@@ -96,6 +96,9 @@ jobs:
           mkdir -p merged-dist/font
           cp -r apps/font-tools/dist/. merged-dist/font/
 
+      - name: Regenerate consolidated sitemap index
+        run: node apps/loomfile/scripts/generate-sitemap-index.mjs merged-dist
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
