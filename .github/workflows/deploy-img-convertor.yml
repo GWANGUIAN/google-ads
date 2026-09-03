@@ -37,14 +37,6 @@ jobs:
       - name: Build img-convertor
         run: pnpm turbo run build --filter=img-convertor...
 
-      - name: Debug secret presence
-        env:
-          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          echo "token length: ${#TOKEN}"
-          echo "account length: ${#ACCOUNT}"
-
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
