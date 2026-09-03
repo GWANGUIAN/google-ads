@@ -92,4 +92,4 @@ Reference implementation: `apps/img-convertor/src/lib/convert/` + `src/component
 
 | Site | App path | Domain (planned) | Status |
 |---|---|---|---|
-| ImgConvertor | `apps/img-convertor` | imgconvertor.com (verify availability before purchase) | Built, not yet deployed/domain-connected |
+| ImgConvertor | `apps/img-convertor` | imgconvertor.download | Deployed to Cloudflare Pages, domain connection in progress |
