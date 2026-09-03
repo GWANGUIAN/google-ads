@@ -17,7 +17,8 @@
     "typescript": "^5.7.0",
     "prettier": "^3.4.0",
     "prettier-plugin-astro": "^0.14.1",
-    "eslint": "^9.17.0"
+    "eslint": "^9.17.0",
+    "wrangler": "^4.20.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
