@@ -20,6 +20,6 @@
     "eslint": "^9.17.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
   }
 }
