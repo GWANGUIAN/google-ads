@@ -1,0 +1,43 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import FontWidget from "@/components/font/FontWidget";
+import { CONVERSION_PAGES } from "@/data/conversionPairs";
+import { FORMATS } from "@/data/formats";
+import { buildIntro, buildWhy } from "@/data/copy";
+import { buildFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+import type { ConversionPage } from "@/data/conversionPairs";
+
+export function getStaticPaths() {
+  return CONVERSION_PAGES.map((page) => ({
+    params: { conversionPage: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props as { page: ConversionPage };
+const source = FORMATS[page.source];
+const target = FORMATS[page.target];
+
+const title = `Convert ${source.label} to ${target.label} Online Free | ${SITE.name}`;
+const description = `Convert ${source.label} font files to ${target.label} instantly in your browser — free, private, no upload required.`;
+const path = `/${page.slug}`;
+
+const faqItems = buildFaq(page);
+const intro = buildIntro(page);
+const why = buildWhy(page);
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`Convert ${source.label} to ${target.label}`}
+  heroSubtitle="Free, instant, and completely private. Your font never leaves your device."
+  breadcrumbName={`${source.label} to ${target.label}`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <FontWidget client:idle initialTarget={page.target} lockTarget acceptSource={page.source} />
+</ToolPageLayout>

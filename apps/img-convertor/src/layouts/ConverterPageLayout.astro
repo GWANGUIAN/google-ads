@@ -11,6 +11,7 @@ import { FORMATS } from "@/data/formats";
 import { buildFaq } from "@/data/faqTemplates";
 import { buildIntro, buildWhyConvert } from "@/data/copy";
 import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
 import type { FormatPair } from "@/data/pairs";
 
 interface Props {
@@ -23,8 +24,11 @@ const to = FORMATS[pair.to];
 
 const title = `Convert ${from.label} to ${to.label} Online Free | ${SITE.name}`;
 const description = `Convert ${from.label} to ${to.label} instantly in your browser — free, private, no upload required. Batch-convert multiple ${from.label} files to ${to.label} at once.`;
+// `path` is passed bare to BaseLayout below, which applies withBase() itself
+// when building its own canonical — applying it here too would double it up.
 const path = `/${pair.slug}`;
-const canonical = new URL(path, SITE.url).toString();
+const canonical = new URL(withBase(path), SITE.url).toString();
+const homeUrl = new URL(withBase("/"), SITE.url).toString();
 
 const faqItems = buildFaq(pair);
 const intro = buildIntro(pair);
@@ -44,7 +48,7 @@ const acceptAttr = from.extensions.map((ext) => `.${ext.replace(".", "")}`).join
   <JsonLd schema={faqPageSchema(faqItems)} />
   <JsonLd
     schema={breadcrumbListSchema([
-      { name: "Home", url: SITE.url },
+      { name: "Home", url: homeUrl },
       { name: `${from.label} to ${to.label}`, url: canonical },
     ])}
   />
@@ -59,7 +63,7 @@ const acceptAttr = from.extensions.map((ext) => `.${ext.replace(".", "")}`).join
     />
 
     <nav aria-label="Breadcrumb" class="-mt-6 mb-6 text-xs text-neutral-400">
-      <a href="/" class="hover:text-neutral-600">Home</a>
+      <a href={withBase("/")} class="hover:text-neutral-600">Home</a>
       <span class="mx-1.5">/</span>
       <span class="text-neutral-600">{from.label} to {to.label}</span>
     </nav>

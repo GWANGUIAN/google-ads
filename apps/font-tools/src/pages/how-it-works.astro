@@ -1,0 +1,63 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`How ${SITE.name} works`}
+  description={`A closer look at how ${SITE.name} converts font files entirely inside your browser, with nothing ever uploaded.`}
+  path="/how-it-works"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">How {SITE.name} works</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          Most online font converters work by uploading your file to a server, processing it there, and sending back
+          a result — which means your font, however proprietary or license-restricted, has to leave your device.
+          {SITE.name} doesn't do that. Every tool on this site runs entirely inside your browser tab, using an
+          open-source library called <strong>fonteditor-core</strong> compiled to <strong>WebAssembly</strong>.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Reading a font</h2>
+        <p>
+          When you drop a file, fonteditor-core parses its internal tables (glyph outlines, metrics, hinting
+          instructions) directly from the bytes in your browser's memory. WOFF2 files are first decompressed using a
+          dedicated WebAssembly codec, since WOFF2's compression isn't something plain JavaScript can efficiently
+          decode.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Writing the result</h2>
+        <p>
+          Once parsed, the same glyph data is re-packaged into the target format's container — TTF, WOFF, or WOFF2.
+          OTF is a special case: it can only be a starting format, not a result, because it stores glyphs as
+          PostScript (CFF) curves rather than TrueType curves — that conversion happens automatically the moment an
+          OTF file is read.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">The live preview</h2>
+        <p>
+          Before or after converting, this tool loads your font directly with the browser's own <strong>FontFace</strong>{" "}
+          API to render sample text in it — a separate, native code path from the conversion itself, so you can
+          confirm you picked the right file.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">What "never uploaded" actually means</h2>
+        <p>
+          Concretely: when you drop a font onto this site, it's read directly from your device into your browser's
+          memory. No <code>fetch</code>, no form submission, no network request carries your font data anywhere. You
+          can confirm this yourself using your browser's developer tools — open the Network tab while converting a
+          file, and you'll see no outgoing request containing your font data.
+        </p>
+
+        <p>
+          For the full picture on what little data is collected (aggregate analytics, advertising cookies once ads
+          are enabled), see our <a href={withBase("/privacy-policy")} class="text-accent-600 underline">Privacy Policy</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

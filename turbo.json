@@ -3,7 +3,19 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "env": [
+        "PUBLIC_SITE_URL",
+        "PUBLIC_BASE_PATH",
+        "PUBLIC_ADS_ENABLED",
+        "PUBLIC_ADSENSE_CLIENT_ID",
+        "PUBLIC_AD_SLOT_HEADER",
+        "PUBLIC_AD_SLOT_IN_CONTENT",
+        "PUBLIC_AD_SLOT_SIDEBAR",
+        "PUBLIC_AD_SLOT_FOOTER",
+        "PUBLIC_GOOGLE_SITE_VERIFICATION",
+        "PUBLIC_NAVER_SITE_VERIFICATION"
+      ]
     },
     "dev": {
       "cache": false,

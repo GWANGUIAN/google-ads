@@ -4,3 +4,5 @@ Allow: /
 Sitemap: https://loomfile.com/sitemap-index.xml
 Sitemap: https://loomfile.com/pdf/sitemap-index.xml
 Sitemap: https://loomfile.com/video/sitemap-index.xml
+Sitemap: https://loomfile.com/image-convertor/sitemap-index.xml
+Sitemap: https://loomfile.com/font/sitemap-index.xml

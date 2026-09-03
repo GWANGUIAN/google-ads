@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@repo/ui/Container.astro";
 import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
 ---
 
 <BaseLayout
@@ -37,7 +38,7 @@ import { SITE } from "@/data/site";
         <h2 class="text-xl font-bold text-neutral-900">Who's behind this</h2>
         <p>
           {SITE.name} is an independent, small-scale project focused on doing one thing well: fast, private
-          image conversion. If you have feedback or run into a bug, see our <a href="/contact" class="text-accent-600 underline">Contact page</a>.
+          image conversion. If you have feedback or run into a bug, see our <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
         </p>
       </div>
     </article>

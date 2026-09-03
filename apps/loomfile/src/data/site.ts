@@ -40,9 +40,13 @@ export const TOOLS = [
     tagline: "Compress and trim MP4 and WebM video, right in your browser",
   },
   {
-    slug: "https://imgconvertor.download",
+    slug: "/image-convertor/",
     name: "Image Convertor",
     tagline: "Convert images between PNG, JPG, WEBP, BMP, GIF, and HEIC",
-    external: true,
+  },
+  {
+    slug: "/font/",
+    name: "Font Tools",
+    tagline: "Convert TTF, OTF, WOFF, and WOFF2 fonts, right in your browser",
   },
 ];

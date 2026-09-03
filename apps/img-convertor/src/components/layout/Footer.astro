@@ -2,6 +2,7 @@
 import Container from "@repo/ui/Container.astro";
 import { FORMAT_PAIRS } from "@/data/pairs";
 import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
 
 const featured = FORMAT_PAIRS.slice(0, 10);
 ---
@@ -19,7 +20,7 @@ const featured = FORMAT_PAIRS.slice(0, 10);
         {
           featured.map((pair) => (
             <li>
-              <a href={`/${pair.slug}`} class="hover:text-accent-600">
+              <a href={withBase(`/${pair.slug}`)} class="hover:text-accent-600">
                 {pair.from.toUpperCase()} to {pair.to.toUpperCase()}
               </a>
             </li>
@@ -31,16 +32,16 @@ const featured = FORMAT_PAIRS.slice(0, 10);
     <div>
       <p class="text-sm font-semibold text-neutral-900">Company</p>
       <ul class="mt-3 space-y-2 text-sm text-neutral-600">
-        <li><a href="/about" class="hover:text-accent-600">About</a></li>
-        <li><a href="/contact" class="hover:text-accent-600">Contact</a></li>
+        <li><a href={withBase("/about")} class="hover:text-accent-600">About</a></li>
+        <li><a href={withBase("/contact")} class="hover:text-accent-600">Contact</a></li>
       </ul>
     </div>
 
     <div>
       <p class="text-sm font-semibold text-neutral-900">Legal</p>
       <ul class="mt-3 space-y-2 text-sm text-neutral-600">
-        <li><a href="/privacy-policy" class="hover:text-accent-600">Privacy Policy</a></li>
-        <li><a href="/terms-of-service" class="hover:text-accent-600">Terms of Service</a></li>
+        <li><a href={withBase("/privacy-policy")} class="hover:text-accent-600">Privacy Policy</a></li>
+        <li><a href={withBase("/terms-of-service")} class="hover:text-accent-600">Terms of Service</a></li>
       </ul>
     </div>
   </Container>

@@ -48,20 +48,34 @@ export default function TrimTimeline({ duration, start, end, onChange, thumbnail
     e.stopPropagation();
     e.preventDefault();
     const handle = e.currentTarget;
-    handle.setPointerCapture(e.pointerId);
+    const pointerId = e.pointerId;
+    try {
+      // Pointer capture keeps events flowing to `handle` (and the right
+      // cursor/touch behavior) even once the pointer leaves it — a nice-to-
+      // have, not a requirement: some embedded/automated browser contexts
+      // don't register a pointerdown as an "active" pointer, so this can
+      // throw. The window listeners below make the drag work regardless.
+      handle.setPointerCapture(pointerId);
+    } catch {
+      // ignored — see above
+    }
 
     function handleMove(ev: PointerEvent) {
       const t = timeFromClientX(ev.clientX);
       if (which === "start") onChangeRef.current(Math.min(t, endRef.current - 0.1), endRef.current);
       else onChangeRef.current(startRef.current, Math.max(t, startRef.current + 0.1));
     }
-    function handleUp(ev: PointerEvent) {
-      handle.removeEventListener("pointermove", handleMove);
-      handle.removeEventListener("pointerup", handleUp);
-      handle.releasePointerCapture(ev.pointerId);
+    function handleUp() {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", handleUp);
+      try {
+        handle.releasePointerCapture(pointerId);
+      } catch {
+        // ignored — see above
+      }
     }
-    handle.addEventListener("pointermove", handleMove);
-    handle.addEventListener("pointerup", handleUp);
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", handleUp);
   }
 
   const startPct = duration ? (start / duration) * 100 : 0;

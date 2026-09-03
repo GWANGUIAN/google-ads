@@ -31,6 +31,14 @@
       "port": 4324,
       "autoPort": true,
       "env": { "PORT": "4324" }
+    },
+    {
+      "name": "font-tools",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "font-tools", "dev"],
+      "port": 4326,
+      "autoPort": true,
+      "env": { "PORT": "4326" }
     }
   ]
 }

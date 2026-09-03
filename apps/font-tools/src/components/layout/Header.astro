@@ -1,0 +1,24 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href={withBase("/")} class="flex items-center gap-2 text-base font-bold text-neutral-900">
+      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 20h5M9 4l-4 16M14 8h6M12 20l4-16 4 16" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      {SITE.name}
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-600 lg:flex">
+      <a href={withBase("/ttf-to-woff2")} class="hover:text-neutral-900">TTF → WOFF2</a>
+      <a href={withBase("/otf-to-ttf")} class="hover:text-neutral-900">OTF → TTF</a>
+      <a href={withBase("/faq")} class="hover:text-neutral-900">FAQ</a>
+      <a href={withBase("/how-it-works")} class="hover:text-neutral-900">How it works</a>
+    </nav>
+  </Container>
+</header>

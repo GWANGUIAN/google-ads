@@ -1,0 +1,29 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema } from "@repo/seo/schema";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "Do I need to install anything?", answer: "No. Every tool runs directly in your web browser using WebAssembly — there's nothing to download or install." },
+  { question: "Is there a limit on file size or how many times I can use these tools?", answer: "No hard limit — font files are small, so conversion is near-instant even for large batches." },
+  { question: "What font formats are supported?", answer: "TTF, OTF, WOFF, and WOFF2 as input. OTF can only be converted, not converted to — it can be a source format, but not a target, since it uses PostScript outlines this tool converts to TrueType outlines on read." },
+  { question: "Does this work on mobile?", answer: "It works in any modern browser with WebAssembly support — Chrome, Safari, Firefox, and Edge on both desktop and mobile." },
+  { question: "How is this free?", answer: "Because all processing happens in your browser, there's no server cost per file. The site is supported by advertising rather than charging per use." },
+]);
+---
+
+<BaseLayout title={`FAQ | ${SITE.name}`} description="Answers to common questions about Font Tools." path="/faq">
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">Frequently asked questions</h1>
+      <div class="mt-6">
+        <Faq items={faqItems} heading="" />
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

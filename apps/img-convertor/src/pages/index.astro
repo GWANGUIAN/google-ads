@@ -5,6 +5,7 @@ import Hero from "@/components/marketing/Hero.astro";
 import AdSlot from "@/components/ads/AdSlot.astro";
 import { FORMAT_PAIRS, popularPairs } from "@/data/pairs";
 import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
 
 const popular = popularPairs(8);
 
@@ -27,7 +28,7 @@ const grouped = FORMAT_PAIRS.reduce<Record<string, typeof FORMAT_PAIRS>>((acc, p
         {
           popular.map((pair) => (
             <a
-              href={`/${pair.slug}`}
+              href={withBase(`/${pair.slug}`)}
               class="rounded-control border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-700 hover:border-accent-400 hover:text-accent-700"
             >
               {pair.from.toUpperCase()} → {pair.to.toUpperCase()}
@@ -51,7 +52,7 @@ const grouped = FORMAT_PAIRS.reduce<Record<string, typeof FORMAT_PAIRS>>((acc, p
               <ul class="mt-2 space-y-1.5">
                 {pairs.map((pair) => (
                   <li>
-                    <a href={`/${pair.slug}`} class="text-sm text-neutral-600 hover:text-accent-600">
+                    <a href={withBase(`/${pair.slug}`)} class="text-sm text-neutral-600 hover:text-accent-600">
                       {pair.from.toUpperCase()} to {pair.to.toUpperCase()}
                     </a>
                   </li>

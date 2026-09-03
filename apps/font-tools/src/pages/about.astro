@@ -1,0 +1,47 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`About ${SITE.name}`}
+  description={`Learn how ${SITE.name} works, why it's free, and why your fonts never leave your device.`}
+  path="/about"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">About {SITE.name}</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          {SITE.name} is a free toolkit for converting font files between TTF, OTF, WOFF, and WOFF2 — directly in
+          your web browser. There's no sign-up, no watermark, and no limit on how many fonts you convert.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Why is it free?</h2>
+        <p>
+          Every tool here runs using WebAssembly in your own browser, not a server we operate. Because we're not
+          paying to process your fonts on our own infrastructure, there's no per-use cost to pass on — the site is
+          instead supported by advertising.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Your font never leaves your device</h2>
+        <p>
+          Every conversion on this site happens locally, using the open-source <strong>fonteditor-core</strong>{" "}
+          library compiled to WebAssembly. Your font file is read, converted, and downloaded entirely on your own
+          computer or phone — at no point is it uploaded to any server. We can't see your fonts, because we never
+          receive them. See <a href={withBase("/how-it-works")} class="text-accent-600 underline">How it works</a>{" "}
+          for the technical detail.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Who's behind this</h2>
+        <p>
+          {SITE.name} is part of the LoomFile family of free, private, in-browser file tools. If you have feedback
+          or run into a bug, see our <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>
