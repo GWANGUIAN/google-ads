@@ -10,6 +10,7 @@ Consequences:
 - Astro projects use `output: 'static'` and **no server adapter of any kind**. Do not add `@astrojs/cloudflare`, `@astrojs/node`, etc. Astro's default static build already produces a plain `dist/` folder that Cloudflare Pages serves natively.
 - Any feature that seems to need a backend (contact forms, user accounts, image uploads to a server) must instead use a client-only alternative: `mailto:` links, third-party static-friendly form embeds, or — for image processing — the browser's own APIs (Canvas, Web Workers). Do not stand up serverless functions "just this once."
 - If a genuine server-side need ever arises, treat that as a decision requiring the user's explicit sign-off, not a default engineering choice.
+- **Never add a `functions/` directory or a `_worker.js`** to any site's build output unless that decision has been explicitly signed off on. Their presence is what makes Cloudflare route a request through the Workers runtime — and that's what counts against the Workers free plan's daily request quota. With neither present (the current state of every site here — verify via `find apps/<site>/dist -name "_worker.js" -o -name functions`), Cloudflare Pages serves every request as a plain static asset straight from the edge, which has no request-count cap on the free plan and never touches the Workers quota at all. This is a direct, mechanical consequence of the static-only constraint above, not a separate setting to remember.
 
 ## 2. Monorepo layout & scaffolding a new site
 
