@@ -36,6 +36,21 @@ jobs:
 
       - name: Build img-convertor
         run: pnpm turbo run build --filter=img-convertor...
+        env:
+          # Astro bakes PUBLIC_* vars into the static build at build time, so
+          # they must be provided here (GitHub Actions), not in the Cloudflare
+          # Pages dashboard — this repo builds via CI and ships a finished
+          # dist/, Cloudflare's own build/env-var system is never invoked.
+          # These are not secrets (they end up in public page HTML once ads
+          # are on), so they're stored as repo Variables, set via:
+          #   gh variable set PUBLIC_ADS_ENABLED --body true
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_ADS_ENABLED: ${{ vars.PUBLIC_ADS_ENABLED }}
+          PUBLIC_ADSENSE_CLIENT_ID: ${{ vars.PUBLIC_ADSENSE_CLIENT_ID }}
+          PUBLIC_AD_SLOT_HEADER: ${{ vars.PUBLIC_AD_SLOT_HEADER }}
+          PUBLIC_AD_SLOT_IN_CONTENT: ${{ vars.PUBLIC_AD_SLOT_IN_CONTENT }}
+          PUBLIC_AD_SLOT_SIDEBAR: ${{ vars.PUBLIC_AD_SLOT_SIDEBAR }}
+          PUBLIC_AD_SLOT_FOOTER: ${{ vars.PUBLIC_AD_SLOT_FOOTER }}
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
