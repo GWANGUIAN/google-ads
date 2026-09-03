@@ -3,3 +3,4 @@ Allow: /
 
 Sitemap: https://loomfile.com/sitemap-index.xml
 Sitemap: https://loomfile.com/pdf/sitemap-index.xml
+Sitemap: https://loomfile.com/video/sitemap-index.xml

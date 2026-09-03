@@ -13,7 +13,7 @@ import { SITE, TOOLS } from "@/data/site";
       </h1>
       <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">
         Every tool on {SITE.name} runs entirely on your own device — no uploads, no sign-up, no limits. We're
-        starting with PDFs, and adding more tools over time.
+        adding new browser-based file tools over time.
       </p>
     </section>
 
@@ -24,6 +24,8 @@ import { SITE, TOOLS } from "@/data/site";
           TOOLS.map((tool) => (
             <a
               href={tool.slug}
+              target={tool.external ? "_blank" : undefined}
+              rel={tool.external ? "noopener noreferrer" : undefined}
               class="rounded-card border border-neutral-200 bg-white p-5 hover:border-accent-400 hover:shadow-sm"
             >
               <p class="text-base font-bold text-neutral-900">{tool.name}</p>

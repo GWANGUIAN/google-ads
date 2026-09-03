@@ -1,0 +1,44 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import VideoWidget from "@/components/video/VideoWidget";
+import { OPERATION_PAGES } from "@/data/operationPages";
+import { OPERATIONS } from "@/data/operations";
+import { FORMATS } from "@/data/formats";
+import { buildIntro, buildWhy } from "@/data/copy";
+import { buildFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+import type { OperationPage } from "@/data/operationPages";
+
+export function getStaticPaths() {
+  return OPERATION_PAGES.map((page) => ({
+    params: { operationPage: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props as { page: OperationPage };
+const operation = OPERATIONS[page.operation];
+const format = FORMATS[page.format];
+
+const title = `${operation.verb} ${format.label} Video Online Free | ${SITE.name}`;
+const description = `${operation.verb} ${format.label} video instantly in your browser — free, private, no upload required.`;
+const path = `/${page.slug}`;
+
+const faqItems = buildFaq(page);
+const intro = buildIntro(page);
+const why = buildWhy(page);
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`${operation.verb} ${format.label} video`}
+  heroSubtitle="Free, instant, and completely private. Your video never leaves your device."
+  breadcrumbName={`${operation.verb} ${format.label}`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <VideoWidget client:idle initialOperation={page.operation} lockOperation acceptContainer={page.format} />
+</ToolPageLayout>

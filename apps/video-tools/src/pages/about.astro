@@ -1,0 +1,49 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`About ${SITE.name}`}
+  description={`Learn how ${SITE.name} works, why it's free, and why your video never leaves your device.`}
+  path="/about"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">About {SITE.name}</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          {SITE.name} is a free toolkit for shrinking and trimming video — compressing MP4 and WebM files down to a
+          smaller size, or cutting them down to just the range you need — directly in your web browser. There's no
+          sign-up, no watermark, and no limit on how many videos you process.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Why is it free?</h2>
+        <p>
+          Every tool here runs using your browser's own WebCodecs API, not a server we operate. Because we're not
+          paying to process your video on our own infrastructure, there's no per-use cost to pass on — the site is
+          instead supported by advertising.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Your video never leaves your device</h2>
+        <p>
+          Every operation on this site happens locally, using the open-source <strong>mediabunny</strong> library on
+          top of your browser's built-in WebCodecs hardware encoder/decoder. Your video is read, processed, and
+          downloaded entirely on your own computer or phone — at no point is it uploaded to any server. We can't see
+          your videos, because we never receive them. See
+          <a href={withBase("/how-it-works")} class="text-accent-600 underline">How it works</a> for the technical
+          detail.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Who's behind this</h2>
+        <p>
+          {SITE.name} is part of the LoomFile family of free, private, in-browser file tools. If you have feedback
+          or run into a bug, see our <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

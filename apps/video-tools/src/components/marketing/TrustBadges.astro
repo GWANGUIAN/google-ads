@@ -1,0 +1,19 @@
+---
+const badges = [
+  { title: "100% private", desc: "Video never leaves your device" },
+  { title: "No sign-up", desc: "Just drop your file and go" },
+  { title: "Unlimited & free", desc: "No limits, no watermarks" },
+  { title: "MP4 & WebM", desc: "Compress and trim both containers" },
+];
+---
+
+<div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+  {
+    badges.map((badge) => (
+      <div class="rounded-card border border-neutral-200 bg-white px-4 py-3 text-center">
+        <p class="text-sm font-semibold text-neutral-900">{badge.title}</p>
+        <p class="mt-0.5 text-xs text-neutral-500">{badge.desc}</p>
+      </div>
+    ))
+  }
+</div>

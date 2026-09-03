@@ -14,7 +14,16 @@ import { SITE, TOOLS } from "@/data/site";
       <p class="text-sm font-semibold text-neutral-900">Tools</p>
       <ul class="mt-3 space-y-2 text-sm text-neutral-600">
         {TOOLS.map((tool) => (
-          <li><a href={tool.slug} class="hover:text-accent-600">{tool.name}</a></li>
+          <li>
+            <a
+              href={tool.slug}
+              target={tool.external ? "_blank" : undefined}
+              rel={tool.external ? "noopener noreferrer" : undefined}
+              class="hover:text-accent-600"
+            >
+              {tool.name}
+            </a>
+          </li>
         ))}
       </ul>
     </div>

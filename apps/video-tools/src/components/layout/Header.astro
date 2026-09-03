@@ -1,0 +1,24 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href={withBase("/")} class="flex items-center gap-2 text-base font-bold text-neutral-900">
+      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5.5c0-.9 1-1.5 1.8-1l9 5.5c.8.5.8 1.6 0 2.1l-9 5.5c-.8.5-1.8-.1-1.8-1V5.5Z" />
+        </svg>
+      </span>
+      {SITE.name}
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-600 lg:flex">
+      <a href={withBase("/compress-mp4")} class="hover:text-neutral-900">Compress</a>
+      <a href={withBase("/trim-mp4")} class="hover:text-neutral-900">Trim</a>
+      <a href={withBase("/faq")} class="hover:text-neutral-900">FAQ</a>
+      <a href={withBase("/how-it-works")} class="hover:text-neutral-900">How it works</a>
+    </nav>
+  </Container>
+</header>

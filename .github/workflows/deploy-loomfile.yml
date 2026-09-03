@@ -14,6 +14,7 @@ on:
     paths:
       - "apps/loomfile/**"
       - "apps/localpdf/**"
+      - "apps/video-tools/**"
       - "packages/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -45,7 +46,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build loomfile (root) and every tool mounted under it
-        run: pnpm turbo run build --filter=loomfile... --filter=localpdf...
+        run: pnpm turbo run build --filter=loomfile... --filter=localpdf... --filter=video-tools...
         env:
           # Astro bakes PUBLIC_* vars into the static build at build time, so
           # they must be provided here (GitHub Actions), not in the Cloudflare
@@ -80,6 +81,8 @@ jobs:
           cp -r apps/loomfile/dist/. merged-dist/
           mkdir -p merged-dist/pdf
           cp -r apps/localpdf/dist/. merged-dist/pdf/
+          mkdir -p merged-dist/video
+          cp -r apps/video-tools/dist/. merged-dist/video/
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4

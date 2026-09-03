@@ -99,6 +99,7 @@ Reference implementation: `apps/img-convertor/src/lib/convert/` + `src/component
 | ImgConvertor | `apps/img-convertor` | imgconvertor.download | Deployed to Cloudflare Pages, domain connection in progress |
 | LoomFile (umbrella root) | `apps/loomfile` | loomfile.com | Scaffolded, not yet deployed — domain purchased 2026-09-04 |
 | — PDF Tools | `apps/localpdf` | loomfile.com/pdf | Scaffolded, wired for the umbrella deploy; not yet deployed |
+| — Video Tools | `apps/video-tools` | loomfile.com/video | Scaffolded (compress + trim, MP4/WebM via WebCodecs/mediabunny), wired for the umbrella deploy; not yet deployed |
 
 ## 11. Multi-tool umbrella domain strategy (decided 2026-09-04)
 
@@ -119,6 +120,8 @@ New sites beyond ImgConvertor are **not** getting their own dedicated domain eac
 - `.github/workflows/deploy-loomfile.yml` builds `loomfile` (root) and every tool app with one `turbo run build`, then copies each tool's `dist/` into `merged-dist/<path>/` (`apps/localpdf/dist/*` → `merged-dist/pdf/*`) and `apps/loomfile/dist/*` into `merged-dist/` itself, then ships `merged-dist/` with a single `wrangler pages deploy --project-name=loomfile`
 - adding a new tool to this domain means: add its app under `apps/`, add it to `apps/loomfile/src/data/site.ts`'s `TOOLS` list, add a `cp -r apps/<tool>/dist/. merged-dist/<path>/` line + a `--filter=<tool>...` to the build step + a `paths:` entry, all in `deploy-loomfile.yml`
 - this replaces the "one Cloudflare Pages project + one workflow per site" pattern in §8 **for umbrella-domain sites only** — img-convertor's existing per-domain workflow is unaffected and unchanged.
+- **a tool kept on its own dedicated domain (the img-convertor exception) is cross-linked from the loomfile landing page instead of merged into the build**: add a `TOOLS` entry with `external: true` and an absolute `slug` URL (e.g. `"https://imgconvertor.download"`) — `Header.astro`, `Footer.astro`, and `index.astro` all read `tool.external` and render those links with `target="_blank" rel="noopener noreferrer"`. It gets **no** `merged-dist/<path>` copy step, `--filter=<tool>...` build addition, or `paths:` entry in `deploy-loomfile.yml`, and its own independent `deploy-<site>.yml` pipeline and `robots.txt` stay untouched — only the `TOOLS` entry changes.
+- **whenever the tool roster changes (adding, removing, or reworking a tool), also re-read the landing page's hero paragraph (`apps/loomfile/src/pages/index.astro`) and `SITE.description` in `site.ts`** — both are hand-written prose, not generated from `TOOLS`, so Astro won't flag them when they drift out of date (e.g. copy that still says "starting with PDFs" after other tools were added).
 
 **`robots.txt`/`ads.txt` are domain-root-only files** — only `apps/loomfile/public/{robots.txt,ads.txt}` are reachable once merged (at `loomfile.com/robots.txt`); any copy left in a tool app's own `public/` (e.g. `apps/localpdf/public/robots.txt`) lands at an unreachable path like `loomfile.com/pdf/robots.txt` post-merge and is harmless dead weight, not the authoritative file. The root `robots.txt` lists every tool's own sitemap explicitly (`Sitemap: https://loomfile.com/pdf/sitemap-index.xml`, etc.) — add a line there for each new tool.
 

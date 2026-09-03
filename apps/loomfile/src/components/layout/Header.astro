@@ -15,7 +15,14 @@ import { SITE, TOOLS } from "@/data/site";
     </a>
     <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-600 lg:flex">
       {TOOLS.map((tool) => (
-        <a href={tool.slug} class="hover:text-neutral-900">{tool.name}</a>
+        <a
+          href={tool.slug}
+          target={tool.external ? "_blank" : undefined}
+          rel={tool.external ? "noopener noreferrer" : undefined}
+          class="hover:text-neutral-900"
+        >
+          {tool.name}
+        </a>
       ))}
     </nav>
   </Container>

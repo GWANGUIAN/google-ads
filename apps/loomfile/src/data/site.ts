@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Free, private browser tools",
   url: import.meta.env.PUBLIC_SITE_URL ?? "https://loomfile.com",
   description:
-    "A growing collection of free file tools that run entirely in your browser — starting with PDFs. No uploads, no sign-up, your files never leave your device.",
+    "A growing collection of free file tools that run entirely in your browser — PDFs, video, images, and more. No uploads, no sign-up, your files never leave your device.",
   contactEmail: "hello@loomfile.com",
 };
 
@@ -24,12 +24,25 @@ export const ADS = {
   },
 };
 
-/** Tools live on this domain, each mounted at its own path. Extend this list
- *  as new tools are added — the landing page and footer read from it. */
+/** Tools mounted on this domain (relative `slug`), plus tools kept on their
+ *  own dedicated domain and cross-linked here (`external: true`, absolute
+ *  `slug` URL — see docs/NEW_SITE_PLAYBOOK.md §11). Extend this list as new
+ *  tools are added — the header, footer, and landing page all read from it. */
 export const TOOLS = [
   {
     slug: "/pdf/",
     name: "PDF Tools",
     tagline: "Convert, merge, split, organize, view, and extract from PDFs",
+  },
+  {
+    slug: "/video/",
+    name: "Video Tools",
+    tagline: "Compress and trim MP4 and WebM video, right in your browser",
+  },
+  {
+    slug: "https://imgconvertor.download",
+    name: "Image Convertor",
+    tagline: "Convert images between PNG, JPG, WEBP, BMP, GIF, and HEIC",
+    external: true,
   },
 ];

@@ -1,0 +1,29 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema } from "@repo/seo/schema";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "Do I need to install anything?", answer: "No. Every tool runs directly in your web browser using the WebCodecs API — there's nothing to download or install." },
+  { question: "Is there a limit on file size or how many times I can use these tools?", answer: "No hard limit, though very large videos (300MB+) may be slow since everything runs in your browser's memory rather than on a server." },
+  { question: "What video formats are supported?", answer: "MP4 (H.264/AAC) and WebM (VP9/Opus) as both input and output for now. Support for more formats like MOV is planned." },
+  { question: "Does this work on mobile?", answer: "It works wherever your browser supports the WebCodecs API — currently strongest on desktop Chrome/Edge/Firefox; mobile browser support varies and is improving." },
+  { question: "How is this free?", answer: "Because all processing happens in your browser, there's no server cost per file. The site is supported by advertising rather than charging per use." },
+]);
+---
+
+<BaseLayout title={`FAQ | ${SITE.name}`} description="Answers to common questions about Video Tools." path="/faq">
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">Frequently asked questions</h1>
+      <div class="mt-6">
+        <Faq items={faqItems} heading="" />
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

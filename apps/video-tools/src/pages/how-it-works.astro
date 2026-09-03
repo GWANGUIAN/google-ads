@@ -1,0 +1,54 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`How ${SITE.name} works`}
+  description={`A closer look at how ${SITE.name} compresses and trims video entirely inside your browser, with nothing ever uploaded.`}
+  path="/how-it-works"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">How {SITE.name} works</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          Most online video tools work by uploading your file to a server, processing it there, and sending back a
+          result — which means your video, however sensitive, has to leave your device. {SITE.name} doesn't do that.
+          Every tool on this site runs entirely inside your browser tab, using the browser's own
+          <strong>WebCodecs API</strong> (hardware-accelerated video/audio encoding and decoding built into modern
+          browsers) via an open-source library called <strong>mediabunny</strong>.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Compressing a video</h2>
+        <p>
+          Compression decodes your video's frames using WebCodecs, re-encodes them at a lower bitrate (and, at the
+          "Smaller file" preset, a capped resolution), and writes the result back into a fresh MP4 or WebM
+          container — all in memory, in your browser tab.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Trimming a video</h2>
+        <p>
+          Trimming reads only the portion of the file between your chosen start and end times and writes it into a
+          new container, without needing to touch the parts you're cutting away.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">What "never uploaded" actually means</h2>
+        <p>
+          Concretely: when you drop a video onto this site, it's read directly from your device into your browser's
+          memory. No <code>fetch</code>, no form submission, no network request carries your video data anywhere.
+          You can confirm this yourself using your browser's developer tools — open the Network tab while
+          compressing or trimming a file, and you'll see no outgoing request containing your video data.
+        </p>
+
+        <p>
+          For the full picture on what little data is collected (aggregate analytics, advertising cookies once ads
+          are enabled), see our <a href={withBase("/privacy-policy")} class="text-accent-600 underline">Privacy Policy</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

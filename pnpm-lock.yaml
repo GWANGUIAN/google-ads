@@ -162,6 +162,55 @@ importers:
         specifier: ^4.20.0
         version: 4.128.0
 
+  apps/video-tools:
+    dependencies:
+      '@astrojs/react':
+        specifier: ^4.1.0
+        version: 4.4.2(@types/node@24.13.3)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(jiti@2.7.0)(lightningcss@1.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yaml@2.9.0)
+      '@astrojs/sitemap':
+        specifier: ^3.2.0
+        version: 3.7.4
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@repo/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@tailwindcss/vite':
+        specifier: ^4.0.0
+        version: 4.3.3(vite@6.4.3(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))
+      astro:
+        specifier: ^5.1.0
+        version: 5.18.2(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.63.1)(typescript@5.9.3)(yaml@2.9.0)
+      mediabunny:
+        specifier: ^1.55.6
+        version: 1.55.6
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.3.3
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.4
+        version: 0.9.10(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@5.9.3)
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.31
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.31)
+      wrangler:
+        specifier: ^4.20.0
+        version: 4.128.0
+
   packages/config:
     dependencies:
       '@eslint/js':
@@ -1617,6 +1666,12 @@ packages:
   '@types/debug@4.1.13':
     resolution: {integrity: sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==}
 
+  '@types/dom-mediacapture-transform@0.1.12':
+    resolution: {integrity: sha512-d7/QsLRwF864A5mgIM/YrfiglHoYn7zgCcAoJgW404r+2DwnNr7EBbLnCWpmOMgH8y0te73L1AV6H1bmauaWFw==}
+
+  '@types/dom-webcodecs@0.1.13':
+    resolution: {integrity: sha512-O5hkiFIcjjszPIYyUSyvScyvrBoV3NOEEZx/pMlsu44TKzWNkLVBBxnxJz42in5n3QIolYOcBYFCPZZ0h8SkwQ==}
+
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
@@ -2545,6 +2600,9 @@ packages:
 
   mdn-data@2.27.1:
     resolution: {integrity: sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ==}
+
+  mediabunny@1.55.6:
+    resolution: {integrity: sha512-IuwxlL8GQ5qODxvdj0mm5bUumrwTr13ooX0UygsrT2u1uwERjV1Awv/zuFoY5iNeYic6SQU78BcGcGLnDgPQ9g==}
 
   micromark-core-commonmark@2.0.3:
     resolution: {integrity: sha512-RDBrHEMSxVFLg6xvnXmb1Ayr2WzLAWjeSATAoxwKYJV94TeNavgoIdA0a9ytzDSVzBy2YKFK+emCPOEibLeCrg==}
@@ -4606,6 +4664,12 @@ snapshots:
     dependencies:
       '@types/ms': 2.1.0
 
+  '@types/dom-mediacapture-transform@0.1.12':
+    dependencies:
+      '@types/dom-webcodecs': 0.1.13
+
+  '@types/dom-webcodecs@0.1.13': {}
+
   '@types/estree@1.0.9': {}
 
   '@types/hast@3.0.5':
@@ -5793,6 +5857,11 @@ snapshots:
   mdn-data@2.0.28: {}
 
   mdn-data@2.27.1: {}
+
+  mediabunny@1.55.6:
+    dependencies:
+      '@types/dom-mediacapture-transform': 0.1.12
+      '@types/dom-webcodecs': 0.1.13
 
   micromark-core-commonmark@2.0.3:
     dependencies:

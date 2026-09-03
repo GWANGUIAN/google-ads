@@ -1,0 +1,58 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import TrustBadges from "@/components/marketing/TrustBadges.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import VideoWidget from "@/components/video/VideoWidget";
+import { OPERATION_PAGES } from "@/data/operationPages";
+import { OPERATIONS } from "@/data/operations";
+import { FORMATS } from "@/data/formats";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout title={`${SITE.name} — Compress & Trim Video Free`} description={SITE.description} path="/">
+  <Container>
+    <section class="py-12 text-center sm:py-16">
+      <h1 class="mx-auto max-w-3xl text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
+        Compress and trim video, right in your browser
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">
+        No uploads, no sign-up, no limits. MP4 and WebM in, smaller or shorter MP4/WebM out — every byte stays on
+        your device.
+      </p>
+      <div class="mx-auto mt-8 max-w-2xl">
+        <TrustBadges />
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-2xl py-6">
+      <VideoWidget client:idle initialOperation="compress" />
+    </section>
+
+    <AdSlot position="in-content" class="py-4" />
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">Tools</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        {
+          OPERATION_PAGES.map((page) => (
+            <a
+              href={withBase(page.slug)}
+              class="rounded-card border border-neutral-200 bg-white p-5 hover:border-accent-400 hover:shadow-sm"
+            >
+              <p class="text-base font-bold text-neutral-900">
+                {OPERATIONS[page.operation].verb} {FORMATS[page.format].label}
+              </p>
+              <p class="mt-1.5 text-sm text-neutral-600">
+                {page.operation === "compress"
+                  ? `Shrink a ${FORMATS[page.format].label} file's size`
+                  : `Cut a ${FORMATS[page.format].label} file down to a time range`}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+</BaseLayout>
