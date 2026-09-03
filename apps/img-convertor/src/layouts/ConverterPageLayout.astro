@@ -1,0 +1,85 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema, breadcrumbListSchema, softwareApplicationSchema } from "@repo/seo/schema";
+import Container from "@repo/ui/Container.astro";
+import Hero from "@/components/marketing/Hero.astro";
+import FormatFactSheet from "@/components/marketing/FormatFactSheet.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { FORMATS } from "@/data/formats";
+import { buildFaq } from "@/data/faqTemplates";
+import { buildIntro, buildWhyConvert } from "@/data/copy";
+import { SITE } from "@/data/site";
+import type { FormatPair } from "@/data/pairs";
+
+interface Props {
+  pair: FormatPair;
+}
+
+const { pair } = Astro.props;
+const from = FORMATS[pair.from];
+const to = FORMATS[pair.to];
+
+const title = `Convert ${from.label} to ${to.label} Online Free | ${SITE.name}`;
+const description = `Convert ${from.label} to ${to.label} instantly in your browser — free, private, no upload required. Batch-convert multiple ${from.label} files to ${to.label} at once.`;
+const path = `/${pair.slug}`;
+const canonical = new URL(path, SITE.url).toString();
+
+const faqItems = buildFaq(pair);
+const intro = buildIntro(pair);
+const whyConvert = buildWhyConvert(pair);
+
+const acceptAttr = from.extensions.map((ext) => `.${ext.replace(".", "")}`).join(",");
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <JsonLd
+    schema={softwareApplicationSchema({
+      name: `${from.label} to ${to.label} Converter`,
+      url: canonical,
+      description,
+    })}
+  />
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <JsonLd
+    schema={breadcrumbListSchema([
+      { name: "Home", url: SITE.url },
+      { name: `${from.label} to ${to.label}`, url: canonical },
+    ])}
+  />
+
+  <Container>
+    <Hero
+      title={`Convert ${from.label} to ${to.label}`}
+      subtitle={`Free, instant, and completely private. Your ${from.label} files never leave your device.`}
+      initialTarget={pair.to}
+      lockTarget
+      accept={acceptAttr}
+    />
+
+    <nav aria-label="Breadcrumb" class="-mt-6 mb-6 text-xs text-neutral-400">
+      <a href="/" class="hover:text-neutral-600">Home</a>
+      <span class="mx-1.5">/</span>
+      <span class="text-neutral-600">{from.label} to {to.label}</span>
+    </nav>
+
+    <article class="mx-auto max-w-3xl space-y-10 pb-16">
+      <section>
+        <p class="text-base leading-relaxed text-neutral-700">{intro}</p>
+        <p class="mt-4 text-base leading-relaxed text-neutral-700">{whyConvert}</p>
+      </section>
+
+      <section class="grid gap-4 sm:grid-cols-2">
+        <FormatFactSheet format={from} />
+        <FormatFactSheet format={to} />
+      </section>
+
+      <AdSlot position="in-content" />
+
+      <section>
+        <Faq items={faqItems} />
+      </section>
+    </article>
+  </Container>
+</BaseLayout>

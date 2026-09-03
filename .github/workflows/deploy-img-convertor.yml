@@ -1,0 +1,46 @@
+name: Deploy img-convertor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/img-convertor/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - ".github/workflows/deploy-img-convertor.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-img-convertor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build img-convertor
+        run: pnpm turbo run build --filter=img-convertor...
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: apps/img-convertor
+          command: pages deploy dist --project-name=img-convertor --branch=main

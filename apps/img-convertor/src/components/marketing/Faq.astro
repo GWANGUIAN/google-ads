@@ -1,0 +1,17 @@
+---
+import Accordion from "@repo/ui/Accordion.tsx";
+import type { FaqItem } from "@/data/faqTemplates";
+
+interface Props {
+  items: FaqItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div>
+  <h2 class="text-xl font-bold text-neutral-900">Frequently asked questions</h2>
+  <div class="mt-4">
+    <Accordion client:visible items={items} />
+  </div>
+</div>

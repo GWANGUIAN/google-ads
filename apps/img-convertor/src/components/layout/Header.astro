@@ -1,0 +1,24 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+---
+
+<header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href="/" class="flex items-center gap-2 text-base font-bold text-neutral-900">
+      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      {SITE.name}
+    </a>
+    <nav class="hidden items-center gap-6 text-sm font-medium text-neutral-600 sm:flex">
+      <a href="/png-to-webp" class="hover:text-neutral-900">PNG to WEBP</a>
+      <a href="/jpg-to-png" class="hover:text-neutral-900">JPG to PNG</a>
+      <a href="/heic-to-jpg" class="hover:text-neutral-900">HEIC to JPG</a>
+      <a href="/about" class="hover:text-neutral-900">About</a>
+    </nav>
+  </Container>
+</header>

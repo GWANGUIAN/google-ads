@@ -1,0 +1,35 @@
+---
+import ConverterWidget from "@/components/converter/ConverterWidget";
+import TrustBadges from "./TrustBadges.astro";
+import type { OutputFormatCode } from "@/lib/convert/types";
+
+interface Props {
+  title: string;
+  subtitle: string;
+  initialTarget?: OutputFormatCode;
+  lockTarget?: boolean;
+  accept?: string;
+}
+
+const { title, subtitle, initialTarget, lockTarget, accept } = Astro.props;
+---
+
+<section class="py-12 sm:py-16">
+  <div class="mx-auto max-w-3xl text-center">
+    <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">{title}</h1>
+    <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">{subtitle}</p>
+  </div>
+
+  <div class="mx-auto mt-8 max-w-2xl">
+    <ConverterWidget
+      client:idle
+      initialTarget={initialTarget}
+      lockTarget={lockTarget}
+      accept={accept}
+    />
+  </div>
+
+  <div class="mx-auto mt-8 max-w-2xl">
+    <TrustBadges />
+  </div>
+</section>

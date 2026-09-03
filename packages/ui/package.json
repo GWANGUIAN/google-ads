@@ -1,0 +1,16 @@
+{
+  "name": "@repo/ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "./Button.astro": "./src/Button.astro",
+    "./Card.astro": "./src/Card.astro",
+    "./Container.astro": "./src/Container.astro",
+    "./Accordion.tsx": "./src/Accordion.tsx"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0",
+    "react": "^18.3.0"
+  }
+}

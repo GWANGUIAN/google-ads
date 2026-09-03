@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+.turbo/
+
+# env
+.env
+.env.*.local
+
+# cloudflare
+.wrangler/
+
+# editor / os
+.DS_Store
+*.log
+npm-debug.log*

@@ -1,0 +1,55 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { FORMAT_PAIRS } from "@/data/pairs";
+import { SITE } from "@/data/site";
+
+const featured = FORMAT_PAIRS.slice(0, 10);
+---
+
+<footer class="mt-16 border-t border-neutral-200 bg-neutral-50">
+  <Container class="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <p class="text-base font-bold text-neutral-900">{SITE.name}</p>
+      <p class="mt-2 text-sm text-neutral-600">{SITE.tagline}</p>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">Popular conversions</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        {
+          featured.map((pair) => (
+            <li>
+              <a href={`/${pair.slug}`} class="hover:text-accent-600">
+                {pair.from.toUpperCase()} to {pair.to.toUpperCase()}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">Company</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href="/about" class="hover:text-accent-600">About</a></li>
+        <li><a href="/contact" class="hover:text-accent-600">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">Legal</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href="/privacy-policy" class="hover:text-accent-600">Privacy Policy</a></li>
+        <li><a href="/terms-of-service" class="hover:text-accent-600">Terms of Service</a></li>
+      </ul>
+    </div>
+  </Container>
+
+  <div class="border-t border-neutral-200 py-6">
+    <Container>
+      <p class="text-xs text-neutral-500">
+        © {new Date().getFullYear()} {SITE.name}. All conversions happen locally in your browser — your images are never uploaded.
+      </p>
+    </Container>
+  </div>
+</footer>

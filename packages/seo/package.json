@@ -1,0 +1,14 @@
+{
+  "name": "@repo/seo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "./SeoHead.astro": "./src/SeoHead.astro",
+    "./JsonLd.astro": "./src/JsonLd.astro",
+    "./schema": "./src/schema.ts"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  }
+}

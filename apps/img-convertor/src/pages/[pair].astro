@@ -1,0 +1,15 @@
+---
+import ConverterPageLayout from "@/layouts/ConverterPageLayout.astro";
+import { FORMAT_PAIRS } from "@/data/pairs";
+
+export function getStaticPaths() {
+  return FORMAT_PAIRS.map((pair) => ({
+    params: { pair: pair.slug },
+    props: { pair },
+  }));
+}
+
+const { pair } = Astro.props;
+---
+
+<ConverterPageLayout pair={pair} />

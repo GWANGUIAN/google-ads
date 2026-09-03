@@ -1,0 +1,66 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Hero from "@/components/marketing/Hero.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { FORMAT_PAIRS, popularPairs } from "@/data/pairs";
+import { SITE } from "@/data/site";
+
+const popular = popularPairs(8);
+
+const grouped = FORMAT_PAIRS.reduce<Record<string, typeof FORMAT_PAIRS>>((acc, pair) => {
+  (acc[pair.from] ??= []).push(pair);
+  return acc;
+}, {});
+---
+
+<BaseLayout title={`${SITE.name} — Free Online Image Format Converter`} description={SITE.description} path="/">
+  <Container>
+    <Hero
+      title="Convert images to any format, free and private"
+      subtitle="Drag and drop PNG, JPG, WEBP, BMP, GIF, or HEIC files — convert them all at once, right in your browser. Nothing is ever uploaded."
+    />
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">Popular conversions</h2>
+      <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {
+          popular.map((pair) => (
+            <a
+              href={`/${pair.slug}`}
+              class="rounded-control border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-700 hover:border-accent-400 hover:text-accent-700"
+            >
+              {pair.from.toUpperCase()} → {pair.to.toUpperCase()}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <AdSlot position="in-content" class="py-4" />
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">All conversions</h2>
+      <div class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          Object.entries(grouped).map(([from, pairs]) => (
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-wide text-neutral-400">
+                From {from.toUpperCase()}
+              </p>
+              <ul class="mt-2 space-y-1.5">
+                {pairs.map((pair) => (
+                  <li>
+                    <a href={`/${pair.slug}`} class="text-sm text-neutral-600 hover:text-accent-600">
+                      {pair.from.toUpperCase()} to {pair.to.toUpperCase()}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+</BaseLayout>
