@@ -7,6 +7,12 @@ export const SITE = {
   contactEmail: "hello@imgconvertor.download",
 };
 
+/** Search-engine ownership verification codes (meta tags), all optional. */
+export const SITE_VERIFICATION = {
+  google: import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
+  naver: import.meta.env.PUBLIC_NAVER_SITE_VERIFICATION ?? "",
+};
+
 export const ADS = {
   enabled: import.meta.env.PUBLIC_ADS_ENABLED === "true",
   clientId: import.meta.env.PUBLIC_ADSENSE_CLIENT_ID ?? "",

@@ -5,7 +5,7 @@ import { organizationSchema, websiteSchema } from "@repo/seo/schema";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 import AdSlot from "@/components/ads/AdSlot.astro";
-import { SITE, ADS } from "@/data/site";
+import { SITE, ADS, SITE_VERIFICATION } from "@/data/site";
 import "@/styles/global.css";
 
 interface Props {
@@ -26,6 +26,8 @@ const canonical = new URL(path, SITE.url).toString();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#2563eb" />
+    {SITE_VERIFICATION.google && <meta name="google-site-verification" content={SITE_VERIFICATION.google} />}
+    {SITE_VERIFICATION.naver && <meta name="naver-site-verification" content={SITE_VERIFICATION.naver} />}
 
     <SeoHead title={title} description={description} canonical={canonical} siteName={SITE.name} noindex={noindex} />
     <JsonLd schema={organizationSchema({ name: SITE.name, url: SITE.url, logo: `${SITE.url}/favicon.svg`, description: SITE.description })} />
