@@ -6,7 +6,8 @@
   "exports": {
     "./SeoHead.astro": "./src/SeoHead.astro",
     "./JsonLd.astro": "./src/JsonLd.astro",
-    "./schema": "./src/schema.ts"
+    "./schema": "./src/schema.ts",
+    "./loomfileNetwork": "./src/loomfileNetwork.ts"
   },
   "peerDependencies": {
     "astro": "^5.0.0"

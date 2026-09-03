@@ -18,6 +18,7 @@ interface Props {
 
 const { title, description, path, noindex } = Astro.props;
 const canonical = new URL(withBase(path), SITE.url).toString();
+const ogImage = new URL(withBase("og-image.png"), SITE.url).toString();
 ---
 
 <!doctype html>
@@ -30,8 +31,8 @@ const canonical = new URL(withBase(path), SITE.url).toString();
     {SITE_VERIFICATION.google && <meta name="google-site-verification" content={SITE_VERIFICATION.google} />}
     {SITE_VERIFICATION.naver && <meta name="naver-site-verification" content={SITE_VERIFICATION.naver} />}
 
-    <SeoHead title={title} description={description} canonical={canonical} siteName={SITE.name} noindex={noindex} />
-    <JsonLd schema={organizationSchema({ name: SITE.name, url: SITE.url, logo: `${SITE.url}/favicon.svg`, description: SITE.description })} />
+    <SeoHead title={title} description={description} canonical={canonical} ogImage={ogImage} siteName={SITE.name} noindex={noindex} />
+    <JsonLd schema={organizationSchema({ name: SITE.name, url: new URL(withBase("/"), SITE.url).toString(), logo: new URL(withBase("favicon.svg"), SITE.url).toString(), description: SITE.description })} />
     <JsonLd schema={websiteSchema({ name: SITE.name, url: SITE.url })} />
 
     {

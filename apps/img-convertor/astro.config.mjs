@@ -8,7 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 //
 // This app is built twice per commit by two independent pipelines: standalone
 // (deploy-img-convertor.yml, defaults below apply — no env vars set) and
-// mounted at loomfile.com/image (deploy-loomfile.yml, which sets
+// mounted at loomfile.com/image-convertor (deploy-loomfile.yml, which sets
 // PUBLIC_SITE_URL and PUBLIC_BASE_PATH). Hand-written hrefs and canonical/
 // JSON-LD URLs go through the withBase() helper (src/lib/url.ts) so both
 // builds resolve correctly. See docs/NEW_SITE_PLAYBOOK.md §11.

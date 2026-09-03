@@ -96,10 +96,11 @@ Reference implementation: `apps/img-convertor/src/lib/convert/` + `src/component
 
 | Site | App path | Domain | Status |
 |---|---|---|---|
-| ImgConvertor | `apps/img-convertor` | imgconvertor.download **and** loomfile.com/image-convertor | Dual-deployed (see §11) — standalone domain connection in progress; loomfile mount wired, not yet deployed |
-| LoomFile (umbrella root) | `apps/loomfile` | loomfile.com | Scaffolded, not yet deployed — domain purchased 2026-09-04 |
-| — PDF Tools | `apps/localpdf` | loomfile.com/pdf | Scaffolded, wired for the umbrella deploy; not yet deployed |
-| — Video Tools | `apps/video-tools` | loomfile.com/video | Scaffolded (compress + trim, MP4/WebM via WebCodecs/mediabunny), wired for the umbrella deploy; not yet deployed |
+| ImgConvertor | `apps/img-convertor` | imgconvertor.download **and** loomfile.com/image-convertor | Dual-deployed (see §11) — both targets live |
+| LoomFile (umbrella root) | `apps/loomfile` | loomfile.com | Deployed — domain purchased 2026-09-04 |
+| — PDF Tools | `apps/localpdf` | loomfile.com/pdf | Deployed |
+| — Video Tools | `apps/video-tools` | loomfile.com/video | Deployed (compress + trim, MP4/WebM via WebCodecs/mediabunny) |
+| — Font Tools | `apps/font-tools` | loomfile.com/font | Deployed (TTF/OTF/WOFF/WOFF2 conversion via fonteditor-core/WASM) |
 
 ## 11. Multi-tool umbrella domain strategy (decided 2026-09-04)
 
@@ -128,9 +129,6 @@ New sites beyond ImgConvertor are **not** getting their own dedicated domain eac
 
 **Sitemaps are consolidated into one root index at build time — no per-tool `robots.txt` edit, ever.** Each tool app still generates its own `sitemap-index.xml`/`sitemap-0.xml` via `@astrojs/sitemap` (correctly scoped to its own `site`/`base`, per the dual-target-app bullet above), but a sitemap index file may only list actual sitemap files, not other sitemap index files (sitemaps.org protocol) — so after the merge step, `apps/loomfile/scripts/generate-sitemap-index.mjs merged-dist` scans `merged-dist/*/sitemap-index.xml` (auto-discovering every mounted tool, whatever its path), pulls each one's `<loc>` entries, and overwrites `merged-dist/sitemap-index.xml` with a single index aggregating loomfile's own sitemap plus every tool's. `apps/loomfile/public/robots.txt` therefore only ever needs the one line `Sitemap: https://loomfile.com/sitemap-index.xml` — adding, removing, or renaming a tool's mount path requires no `robots.txt` or sitemap change at all, only the usual "new tool" steps above. Submit just `https://loomfile.com/sitemap-index.xml` in Google Search Console; it covers every mounted tool automatically as the roster grows.
 
-**Still open — user to do:**
-- Verify DNS for loomfile.com points at Cloudflare (nameserver change, unless bought via Cloudflare Registrar).
-- Create the Cloudflare Pages project: `wrangler pages project create loomfile`.
-- Set the shared `PUBLIC_*` repo Variables (ads stay off by default) once ready to deploy.
+**Deployment is complete** — DNS, the Cloudflare Pages project, and the `PUBLIC_*` Variables are all set; loomfile.com is live with all four tools. `PUBLIC_ADS_ENABLED` is intentionally kept `false` in the `loomfile`/`img-convertor` GitHub Environments until AdSense site review is actually requested — flip it to `true` (and set the `PUBLIC_AD_SLOT_*` Variables) at that point, not before, so the `adsbygoogle.js` loader doesn't fire with no ad units to show on a brand-new domain.
 
 **Open branding question — not decided, flagged rather than assumed:** `apps/localpdf`'s on-page brand (`SITE.name` = "LocalPDF", header/footer copy, `hello@loomfile.com` contact address already updated) still reads as its own product name distinct from the "LoomFile" umbrella brand shown at the domain root. Keeping a tool-level sub-brand under an umbrella domain is a legitimate pattern (many multi-tool sites do this), but whether LocalPDF should keep its name or become "PDF Tools by LoomFile" is a product decision for the user, not something this restructuring silently decided.

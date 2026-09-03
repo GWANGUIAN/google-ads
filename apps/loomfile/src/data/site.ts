@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Free, private browser tools",
   url: import.meta.env.PUBLIC_SITE_URL ?? "https://loomfile.com",
   description:
-    "A growing collection of free file tools that run entirely in your browser — PDFs, video, images, and more. No uploads, no sign-up, your files never leave your device.",
+    "A growing collection of free file tools that run entirely in your browser — PDFs, video, images, fonts, and more. No uploads, no sign-up, your files never leave your device.",
   contactEmail: "hello@loomfile.com",
 };
 

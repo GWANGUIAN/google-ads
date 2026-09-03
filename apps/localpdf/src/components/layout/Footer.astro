@@ -1,10 +1,13 @@
 ---
 import Container from "@repo/ui/Container.astro";
+import { siblingLoomfileTools } from "@repo/seo/loomfileNetwork";
 import { IMAGE_TO_PDF_PAIRS } from "@/data/imageToPdfPairs";
 import { PDF_TO_IMAGE_PAIRS } from "@/data/pdfToImagePairs";
 import { ORGANIZER_TOOLS } from "@/data/pageOrganizerTools";
 import { SITE } from "@/data/site";
 import { withBase } from "@/lib/url";
+
+const moreTools = siblingLoomfileTools("/pdf/");
 ---
 
 <footer class="mt-16 border-t border-neutral-200 bg-neutral-50">
@@ -72,6 +75,23 @@ import { withBase } from "@/lib/url";
       </ul>
     </div>
   </Container>
+
+  <div class="border-t border-neutral-200 py-8">
+    <Container>
+      <p class="text-sm font-semibold text-neutral-900">More free tools on LoomFile</p>
+      <ul class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-600">
+        {
+          moreTools.map((tool) => (
+            <li>
+              <a href={tool.url} class="hover:text-accent-600">
+                {tool.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </div>
 
   <div class="border-t border-neutral-200 py-6">
     <Container>
