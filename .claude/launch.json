@@ -7,6 +7,22 @@
       "runtimeArgs": ["--filter", "img-convertor", "dev"],
       "port": 4325,
       "env": { "PORT": "4325" }
+    },
+    {
+      "name": "localpdf",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "localpdf", "dev"],
+      "port": 4322,
+      "autoPort": true,
+      "env": { "PORT": "4322" }
+    },
+    {
+      "name": "loomfile",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "loomfile", "dev"],
+      "port": 4323,
+      "autoPort": true,
+      "env": { "PORT": "4323" }
     }
   ]
 }

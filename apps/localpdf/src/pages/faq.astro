@@ -1,0 +1,29 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema } from "@repo/seo/schema";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "Do I need to install anything?", answer: "No. Every tool runs directly in your web browser using JavaScript — there's nothing to download or install." },
+  { question: "Is there a limit on file size or how many times I can use these tools?", answer: "No hard limit, though very large files (50MB+) or huge image batches (150+) may be slow since everything runs in your browser's memory rather than on a server." },
+  { question: "Do you support password-protected PDFs?", answer: "Not currently — encrypted PDFs can't be opened by this tool. Remove the password using another tool first, then use LocalPDF." },
+  { question: "Does this work on mobile?", answer: "Yes, every tool is designed to work on phones and tablets, including touch-friendly page reordering." },
+  { question: "How is this free?", answer: "Because all processing happens in your browser, there's no server cost per file. The site is supported by advertising rather than charging per use." },
+]);
+---
+
+<BaseLayout title={`FAQ | ${SITE.name}`} description="Answers to common questions about LocalPDF's tools." path="/faq">
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">Frequently asked questions</h1>
+      <div class="mt-6">
+        <Faq items={faqItems} heading="" />
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

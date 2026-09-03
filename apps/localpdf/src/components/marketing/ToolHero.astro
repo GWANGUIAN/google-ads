@@ -1,0 +1,30 @@
+---
+import TrustBadges from "./TrustBadges.astro";
+
+interface Props {
+  title: string;
+  subtitle: string;
+  /** Widgets with more horizontal content (page-thumbnail grids, the PDF
+   * viewer) opt into a wider column than the default single-file/queue
+   * widgets. */
+  wide?: boolean;
+}
+
+const { title, subtitle, wide = false } = Astro.props;
+const widthClass = wide ? "max-w-4xl" : "max-w-2xl";
+---
+
+<section class="py-12 sm:py-16">
+  <div class="mx-auto max-w-3xl text-center">
+    <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">{title}</h1>
+    <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">{subtitle}</p>
+  </div>
+
+  <div class:list={["mx-auto mt-8", widthClass]}>
+    <slot />
+  </div>
+
+  <div class:list={["mx-auto mt-8", widthClass]}>
+    <TrustBadges />
+  </div>
+</section>

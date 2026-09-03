@@ -1,0 +1,55 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`How ${SITE.name} works`}
+  description={`A closer look at how ${SITE.name} processes PDFs entirely inside your browser, with nothing ever uploaded.`}
+  path="/how-it-works"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">How {SITE.name} works</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          Most online PDF tools work by uploading your file to a server, processing it there, and sending back a
+          result. {SITE.name} doesn't do that. Every tool on this site runs entirely inside your browser tab, using
+          two open-source JavaScript libraries: <strong>pdf-lib</strong> and <strong>PDF.js</strong>.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">pdf-lib: building and editing PDFs</h2>
+        <p>
+          When you merge PDFs, split one apart, turn images into a PDF, or delete/reorder/rotate pages, that work is
+          done by pdf-lib — a library that reads and writes the PDF file format directly in JavaScript. To keep the
+          page responsive on large files, this work runs inside a background thread (a Web Worker) rather than on
+          the main thread that draws the page.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">PDF.js: viewing and reading PDFs</h2>
+        <p>
+          When you view a PDF, generate page thumbnails, extract text, or convert PDF pages to images, that's
+          handled by PDF.js — the same rendering engine that powers Firefox's built-in PDF viewer. PDF.js uses its
+          own background script to parse PDF files efficiently; that script is served from this site itself, not a
+          third party, so no file data is ever sent anywhere during rendering.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">What "never uploaded" actually means</h2>
+        <p>
+          Concretely: when you drop a file onto any tool on this site, it's read directly from your device into
+          your browser's memory. No <code>fetch</code>, no form submission, no network request carries your file
+          data anywhere. You can confirm this yourself using your browser's developer tools — open the Network tab
+          while converting a file, and you'll see no outgoing request containing your PDF or image data.
+        </p>
+
+        <p>
+          For the full picture on what little data is collected (aggregate analytics, advertising cookies once
+          ads are enabled), see our <a href={withBase("/privacy-policy")} class="text-accent-600 underline">Privacy Policy</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

@@ -1,0 +1,26 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import PdfViewerWidget from "@/components/pdf/PdfViewerWidget";
+import { VIEWER_COPY } from "@/data/toolCopy";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "Can I download the PDF I'm viewing?", answer: "This tool is for viewing only — your browser already has the original file, so use your browser's own \"Save As\" if you opened it from a link, or simply keep the file you dropped in." },
+]);
+---
+
+<ToolPageLayout
+  title={`${VIEWER_COPY.title} — ${SITE.name}`}
+  description={VIEWER_COPY.subtitle}
+  path="/pdf-viewer"
+  heroTitle={VIEWER_COPY.title}
+  heroSubtitle={VIEWER_COPY.subtitle}
+  breadcrumbName="PDF Viewer"
+  faqItems={faqItems}
+  intro={VIEWER_COPY.intro}
+  why={VIEWER_COPY.why}
+  wide
+>
+  <PdfViewerWidget client:idle />
+</ToolPageLayout>

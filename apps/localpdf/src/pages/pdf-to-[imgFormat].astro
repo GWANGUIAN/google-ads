@@ -1,0 +1,39 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import PdfToImageWidget from "@/components/pdf/PdfToImageWidget";
+import { PDF_TO_IMAGE_PAIRS } from "@/data/pdfToImagePairs";
+import { buildPdfToImageIntro, buildPdfToImageWhy } from "@/data/copy";
+import { buildPdfToImageFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+export function getStaticPaths() {
+  return PDF_TO_IMAGE_PAIRS.map((pair) => ({
+    params: { imgFormat: pair.to },
+    props: { pair },
+  }));
+}
+
+const { pair } = Astro.props;
+
+const title = `Convert PDF to ${pair.label} Online Free | ${SITE.name}`;
+const description = `Convert every page of a PDF into a ${pair.label} image, instantly in your browser — free, private, no upload required.`;
+const path = `/${pair.slug}`;
+
+const faqItems = buildPdfToImageFaq(pair);
+const intro = buildPdfToImageIntro(pair);
+const why = buildPdfToImageWhy(pair);
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`Convert PDF to ${pair.label}`}
+  heroSubtitle={`Free, instant, and completely private. Your PDF never leaves your device.`}
+  breadcrumbName={`PDF to ${pair.label}`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <PdfToImageWidget client:idle format={pair.mimeType as "image/png" | "image/jpeg"} extension={pair.to} label={pair.label} />
+</ToolPageLayout>

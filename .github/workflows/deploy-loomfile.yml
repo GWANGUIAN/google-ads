@@ -1,25 +1,34 @@
-name: Deploy img-convertor
+name: Deploy loomfile
+
+# Deploys every tool on the loomfile.com umbrella domain. Each contributing
+# app builds normally (with its own Astro `base` path where applicable), then
+# their dist/ folders are merged into one directory and shipped as a single
+# Cloudflare Pages deploy — no Cloudflare Worker, so this stays outside the
+# Workers request quota just like every other site in this repo. Add a new
+# `cp -r apps/<tool>/dist/. merged-dist/<path>/` line (and a paths: entry
+# above) each time a new tool joins this domain. See docs/NEW_SITE_PLAYBOOK.md §11.
 
 on:
   push:
     branches: [main]
     paths:
-      - "apps/img-convertor/**"
+      - "apps/loomfile/**"
+      - "apps/localpdf/**"
       - "packages/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "turbo.json"
-      - ".github/workflows/deploy-img-convertor.yml"
+      - ".github/workflows/deploy-loomfile.yml"
   workflow_dispatch:
 
 concurrency:
-  group: deploy-img-convertor-${{ github.ref }}
+  group: deploy-loomfile-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: img-convertor
+    environment: loomfile
     permissions:
       contents: read
     steps:
@@ -35,8 +44,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build img-convertor
-        run: pnpm turbo run build --filter=img-convertor...
+      - name: Build loomfile (root) and every tool mounted under it
+        run: pnpm turbo run build --filter=loomfile... --filter=localpdf...
         env:
           # Astro bakes PUBLIC_* vars into the static build at build time, so
           # they must be provided here (GitHub Actions), not in the Cloudflare
@@ -44,14 +53,16 @@ jobs:
           # dist/, Cloudflare's own build/env-var system is never invoked.
           # These are not secrets (they end up in public page HTML once ads
           # are on). Domain-specific ones (site URL, ads on/off, search
-          # verification codes) live in the `img-convertor` GitHub Environment
+          # verification codes) live in the `loomfile` GitHub Environment
           # above, NOT as repo-level Variables — a repo-level Variable is
           # shared by every site's workflow, which silently breaks the moment
           # a second site's workflow reads the same name expecting a
-          # different value. Only PUBLIC_ADSENSE_CLIENT_ID (one AdSense
-          # account, safe to share) stays at the repo level; environment
-          # Variables of the same name take precedence over it automatically.
-          #   gh variable set PUBLIC_ADS_ENABLED --env img-convertor --body true
+          # different value (this is why img-convertor and loomfile don't
+          # just reuse one PUBLIC_SITE_URL). Only PUBLIC_ADSENSE_CLIENT_ID
+          # (one AdSense account, safe to share) stays at the repo level.
+          #   gh variable set PUBLIC_ADS_ENABLED --env loomfile --body true
+          # Every tool on this domain (loomfile, localpdf, ...) shares this
+          # one environment's values, since they're all the same domain.
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
           PUBLIC_ADS_ENABLED: ${{ vars.PUBLIC_ADS_ENABLED }}
           PUBLIC_ADSENSE_CLIENT_ID: ${{ vars.PUBLIC_ADSENSE_CLIENT_ID }}
@@ -62,10 +73,17 @@ jobs:
           PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
           PUBLIC_NAVER_SITE_VERIFICATION: ${{ vars.PUBLIC_NAVER_SITE_VERIFICATION }}
 
+      - name: Merge each tool's dist under its path
+        run: |
+          rm -rf merged-dist
+          mkdir -p merged-dist
+          cp -r apps/loomfile/dist/. merged-dist/
+          mkdir -p merged-dist/pdf
+          cp -r apps/localpdf/dist/. merged-dist/pdf/
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: apps/img-convertor
-          command: pages deploy dist --project-name=img-convertor --branch=main
+          command: pages deploy merged-dist --project-name=loomfile --branch=main

@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "@repo/config/tailwind-tokens.css";
+
+@theme {
+  /* LocalPDF rebrands the shared accent scale to red, distinct from
+     img-convertor's default blue — see packages/config/tailwind-tokens.css. */
+  --color-accent-50: #fef2f2;
+  --color-accent-100: #fee2e2;
+  --color-accent-200: #fecaca;
+  --color-accent-300: #fca5a5;
+  --color-accent-400: #f87171;
+  --color-accent-500: #ef4444;
+  --color-accent-600: #dc2626;
+  --color-accent-700: #b91c1c;
+  --color-accent-800: #991b1b;
+  --color-accent-900: #7f1d1d;
+}
+
+body {
+  font-family: var(--font-sans);
+}

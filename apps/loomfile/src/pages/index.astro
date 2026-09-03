@@ -1,0 +1,43 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { SITE, TOOLS } from "@/data/site";
+---
+
+<BaseLayout title={`${SITE.name} — Free, Private Browser Tools`} description={SITE.description} path="/">
+  <Container>
+    <section class="py-12 text-center sm:py-16">
+      <h1 class="mx-auto max-w-3xl text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
+        File tools that never leave your browser
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">
+        Every tool on {SITE.name} runs entirely on your own device — no uploads, no sign-up, no limits. We're
+        starting with PDFs, and adding more tools over time.
+      </p>
+    </section>
+
+    <section class="py-6">
+      <h2 class="text-xl font-bold text-neutral-900">Tools</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          TOOLS.map((tool) => (
+            <a
+              href={tool.slug}
+              class="rounded-card border border-neutral-200 bg-white p-5 hover:border-accent-400 hover:shadow-sm"
+            >
+              <p class="text-base font-bold text-neutral-900">{tool.name}</p>
+              <p class="mt-1.5 text-sm text-neutral-600">{tool.tagline}</p>
+            </a>
+          ))
+        }
+        <div class="rounded-card border border-dashed border-neutral-300 p-5 text-neutral-400">
+          <p class="text-base font-bold">More tools coming</p>
+          <p class="mt-1.5 text-sm">We're adding new browser-based file tools regularly.</p>
+        </div>
+      </div>
+    </section>
+
+    <AdSlot position="in-content" class="py-4" />
+  </Container>
+</BaseLayout>

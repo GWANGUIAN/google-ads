@@ -1,0 +1,25 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import SplitWidget from "@/components/pdf/SplitWidget";
+import { SPLIT_COPY } from "@/data/toolCopy";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "How do I specify page ranges?", answer: "Use comma-separated ranges like \"1-3, 4-6\" — each range becomes its own PDF. A single page range downloads one PDF; multiple ranges download as a ZIP." },
+]);
+---
+
+<ToolPageLayout
+  title={`${SPLIT_COPY.title} Online Free | ${SITE.name}`}
+  description={SPLIT_COPY.subtitle}
+  path="/split-pdf"
+  heroTitle={SPLIT_COPY.title}
+  heroSubtitle={SPLIT_COPY.subtitle}
+  breadcrumbName="Split PDF"
+  faqItems={faqItems}
+  intro={SPLIT_COPY.intro}
+  why={SPLIT_COPY.why}
+>
+  <SplitWidget client:idle />
+</ToolPageLayout>

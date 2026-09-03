@@ -1,0 +1,42 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import ImagesToPdfWidget from "@/components/pdf/ImagesToPdfWidget";
+import { IMAGE_FORMATS, IMAGE_FORMAT_LIST } from "@/data/imageFormats";
+import { buildImageToPdfIntro, buildImageToPdfWhy } from "@/data/copy";
+import { buildImageToPdfFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+export function getStaticPaths() {
+  return IMAGE_FORMAT_LIST.map((f) => ({
+    params: { imgFormat: f.code },
+    props: { code: f.code },
+  }));
+}
+
+const { code } = Astro.props;
+const format = IMAGE_FORMATS[code];
+const pair = { from: format.code, slug: `${format.code}-to-pdf` };
+
+const title = `Convert ${format.label} to PDF Online Free | ${SITE.name}`;
+const description = `Convert ${format.label} to PDF instantly in your browser — free, private, no upload required. Combine multiple ${format.label} files into one PDF.`;
+const path = `/${pair.slug}`;
+
+const faqItems = buildImageToPdfFaq(pair);
+const intro = buildImageToPdfIntro(pair);
+const why = buildImageToPdfWhy(pair);
+const acceptAttr = format.extensions.join(",");
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`Convert ${format.label} to PDF`}
+  heroSubtitle={`Free, instant, and completely private. Your ${format.label} files never leave your device.`}
+  breadcrumbName={`${format.label} to PDF`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <ImagesToPdfWidget client:idle accept={acceptAttr} />
+</ToolPageLayout>

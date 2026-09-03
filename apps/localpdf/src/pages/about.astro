@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`About ${SITE.name}`}
+  description={`Learn how ${SITE.name} works, why it's free, and why your PDFs never leave your device.`}
+  path="/about"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">About {SITE.name}</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          {SITE.name} is a free toolkit for working with PDFs — converting images to PDF, merging and splitting
+          PDFs, deleting/reordering/rotating pages, viewing PDFs, and extracting text — directly in your web
+          browser. There's no sign-up, no watermark, and no limit on how many files you can process.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Why is it free?</h2>
+        <p>
+          Every tool here runs using JavaScript libraries loaded into your own browser, not on a server we
+          operate. Because we're not paying to process your files, there's no per-use cost to pass on — the site
+          is instead supported by advertising.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Your files never leave your device</h2>
+        <p>
+          Every operation on this site happens locally, using open-source libraries (pdf-lib and PDF.js) running
+          in your browser. Your files are read, processed, and downloaded entirely on your own computer or phone
+          — at no point are they uploaded to any server. We can't see your documents, because we never receive
+          them. See <a href={withBase("/how-it-works")} class="text-accent-600 underline">How it works</a> for the technical
+          detail.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Who's behind this</h2>
+        <p>
+          {SITE.name} is an independent, small-scale project focused on doing PDF basics well, privately, and for
+          free. If you have feedback or run into a bug, see our <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

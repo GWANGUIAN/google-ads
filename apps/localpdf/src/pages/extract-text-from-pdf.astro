@@ -1,0 +1,26 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import ExtractWidget from "@/components/pdf/ExtractWidget";
+import { EXTRACT_COPY } from "@/data/toolCopy";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "Why is the extracted text empty?", answer: "If a PDF is a scanned image (a photo of a page rather than real text), it has no text layer to extract — this tool reads existing text, it doesn't perform OCR on scanned images." },
+  { question: "What's the difference between the two modes?", answer: "\"Text\" pulls out the PDF's actual selectable text as a .txt file. \"Page images\" renders each page as a picture (PNG or JPG) instead — useful when you want a snapshot of a page rather than its words." },
+]);
+---
+
+<ToolPageLayout
+  title={`${EXTRACT_COPY.title} Online Free | ${SITE.name}`}
+  description={EXTRACT_COPY.subtitle}
+  path="/extract-text-from-pdf"
+  heroTitle={EXTRACT_COPY.title}
+  heroSubtitle={EXTRACT_COPY.subtitle}
+  breadcrumbName="Extract from PDF"
+  faqItems={faqItems}
+  intro={EXTRACT_COPY.intro}
+  why={EXTRACT_COPY.why}
+>
+  <ExtractWidget client:idle />
+</ToolPageLayout>

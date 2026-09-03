@@ -1,0 +1,56 @@
+---
+import SeoHead from "@repo/seo/SeoHead.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { organizationSchema, websiteSchema } from "@repo/seo/schema";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { SITE, ADS, SITE_VERIFICATION } from "@/data/site";
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+}
+
+const { title, description, path, noindex } = Astro.props;
+const canonical = new URL(path, SITE.url).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#7c3aed" />
+    {SITE_VERIFICATION.google && <meta name="google-site-verification" content={SITE_VERIFICATION.google} />}
+    {SITE_VERIFICATION.naver && <meta name="naver-site-verification" content={SITE_VERIFICATION.naver} />}
+
+    <SeoHead title={title} description={description} canonical={canonical} siteName={SITE.name} noindex={noindex} />
+    <JsonLd schema={organizationSchema({ name: SITE.name, url: SITE.url, logo: `${SITE.url}/favicon.svg`, description: SITE.description })} />
+    <JsonLd schema={websiteSchema({ name: SITE.name, url: SITE.url })} />
+
+    {
+      ADS.enabled && ADS.clientId && (
+        <script
+          is:inline
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADS.clientId}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
+  </head>
+  <body class="min-h-screen bg-white text-neutral-800 antialiased">
+    <Header />
+    <AdSlot position="header" class="mx-auto my-2 max-w-content px-4" />
+    <main>
+      <slot />
+    </main>
+    <AdSlot position="footer" class="mx-auto my-4 max-w-content px-4" />
+    <Footer />
+  </body>
+</html>

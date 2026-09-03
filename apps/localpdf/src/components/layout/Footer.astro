@@ -1,0 +1,83 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { IMAGE_TO_PDF_PAIRS } from "@/data/imageToPdfPairs";
+import { PDF_TO_IMAGE_PAIRS } from "@/data/pdfToImagePairs";
+import { ORGANIZER_TOOLS } from "@/data/pageOrganizerTools";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<footer class="mt-16 border-t border-neutral-200 bg-neutral-50">
+  <Container class="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <p class="text-base font-bold text-neutral-900">{SITE.name}</p>
+      <p class="mt-2 text-sm text-neutral-600">{SITE.tagline}</p>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">Convert</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        {
+          IMAGE_TO_PDF_PAIRS.map((pair) => (
+            <li>
+              <a href={withBase(pair.slug)} class="hover:text-accent-600">
+                {pair.from.toUpperCase()} to PDF
+              </a>
+            </li>
+          ))
+        }
+        {
+          PDF_TO_IMAGE_PAIRS.map((pair) => (
+            <li>
+              <a href={withBase(pair.slug)} class="hover:text-accent-600">
+                PDF to {pair.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">Organize &amp; view</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href={withBase("/merge-pdf")} class="hover:text-accent-600">Merge PDF</a></li>
+        <li><a href={withBase("/split-pdf")} class="hover:text-accent-600">Split PDF</a></li>
+        {
+          ORGANIZER_TOOLS.map((tool) => (
+            <li>
+              <a href={withBase(tool.slug)} class="hover:text-accent-600">
+                {tool.title}
+              </a>
+            </li>
+          ))
+        }
+        <li><a href={withBase("/pdf-viewer")} class="hover:text-accent-600">PDF Viewer</a></li>
+        <li><a href={withBase("/extract-text-from-pdf")} class="hover:text-accent-600">Extract text &amp; images</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">Company</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href={withBase("/about")} class="hover:text-accent-600">About</a></li>
+        <li><a href={withBase("/faq")} class="hover:text-accent-600">FAQ</a></li>
+        <li><a href={withBase("/how-it-works")} class="hover:text-accent-600">How it works</a></li>
+        <li><a href={withBase("/contact")} class="hover:text-accent-600">Contact</a></li>
+      </ul>
+      <p class="mt-5 text-sm font-semibold text-neutral-900">Legal</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href={withBase("/privacy-policy")} class="hover:text-accent-600">Privacy Policy</a></li>
+        <li><a href={withBase("/terms-of-service")} class="hover:text-accent-600">Terms of Service</a></li>
+      </ul>
+    </div>
+  </Container>
+
+  <div class="border-t border-neutral-200 py-6">
+    <Container>
+      <p class="text-xs text-neutral-500">
+        © {new Date().getFullYear()} {SITE.name}. Every tool runs locally in your browser — your PDFs and images are never uploaded.
+      </p>
+    </Container>
+  </div>
+</footer>

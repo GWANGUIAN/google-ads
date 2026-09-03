@@ -1,0 +1,36 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import PageOrganizer from "@/components/pdf/PageOrganizer";
+import { ORGANIZER_TOOLS } from "@/data/pageOrganizerTools";
+import { ORGANIZER_COPY } from "@/data/toolCopy";
+import { buildOrganizerFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+export function getStaticPaths() {
+  return ORGANIZER_TOOLS.map((tool) => ({
+    params: { organizerMode: tool.mode },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+const copy = ORGANIZER_COPY[tool.mode];
+const path = `/${tool.slug}`;
+const title = `${copy.title} Online Free | ${SITE.name}`;
+const faqItems = buildOrganizerFaq(tool.mode);
+---
+
+<ToolPageLayout
+  title={title}
+  description={copy.subtitle}
+  path={path}
+  heroTitle={copy.title}
+  heroSubtitle={copy.subtitle}
+  breadcrumbName={copy.title}
+  faqItems={faqItems}
+  intro={copy.intro}
+  why={copy.why}
+  wide
+>
+  <PageOrganizer client:idle actionLabel={tool.actionLabel} />
+</ToolPageLayout>

@@ -1,0 +1,104 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import TrustBadges from "@/components/marketing/TrustBadges.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { IMAGE_TO_PDF_PAIRS } from "@/data/imageToPdfPairs";
+import { PDF_TO_IMAGE_PAIRS } from "@/data/pdfToImagePairs";
+import { ORGANIZER_TOOLS } from "@/data/pageOrganizerTools";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+
+const tools = [
+  { href: withBase("/jpg-to-pdf"), title: "Image to PDF", desc: "Combine JPG, PNG, WEBP, GIF, BMP or HEIC images into one PDF" },
+  { href: withBase("/merge-pdf"), title: "Merge PDF", desc: "Combine multiple PDFs into one, in the order you choose" },
+  { href: withBase("/split-pdf"), title: "Split PDF", desc: "Break one PDF into several files by page range" },
+  { href: withBase("/reorder-pdf-pages"), title: "Organize pages", desc: "Delete, reorder, and rotate the pages of a PDF" },
+  { href: withBase("/pdf-viewer"), title: "PDF Viewer", desc: "Open and page through a PDF right in your browser" },
+  { href: withBase("/extract-text-from-pdf"), title: "Extract from PDF", desc: "Pull out text, or download pages as images" },
+];
+---
+
+<BaseLayout title={`${SITE.name} — Free Online PDF Toolkit`} description={SITE.description} path="/">
+  <Container>
+    <section class="py-12 text-center sm:py-16">
+      <h1 class="mx-auto max-w-3xl text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
+        Every PDF tool you need, free and private
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">
+        Convert images to PDF, merge and split PDFs, organize pages, view PDFs, and extract text — all running
+        locally in your browser. Nothing is ever uploaded.
+      </p>
+      <div class="mx-auto mt-8 max-w-2xl">
+        <TrustBadges />
+      </div>
+    </section>
+
+    <section class="py-6">
+      <h2 class="text-xl font-bold text-neutral-900">Tools</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          tools.map((tool) => (
+            <a
+              href={tool.href}
+              class="rounded-card border border-neutral-200 bg-white p-5 hover:border-accent-400 hover:shadow-sm"
+            >
+              <p class="text-base font-bold text-neutral-900">{tool.title}</p>
+              <p class="mt-1.5 text-sm text-neutral-600">{tool.desc}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <AdSlot position="in-content" class="py-4" />
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">Convert images to PDF</h2>
+      <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {
+          IMAGE_TO_PDF_PAIRS.map((pair) => (
+            <a
+              href={withBase(pair.slug)}
+              class="rounded-control border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-700 hover:border-accent-400 hover:text-accent-700"
+            >
+              {pair.from.toUpperCase()} to PDF
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">Convert PDF to images</h2>
+      <div class="mt-4 flex flex-wrap gap-3">
+        {
+          PDF_TO_IMAGE_PAIRS.map((pair) => (
+            <a
+              href={withBase(pair.slug)}
+              class="rounded-control border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-700 hover:border-accent-400 hover:text-accent-700"
+            >
+              PDF to {pair.label}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">Organize pages</h2>
+      <div class="mt-4 flex flex-wrap gap-3">
+        {
+          ORGANIZER_TOOLS.map((tool) => (
+            <a
+              href={withBase(tool.slug)}
+              class="rounded-control border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-700 hover:border-accent-400 hover:text-accent-700"
+            >
+              {tool.title}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+</BaseLayout>

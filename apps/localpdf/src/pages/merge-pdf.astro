@@ -1,0 +1,25 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import MergeWidget from "@/components/pdf/MergeWidget";
+import { MERGE_COPY } from "@/data/toolCopy";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "How many PDFs can I merge at once?", answer: "There's no hard limit — add as many PDFs as you like, in whatever order you want them combined." },
+]);
+---
+
+<ToolPageLayout
+  title={`${MERGE_COPY.title} Online Free | ${SITE.name}`}
+  description={MERGE_COPY.subtitle}
+  path="/merge-pdf"
+  heroTitle={MERGE_COPY.title}
+  heroSubtitle={MERGE_COPY.subtitle}
+  breadcrumbName="Merge PDF"
+  faqItems={faqItems}
+  intro={MERGE_COPY.intro}
+  why={MERGE_COPY.why}
+>
+  <MergeWidget client:idle />
+</ToolPageLayout>
