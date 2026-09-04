@@ -20,7 +20,11 @@ export default function ShareButtons({ lang }: Props) {
     title: SITE.name,
     description: t.share.promoText,
     text: t.share.promoText,
-    imageUrl: new URL("og-image.png", SITE.url).toString(),
+    // Kakao's feed template card renders roughly square (its own official
+    // example uses a 640x640 image) — the wide 1200x630 og-image.png used
+    // for Facebook/Twitter/Google gets cropped awkwardly there, so Kakao
+    // gets its own square-composed image instead.
+    imageUrl: new URL("kakao-share-image.png", SITE.url).toString(),
     url: SITE.url,
   };
 

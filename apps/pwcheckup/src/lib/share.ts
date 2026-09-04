@@ -55,6 +55,11 @@ export function shareToKakao(content: ShareContent): void {
       title: content.title,
       description: content.description,
       imageUrl: content.imageUrl,
+      // Matches Kakao's own feed-template example (a 640x640 image with
+      // imageWidth/imageHeight set) — helps the card render the square
+      // share image correctly instead of guessing an aspect ratio.
+      imageWidth: 800,
+      imageHeight: 800,
       link: { mobileWebUrl: content.url, webUrl: content.url },
     },
     buttons: [
