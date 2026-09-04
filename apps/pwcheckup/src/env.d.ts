@@ -7,9 +7,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_AD_SLOT_IN_CONTENT: string;
   readonly PUBLIC_AD_SLOT_FOOTER: string;
   readonly PUBLIC_SITE_URL: string;
-  readonly PUBLIC_GOOGLE_SITE_VERIFICATION: string;
   readonly PUBLIC_NAVER_SITE_VERIFICATION: string;
-  readonly PUBLIC_BING_SITE_VERIFICATION: string;
   readonly PUBLIC_KAKAO_JS_KEY: string;
 }
 

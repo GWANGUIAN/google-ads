@@ -57,9 +57,10 @@ jobs:
           PUBLIC_AD_SLOT_HEADER: ${{ vars.PUBLIC_AD_SLOT_HEADER }}
           PUBLIC_AD_SLOT_IN_CONTENT: ${{ vars.PUBLIC_AD_SLOT_IN_CONTENT }}
           PUBLIC_AD_SLOT_FOOTER: ${{ vars.PUBLIC_AD_SLOT_FOOTER }}
-          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
+          # Only Naver needs a verification var — Google Search Console is
+          # DNS-verified via Cloudflare and Bing imports that verification
+          # directly, neither needs a meta tag/var here. See docs/NEW_SITE_PLAYBOOK.md §4.
           PUBLIC_NAVER_SITE_VERIFICATION: ${{ vars.PUBLIC_NAVER_SITE_VERIFICATION }}
-          PUBLIC_BING_SITE_VERIFICATION: ${{ vars.PUBLIC_BING_SITE_VERIFICATION }}
           PUBLIC_KAKAO_JS_KEY: ${{ vars.PUBLIC_KAKAO_JS_KEY }}
 
       - name: Deploy to Cloudflare Pages

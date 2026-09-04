@@ -7,11 +7,14 @@ export const SITE = {
   contactEmail: "hello@pwcheckup.com",
 };
 
-/** Search-engine ownership verification codes (meta tags), all optional. */
+/**
+ * Naver Search Advisor ownership verification (meta tag), optional. Google
+ * Search Console is DNS-verified via Cloudflare and Bing Webmaster Tools can
+ * import that verification directly, so neither needs a var/meta tag here —
+ * Naver has no such shortcut. See docs/NEW_SITE_PLAYBOOK.md §4.
+ */
 export const SITE_VERIFICATION = {
-  google: import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
   naver: import.meta.env.PUBLIC_NAVER_SITE_VERIFICATION ?? "",
-  bing: import.meta.env.PUBLIC_BING_SITE_VERIFICATION ?? "",
 };
 
 export const ADS = {
