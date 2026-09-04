@@ -4,20 +4,16 @@
  * content is always generic tool-promotion copy — never anything tied to a
  * specific password or check result.
  *
- * IMPORTANT — the version number AND its matching SRI integrity hash below
- * are NOT verified and must be replaced before shipping. Get the current,
- * exact pair from the "Download" section of
- * https://developers.kakao.com/docs/latest/en/getting-started/sdk-js
- * (Kakao does not publish a stable "latest" URL, and the integrity hash
- * must byte-for-byte match the specific version served — a mismatched
- * hash makes the browser silently refuse to run the script, which would
- * break every share button with no visible error). If you'd rather not
- * track this by hand, drop the `integrity`/`crossOrigin` lines entirely —
- * SRI is a defense-in-depth nicety here, not a functional requirement.
+ * Version + integrity copied directly (via the page's own copy-to-clipboard
+ * button, not hand-typed) from the "다운로드"/Download table at
+ * https://developers.kakao.com/docs/ko/javascript/download on 2026-09-04.
+ * Kakao does not publish a stable "latest" URL and the integrity hash must
+ * byte-for-byte match this exact version — re-copy both together from that
+ * page (not just the version number) whenever bumping this.
  */
-const KAKAO_SDK_VERSION = "2.7.4"; // TODO verify against Kakao's Download page
+const KAKAO_SDK_VERSION = "2.8.3";
 const KAKAO_SDK_URL = `https://t1.kakaocdn.net/kakao_js_sdk/${KAKAO_SDK_VERSION}/kakao.min.js`;
-const KAKAO_SDK_INTEGRITY = ""; // TODO fill in the exact hash for KAKAO_SDK_VERSION from Kakao's Download page
+const KAKAO_SDK_INTEGRITY = "sha384-oroumrnFVE0xtgqyDZJARgERibXg2C28380uaUZz2kHDS5CR7tu20eGiOU6GkTpy";
 
 let kakaoLoading: Promise<void> | null = null;
 
