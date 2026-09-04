@@ -264,6 +264,175 @@ export const diffFaq: FaqItem[] = [
   },
 ];
 
+export const urlEncoderFaq: FaqItem[] = [
+  {
+    question: "What's the difference between Component and Full URI mode?",
+    answer:
+      "Component mode uses encodeURIComponent/decodeURIComponent, which escapes every character with special meaning in a URL — including & = ? / : , — so it's safe for a single query-string value. Full URI mode uses encodeURI/decodeURI, which leaves those structural characters alone since they're expected to appear in a complete URL.",
+  },
+  {
+    question: "Why didn't Full URI mode encode my & or = characters?",
+    answer:
+      "That's expected — Full URI mode assumes you're encoding an entire URL, where & and = already have meaning (separating query parameters). Switch to Component mode if you're encoding a single value that will be inserted into a query string.",
+  },
+  {
+    question: "Why did decoding fail?",
+    answer:
+      "The input contains an incomplete or invalid % escape sequence (for example %zz or a trailing % with no hex digits after it) — check for a copy-paste error or double-encoded text.",
+  },
+  {
+    question: "What does batch mode do?",
+    answer:
+      "Batch mode treats each line of the input as a separate value and encodes or decodes them independently, which is useful for processing a list of query-string values at once instead of one at a time.",
+  },
+  {
+    question: "Is my input sent anywhere?",
+    answer:
+      "No — encoding and decoding use JavaScript's built-in encodeURIComponent/decodeURIComponent/encodeURI/decodeURI functions, running entirely in your browser.",
+  },
+];
+
+export const loremIpsumFaq: FaqItem[] = [
+  {
+    question: "What is Lorem Ipsum?",
+    answer:
+      "Placeholder text derived from a scrambled passage of Cicero's 1st-century BC Latin text \"de Finibus Bonorum et Malorum.\" It's used in design and typesetting because its Latin-like word shapes don't distract a viewer with readable meaning, letting them focus on layout.",
+  },
+  {
+    question: "What does \"Wrap in HTML tags\" do?",
+    answer:
+      "It wraps each paragraph in <p>…</p> tags (or each list item in <li>…</li> inside a <ul>) so you can paste the result directly into markup instead of manually adding tags yourself.",
+  },
+  {
+    question: "Why isn't the text exactly the same every time?",
+    answer:
+      "This generator produces fresh randomized text from a bank of classic Lorem Ipsum words each time you change an option or press Regenerate, rather than repeating one fixed passage — click Regenerate for a new variation with the same settings.",
+  },
+  {
+    question: "Is this sent anywhere?",
+    answer: "No — text is generated entirely in your browser with no network request involved.",
+  },
+];
+
+export const htmlFormatterFaq: FaqItem[] = [
+  {
+    question: "Does minifying strip out my comments?",
+    answer:
+      "Yes — HTML comments are removed during minification, along with all redundant whitespace between and inside tags, to produce the smallest valid output. Content inside <pre>, <textarea>, <script>, and <style> tags is left untouched so nothing you see or run changes.",
+  },
+  {
+    question: "Does this minify inline <script> or <style> blocks too?",
+    answer:
+      "No — this tool only minifies HTML structure. Use the dedicated CSS Formatter or JS Formatter tool to minify embedded stylesheet or script code separately, then paste the result back in.",
+  },
+  {
+    question: "Is my HTML sent anywhere?",
+    answer: "No — minifying and beautifying both run entirely in your browser using bundled JavaScript libraries. Nothing you paste is uploaded.",
+  },
+  {
+    question: "Will minifying ever break my HTML?",
+    answer:
+      "It shouldn't — only whitespace, comments, and redundant markup are removed, never actual content or structure. If output looks wrong, double-check the input was valid HTML to begin with.",
+  },
+];
+
+export const cssFormatterFaq: FaqItem[] = [
+  {
+    question: "What does the minifier actually remove?",
+    answer:
+      "Whitespace, comments, and redundant syntax (like unnecessary units on zero values or duplicate semicolons) — the visual result is identical, just far smaller to transfer.",
+  },
+  {
+    question: "Does it support modern CSS features?",
+    answer:
+      "Yes — nesting, custom properties (CSS variables), media queries, and other modern syntax are all preserved correctly through both minify and beautify.",
+  },
+  {
+    question: "Is my CSS sent anywhere?",
+    answer: "No — both minifying and beautifying run entirely in your browser. Nothing you paste is uploaded.",
+  },
+  {
+    question: "Why is the output empty when I paste something in?",
+    answer:
+      "CSS parsers are lenient by design (the same way browsers are) — if a declaration is malformed, it may simply be dropped rather than raising an error. Double-check your braces and colons are balanced.",
+  },
+];
+
+export const jsFormatterFaq: FaqItem[] = [
+  {
+    question: "Does minifying rename my variables?",
+    answer:
+      "Yes — minify mode mangles (shortens) local variable and function names in addition to removing whitespace and comments, which is standard practice for production JavaScript and produces meaningfully smaller output than whitespace removal alone.",
+  },
+  {
+    question: "Will minifying change how my code behaves?",
+    answer:
+      "It shouldn't — the minifier only renames local identifiers and removes dead code/whitespace, both of which preserve behavior. Global names, string contents, and public API surfaces are left untouched.",
+  },
+  {
+    question: "Why does it say my code has a syntax error?",
+    answer:
+      "The minifier parses your JavaScript into an AST before transforming it, so any syntax error (a missing bracket, an invalid token) is caught and reported with a description, rather than silently producing broken output.",
+  },
+  {
+    question: "Is my code sent anywhere?",
+    answer: "No — both minifying and beautifying run entirely in your browser. Nothing you paste is uploaded.",
+  },
+];
+
+export const markdownPreviewerFaq: FaqItem[] = [
+  {
+    question: "Does this support GitHub-flavored Markdown?",
+    answer:
+      "Yes — tables, task lists (- [ ]/- [x]), strikethrough (~~text~~), and fenced code blocks all render correctly, in addition to standard Markdown syntax.",
+  },
+  {
+    question: "Is the rendered output safe from malicious Markdown?",
+    answer:
+      "Yes — the generated HTML is passed through DOMPurify, a widely used sanitization library, before being displayed, which strips scripts and other dangerous markup even if your Markdown contains raw HTML.",
+  },
+  {
+    question: "What's the difference between the two copy buttons?",
+    answer:
+      "\"Copy Markdown\" copies your raw source text as-is. \"Copy HTML\" copies the sanitized HTML generated from it — useful when pasting into a CMS or email client that expects HTML rather than Markdown.",
+  },
+  {
+    question: "Can I see the generated HTML instead of the preview?",
+    answer: "Yes — switch the right-hand pane to \"HTML source\" to see exactly what markup your Markdown produces.",
+  },
+  {
+    question: "Is my Markdown sent anywhere?",
+    answer: "No — parsing and rendering both happen entirely in your browser. Nothing you type is uploaded.",
+  },
+];
+
+export const cronParserFaq: FaqItem[] = [
+  {
+    question: "What format does the cron expression use?",
+    answer:
+      "The classic 5-field format: minute, hour, day of month, month, day of week (e.g. 0 9 * * 1-5 means 9:00 AM every weekday). Nicknames like @daily, @hourly, and @weekly are also supported.",
+  },
+  {
+    question: "What timezone are the next-run times shown in?",
+    answer:
+      "Your browser's local timezone. There's no server involved, so times are computed relative to your own device's clock and timezone setting — keep that in mind if the schedule will actually run on a server in a different timezone.",
+  },
+  {
+    question: "Why does it say my expression is invalid?",
+    answer:
+      "A cron expression needs exactly 5 fields (or a valid @nickname). Check for a missing field, an out-of-range value (e.g. hour 25), or a typo in a weekday/month name.",
+  },
+  {
+    question: "What do the special characters mean?",
+    answer:
+      "* matches any value, , separates a list (1,15), - defines a range (1-5), and / defines a step (*/15 means every 15 units). These can be combined within a single field.",
+  },
+  {
+    question: "Is my cron expression sent anywhere?",
+    answer: "No — parsing, describing, and computing next-run times all happen entirely in your browser.",
+  },
+];
+
 /** General site-wide FAQ, rendered on /faq. */
 export const siteFaq: FaqItem[] = [
   {

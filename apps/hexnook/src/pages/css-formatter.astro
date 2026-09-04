@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import CssFormatterTool from "@/components/tools/CssFormatterTool";
+import { cssFormatterFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="CSS Formatter — Minify & Beautify CSS | hexnook"
+  description="Minify or beautify CSS online. See the exact bytes saved, with syntax-highlighted output — entirely in your browser, nothing uploaded."
+  path="/css-formatter"
+  heroTitle="CSS Formatter"
+  heroSubtitle="Minify CSS for production or beautify it for readability — with a live before/after size comparison."
+  breadcrumbName="CSS Formatter"
+  faqItems={cssFormatterFaq}
+>
+  <CssFormatterTool client:idle />
+</ToolPageLayout>

@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import MarkdownPreviewer from "@/components/tools/MarkdownPreviewer";
+import { markdownPreviewerFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Markdown Previewer — Free, Live GFM Preview | hexnook"
+  description="Preview Markdown live as you type, with full GitHub-flavored Markdown support (tables, task lists, strikethrough). Sanitized output, entirely in your browser."
+  path="/markdown-previewer"
+  heroTitle="Markdown Previewer"
+  heroSubtitle="Write Markdown on the left, see the sanitized live preview on the right — full GitHub-flavored Markdown support included."
+  breadcrumbName="Markdown Previewer"
+  faqItems={markdownPreviewerFaq}
+>
+  <MarkdownPreviewer client:idle />
+</ToolPageLayout>

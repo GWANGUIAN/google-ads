@@ -4,7 +4,26 @@ import Container from "@repo/ui/Container.astro";
 import JsonLd from "@repo/seo/JsonLd.astro";
 import { faqPageSchema } from "@repo/seo/schema";
 import Faq from "@/components/marketing/Faq.astro";
-import { siteFaq, jsonFaq, base64Faq, hashFaq, regexFaq, jwtFaq, colorFaq, uuidFaq, passwordFaq, timestampFaq, diffFaq } from "@/data/toolFaq";
+import {
+  siteFaq,
+  jsonFaq,
+  base64Faq,
+  hashFaq,
+  regexFaq,
+  jwtFaq,
+  colorFaq,
+  uuidFaq,
+  passwordFaq,
+  timestampFaq,
+  diffFaq,
+  urlEncoderFaq,
+  markdownPreviewerFaq,
+  htmlFormatterFaq,
+  cssFormatterFaq,
+  jsFormatterFaq,
+  loremIpsumFaq,
+  cronParserFaq,
+} from "@/data/toolFaq";
 import { SITE } from "@/data/site";
 
 const allFaq = [
@@ -19,6 +38,13 @@ const allFaq = [
   ...passwordFaq,
   ...timestampFaq,
   ...diffFaq,
+  ...urlEncoderFaq,
+  ...markdownPreviewerFaq,
+  ...htmlFormatterFaq,
+  ...cssFormatterFaq,
+  ...jsFormatterFaq,
+  ...loremIpsumFaq,
+  ...cronParserFaq,
 ];
 ---
 
@@ -40,6 +66,13 @@ const allFaq = [
         <Faq items={passwordFaq} heading="Password Generator" />
         <Faq items={timestampFaq} heading="Timestamp Converter" />
         <Faq items={diffFaq} heading="Diff Checker" />
+        <Faq items={urlEncoderFaq} heading="URL Encoder" />
+        <Faq items={markdownPreviewerFaq} heading="Markdown Previewer" />
+        <Faq items={htmlFormatterFaq} heading="HTML Formatter" />
+        <Faq items={cssFormatterFaq} heading="CSS Formatter" />
+        <Faq items={jsFormatterFaq} heading="JS Formatter" />
+        <Faq items={loremIpsumFaq} heading="Lorem Ipsum" />
+        <Faq items={cronParserFaq} heading="Cron Parser" />
       </div>
     </article>
   </Container>

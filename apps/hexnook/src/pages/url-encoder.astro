@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import UrlEncoderTool from "@/components/tools/UrlEncoderTool";
+import { urlEncoderFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="URL Encoder & Decoder — Free, Instant | hexnook"
+  description="Encode or decode URLs and query strings online. Component vs full-URI modes, batch line-by-line processing, and instant results — entirely in your browser."
+  path="/url-encoder"
+  heroTitle="URL Encoder & Decoder"
+  heroSubtitle="Encode or decode a URL or query string — with separate Component and Full URI modes so you never over- or under-escape a value."
+  breadcrumbName="URL Encoder"
+  faqItems={urlEncoderFaq}
+>
+  <UrlEncoderTool client:idle />
+</ToolPageLayout>

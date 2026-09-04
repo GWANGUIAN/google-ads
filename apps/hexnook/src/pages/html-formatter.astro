@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import HtmlFormatterTool from "@/components/tools/HtmlFormatterTool";
+import { htmlFormatterFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="HTML Formatter — Minify & Beautify HTML | hexnook"
+  description="Minify or beautify HTML online. See the exact bytes saved, with syntax-highlighted output — entirely in your browser, nothing uploaded."
+  path="/html-formatter"
+  heroTitle="HTML Formatter"
+  heroSubtitle="Minify HTML for production or beautify it for readability — with a live before/after size comparison."
+  breadcrumbName="HTML Formatter"
+  faqItems={htmlFormatterFaq}
+>
+  <HtmlFormatterTool client:idle />
+</ToolPageLayout>

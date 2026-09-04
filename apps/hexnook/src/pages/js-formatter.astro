@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import JsFormatterTool from "@/components/tools/JsFormatterTool";
+import { jsFormatterFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="JS Formatter — Minify & Beautify JavaScript | hexnook"
+  description="Minify or beautify JavaScript online. See the exact bytes saved, with syntax-highlighted output — entirely in your browser, nothing uploaded."
+  path="/js-formatter"
+  heroTitle="JS Formatter"
+  heroSubtitle="Minify JavaScript for production or beautify it for readability — with a live before/after size comparison."
+  breadcrumbName="JS Formatter"
+  faqItems={jsFormatterFaq}
+>
+  <JsFormatterTool client:idle />
+</ToolPageLayout>

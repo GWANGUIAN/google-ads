@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import CronParserTool from "@/components/tools/CronParserTool";
+import { cronParserFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Cron Expression Parser — Next Run Times & Explainer | hexnook"
+  description="Parse a cron expression into a plain-English description, a color-coded field breakdown, and the next 10 run times in your local timezone — free and instant."
+  path="/cron-parser"
+  heroTitle="Cron Expression Parser"
+  heroSubtitle="See a plain-English description, a field-by-field breakdown, and the next 10 run times for any cron expression."
+  breadcrumbName="Cron Parser"
+  faqItems={cronParserFaq}
+>
+  <CronParserTool client:idle />
+</ToolPageLayout>

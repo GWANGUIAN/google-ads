@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Fast, private, in-browser tools for developers",
   url: import.meta.env.PUBLIC_SITE_URL ?? "https://hexnook.dev",
   description:
-    "Ten free developer tools that run entirely in your browser — JSON, Base64, hashing, regex, JWT, color conversion, UUIDs, passwords, timestamps, and text diffing. Nothing you paste is ever uploaded.",
+    "Seventeen free developer tools that run entirely in your browser — JSON, Base64, hashing, regex, JWT, color conversion, UUIDs, passwords, timestamps, text diffing, URL encoding, Markdown preview, HTML/CSS/JS formatting, Lorem Ipsum generation, and cron expression parsing. Nothing you paste is ever uploaded.",
   contactEmail: "hello@hexnook.dev",
 };
 

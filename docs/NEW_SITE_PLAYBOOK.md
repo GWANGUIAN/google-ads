@@ -111,7 +111,7 @@ Reference implementation: `apps/img-convertor/src/lib/convert/` + `src/component
 | — Font Tools | `apps/font-tools` | loomfile.com/font | Deployed (TTF/OTF/WOFF/WOFF2 conversion via fonteditor-core/WASM) |
 | — QR Code Tools | `apps/qr-tools` | loomfile.com/qr | Deployed (generate + scan QR codes) |
 | PW Checkup | `apps/pwcheckup` | pwcheckup.com | Deployed — standalone (not loomfile-mounted); client-side breached-password checker, ko/en i18n |
-| hexnook | `apps/hexnook` | hexnook.dev | Deployed — standalone (not loomfile-mounted); developer tools (JSON formatter, Base64, hash generator, regex tester, JWT decoder). First dark-only/animated site in the repo — see the dark-mode and animation notes in §3 below |
+| hexnook | `apps/hexnook` | hexnook.dev | Deployed — standalone (not loomfile-mounted); 17 developer tools (JSON formatter, Base64, hash generator, regex tester, JWT decoder, color converter, UUID generator, password generator, timestamp converter, diff checker, URL encoder/decoder, Markdown previewer, HTML/CSS/JS formatter (3 pages), Lorem Ipsum generator, cron expression parser). First dark-only/animated site in the repo — see the dark-mode and animation notes in §3 below |
 
 ## 11. Multi-tool umbrella domain strategy (decided 2026-09-04)
 

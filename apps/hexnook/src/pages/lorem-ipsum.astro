@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import LoremIpsumTool from "@/components/tools/LoremIpsumTool";
+import { loremIpsumFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Lorem Ipsum Generator — Free Placeholder Text | hexnook"
+  description="Generate Lorem Ipsum placeholder text by paragraphs, sentences, words, or list items, with optional HTML tag wrapping — instant, free, and generated entirely in your browser."
+  path="/lorem-ipsum"
+  heroTitle="Lorem Ipsum Generator"
+  heroSubtitle="Generate placeholder text by paragraphs, sentences, words, or list items — with optional HTML wrapping for pasting straight into markup."
+  breadcrumbName="Lorem Ipsum"
+  faqItems={loremIpsumFaq}
+>
+  <LoremIpsumTool client:idle />
+</ToolPageLayout>

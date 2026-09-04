@@ -102,4 +102,67 @@ export const TOOLS: ToolInfo[] = [
     description:
       "Compare two blocks of text line-by-line or word-by-word, with additions and deletions highlighted — computed entirely in your browser.",
   },
+  {
+    slug: "/url-encoder",
+    name: "URL Encoder & Decoder",
+    shortLabel: "URL Encoder",
+    glyph: "%",
+    tagline: "Encode or decode URLs and query strings",
+    description:
+      "Encode or decode a URL or query string, with separate Component and Full URI modes and batch line-by-line processing — computed entirely in your browser.",
+  },
+  {
+    slug: "/markdown-previewer",
+    name: "Markdown Previewer",
+    shortLabel: "Markdown Previewer",
+    glyph: "MD",
+    tagline: "Live GitHub-flavored Markdown preview",
+    description:
+      "Write Markdown and see a live, sanitized preview side by side — full GitHub-flavored Markdown support including tables and task lists, rendered entirely in your browser.",
+  },
+  {
+    slug: "/html-formatter",
+    name: "HTML Formatter",
+    shortLabel: "HTML Formatter",
+    glyph: "<>",
+    tagline: "Minify or beautify HTML instantly",
+    description:
+      "Minify HTML for production or beautify it for readability, with a live before/after size comparison — computed entirely in your browser.",
+  },
+  {
+    slug: "/css-formatter",
+    name: "CSS Formatter",
+    shortLabel: "CSS Formatter",
+    glyph: "{;}",
+    tagline: "Minify or beautify CSS instantly",
+    description:
+      "Minify CSS for production or beautify it for readability, with a live before/after size comparison — computed entirely in your browser.",
+  },
+  {
+    slug: "/js-formatter",
+    name: "JS Formatter",
+    shortLabel: "JS Formatter",
+    glyph: "JS",
+    tagline: "Minify or beautify JavaScript instantly",
+    description:
+      "Minify JavaScript for production or beautify it for readability, with a live before/after size comparison — computed entirely in your browser.",
+  },
+  {
+    slug: "/lorem-ipsum",
+    name: "Lorem Ipsum Generator",
+    shortLabel: "Lorem Ipsum",
+    glyph: "¶",
+    tagline: "Generate placeholder text instantly",
+    description:
+      "Generate Lorem Ipsum placeholder text by paragraphs, sentences, words, or list items, with optional HTML tag wrapping — generated entirely in your browser.",
+  },
+  {
+    slug: "/cron-parser",
+    name: "Cron Expression Parser",
+    shortLabel: "Cron Parser",
+    glyph: "*",
+    tagline: "Explain cron expressions and preview next runs",
+    description:
+      "Parse a cron expression into a plain-English description, a color-coded field breakdown, and the next run times — computed entirely in your browser.",
+  },
 ];
