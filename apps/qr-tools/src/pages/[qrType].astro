@@ -1,0 +1,40 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import QrGeneratorWidget from "@/components/qr/QrGeneratorWidget";
+import { QR_TYPE_LIST } from "@/data/qrTypes";
+import { buildIntro, buildWhy } from "@/data/copy";
+import { buildFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+import type { QrTypeInfo } from "@/data/qrTypes";
+
+export function getStaticPaths() {
+  return QR_TYPE_LIST.map((type) => ({
+    params: { qrType: type.slug },
+    props: { type },
+  }));
+}
+
+const { type } = Astro.props as { type: QrTypeInfo };
+
+const title = `${type.label} QR Code Generator — Free & Instant | ${SITE.name}`;
+const description = `Generate a ${type.label} QR code instantly in your browser — free, private, no upload required.`;
+const path = `/${type.slug}`;
+
+const faqItems = buildFaq(type);
+const intro = buildIntro(type);
+const why = buildWhy(type);
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`${type.label} QR code generator`}
+  heroSubtitle="Free, instant, and completely private. Nothing you enter ever leaves your device."
+  breadcrumbName={`${type.label} QR code`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <QrGeneratorWidget client:idle initialType={type.code} lockType />
+</ToolPageLayout>

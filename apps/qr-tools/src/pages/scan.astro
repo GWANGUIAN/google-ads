@@ -1,0 +1,40 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { softwareApplicationSchema, breadcrumbListSchema } from "@repo/seo/schema";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import QrScannerWidget from "@/components/qr/QrScannerWidget";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+
+const canonical = new URL(withBase("/scan"), SITE.url).toString();
+const homeUrl = new URL(withBase("/"), SITE.url).toString();
+---
+
+<BaseLayout
+  title={`QR Code Scanner — Read Any QR Code Free | ${SITE.name}`}
+  description="Scan a QR code from an uploaded image or your camera, entirely in your browser. Free, private, no upload required."
+  path="/scan"
+>
+  <JsonLd schema={softwareApplicationSchema({ name: "QR Code Scanner", url: canonical, description: "Scan and decode QR codes from images or a live camera, entirely in the browser.", applicationCategory: "UtilitiesApplication" })} />
+  <JsonLd schema={breadcrumbListSchema([{ name: "Home", url: homeUrl }, { name: "Scan", url: canonical }])} />
+
+  <Container>
+    <section class="py-12 text-center sm:py-16">
+      <h1 class="mx-auto max-w-3xl text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
+        Scan a QR code
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">
+        Use your camera or upload an image — the code is decoded entirely on your device, nothing is ever sent to a
+        server.
+      </p>
+    </section>
+
+    <section class="mx-auto max-w-2xl py-6">
+      <QrScannerWidget client:idle />
+    </section>
+
+    <AdSlot position="in-content" class="py-4" />
+  </Container>
+</BaseLayout>

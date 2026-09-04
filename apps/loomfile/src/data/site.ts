@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Free, private browser tools",
   url: import.meta.env.PUBLIC_SITE_URL ?? "https://loomfile.com",
   description:
-    "A growing collection of free file tools that run entirely in your browser — PDFs, video, images, fonts, and more. No uploads, no sign-up, your files never leave your device.",
+    "A growing collection of free file tools that run entirely in your browser — PDFs, video, images, fonts, QR codes, and more. No uploads, no sign-up, your files never leave your device.",
   contactEmail: "hello@loomfile.com",
 };
 
@@ -49,5 +49,10 @@ export const TOOLS = [
     slug: "/font/",
     name: "Font Tools",
     tagline: "Convert TTF, OTF, WOFF, and WOFF2 fonts, right in your browser",
+  },
+  {
+    slug: "/qr/",
+    name: "QR Code Tools",
+    tagline: "Generate and scan QR codes, right in your browser",
   },
 ];

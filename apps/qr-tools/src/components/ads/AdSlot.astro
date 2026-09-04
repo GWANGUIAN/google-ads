@@ -1,0 +1,42 @@
+---
+// Renders nothing at all (no wrapper element, no reserved space) unless ads
+// are explicitly enabled AND this position has a configured slot id — so
+// there is zero layout shift and zero ad markup before AdSense approval.
+// Flip PUBLIC_ADS_ENABLED + fill in slot ids to activate. See docs/NEW_SITE_PLAYBOOK.md.
+import { ADS } from "@/data/site";
+
+interface Props {
+  position: "header" | "in-content" | "sidebar" | "footer";
+  class?: string;
+}
+
+const { position, class: className = "" } = Astro.props;
+
+const slotByPosition: Record<Props["position"], string> = {
+  header: ADS.slots.header,
+  "in-content": ADS.slots.inContent,
+  sidebar: ADS.slots.sidebar,
+  footer: ADS.slots.footer,
+};
+
+const slotId = slotByPosition[position];
+const shouldRender = ADS.enabled && !!slotId && !!ADS.clientId;
+---
+
+{
+  shouldRender && (
+    <div class:list={["ad-slot", className]} data-ad-position={position}>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={ADS.clientId}
+        data-ad-slot={slotId}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script>
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  )
+}

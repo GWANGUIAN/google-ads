@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@/lib/url";
+---
+
+<BaseLayout
+  title={`How ${SITE.name} works`}
+  description={`A closer look at how ${SITE.name} generates and scans QR codes entirely inside your browser, with nothing ever uploaded.`}
+  path="/how-it-works"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">How {SITE.name} works</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          Most online QR generators work by sending the text you type to a server, which builds the code and sends
+          an image back — which means whatever you're encoding, whether it's a WiFi password or a customer's phone
+          number, has to pass through someone else's infrastructure. {SITE.name} doesn't do that. Every tool on this
+          site runs entirely inside your browser tab, using open-source JavaScript libraries.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Generating a code</h2>
+        <p>
+          As you fill in a form — a URL, a WiFi network, a contact card — the tool builds the exact text payload
+          that format expects (for example, WiFi networks are encoded as <code>WIFI:T:WPA;S:...;P:...;;</code>) and
+          draws the resulting QR pattern directly onto an HTML canvas element in your browser. Nothing is sent
+          anywhere until you click Download, at which point the image is saved straight from that canvas to your
+          device.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Scanning a code</h2>
+        <p>
+          The scanner works the same way in reverse. An uploaded image, or a live camera frame, is drawn onto a
+          hidden canvas and read pixel-by-pixel by a QR-decoding library running locally in your browser. The
+          decoded text is displayed on the page — it never leaves your device, whether it came from a photo or your
+          camera.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Logos and styling</h2>
+        <p>
+          Foreground/background colors and an optional center logo are applied directly on the canvas after the
+          code is drawn. Adding a logo automatically raises the error-correction level, so enough of the pattern
+          stays intact for scanners to read around the covered area.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">What "never uploaded" actually means</h2>
+        <p>
+          Concretely: nothing you type into a generator field, and no image you scan, ever leaves your device over
+          the network. No <code>fetch</code>, no form submission, no request carries that data anywhere. You can
+          confirm this yourself using your browser's developer tools — open the Network tab while generating or
+          scanning a code, and you'll see no outgoing request containing your content.
+        </p>
+
+        <p>
+          For the full picture on what little data is collected (aggregate analytics, advertising cookies once ads
+          are enabled), see our <a href={withBase("/privacy-policy")} class="text-accent-600 underline">Privacy Policy</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

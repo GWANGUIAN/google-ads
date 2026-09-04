@@ -39,6 +39,14 @@
       "port": 4326,
       "autoPort": true,
       "env": { "PORT": "4326" }
+    },
+    {
+      "name": "qr-tools",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "qr-tools", "dev"],
+      "port": 4328,
+      "autoPort": true,
+      "env": { "PORT": "4328" }
     }
   ]
 }

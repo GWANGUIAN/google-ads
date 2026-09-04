@@ -1,0 +1,30 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema } from "@repo/seo/schema";
+import { buildToolFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+
+const faqItems = buildToolFaq([
+  { question: "Do I need to install anything?", answer: "No. Every tool runs directly in your web browser using JavaScript — there's nothing to download or install." },
+  { question: "Is there a limit on how many QR codes I can generate or scan?", answer: "No hard limit. The batch generator caps a single run at 200 lines to keep the page responsive, but you can run it as many times as you like." },
+  { question: "What types of QR codes can I generate?", answer: "URLs, WiFi networks, contact cards (vCard), email, SMS, phone numbers, plain text, calendar events, GPS locations, WhatsApp chat links, and app download links." },
+  { question: "Do QR codes generated here expire?", answer: "No. These are \"static\" QR codes — the content is encoded directly into the pattern, so it works forever and doesn't rely on any server staying online." },
+  { question: "Does this work on mobile?", answer: "Yes — it works in any modern browser on desktop or mobile. The camera scanner uses your device's back camera automatically where available." },
+  { question: "How is this free?", answer: "Because all processing happens in your browser, there's no server cost per QR code. The site is supported by advertising rather than charging per use." },
+]);
+---
+
+<BaseLayout title={`FAQ | ${SITE.name}`} description="Answers to common questions about QR Code Tools." path="/faq">
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">Frequently asked questions</h1>
+      <div class="mt-6">
+        <Faq items={faqItems} heading="" />
+      </div>
+    </article>
+  </Container>
+</BaseLayout>
