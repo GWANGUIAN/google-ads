@@ -1,0 +1,6 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://t1.kakaocdn.net https://pagead2.googlesyndication.com; connect-src 'self' https://api.pwnedpasswords.com https://t1.kakaocdn.net; img-src 'self' data: https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline'; frame-src https://googleads.g.doubleclick.net; font-src 'self'

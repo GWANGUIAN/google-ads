@@ -1,0 +1,71 @@
+---
+import SeoHead from "@repo/seo/SeoHead.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { organizationSchema, websiteSchema } from "@repo/seo/schema";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { SITE, ADS, SITE_VERIFICATION } from "@/data/site";
+import { getDictionary, type Locale } from "@/i18n/config";
+import "@/styles/global.css";
+
+interface Props {
+  lang: Locale;
+  title: string;
+  description: string;
+  /** Locale-neutral path, e.g. "/about" or "/" — never includes "/en". */
+  path: string;
+  noindex?: boolean;
+}
+
+const { lang, title, description, path, noindex } = Astro.props;
+const t = getDictionary(lang);
+
+const koPath = path === "/" ? "/" : path;
+const enPath = path === "/" ? "/en/" : `/en${path}`;
+const koUrl = new URL(koPath, SITE.url).toString();
+const enUrl = new URL(enPath, SITE.url).toString();
+const canonical = lang === "ko" ? koUrl : enUrl;
+const ogImage = new URL("og-image.png", SITE.url).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#2563eb" />
+    {SITE_VERIFICATION.google && <meta name="google-site-verification" content={SITE_VERIFICATION.google} />}
+    {SITE_VERIFICATION.naver && <meta name="naver-site-verification" content={SITE_VERIFICATION.naver} />}
+    {SITE_VERIFICATION.bing && <meta name="msvalidate.01" content={SITE_VERIFICATION.bing} />}
+
+    <link rel="alternate" hreflang="ko" href={koUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={koUrl} />
+
+    <SeoHead title={title} description={description} canonical={canonical} ogImage={ogImage} siteName={SITE.name} noindex={noindex} />
+    <JsonLd schema={organizationSchema({ name: SITE.name, url: SITE.url, logo: new URL("favicon.svg", SITE.url).toString(), description: t.pages.home.description })} />
+    <JsonLd schema={websiteSchema({ name: SITE.name, url: SITE.url })} />
+
+    {
+      ADS.enabled && ADS.clientId && (
+        <script
+          is:inline
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADS.clientId}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
+  </head>
+  <body class="min-h-screen bg-white text-neutral-800 antialiased">
+    <Header lang={lang} path={path} />
+    <AdSlot position="header" class="mx-auto my-2 max-w-content px-4" />
+    <main>
+      <slot />
+    </main>
+    <AdSlot position="footer" class="mx-auto my-4 max-w-content px-4" />
+    <Footer lang={lang} path={path} />
+  </body>
+</html>

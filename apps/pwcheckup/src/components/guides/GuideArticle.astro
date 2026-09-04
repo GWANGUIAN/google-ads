@@ -1,0 +1,67 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { breadcrumbListSchema } from "@repo/seo/schema";
+import { SITE } from "@/data/site";
+import { localizePath, type Locale } from "@/i18n/config";
+
+interface Props {
+  entry: CollectionEntry<"guides">;
+  slug: string;
+  lang: Locale;
+}
+
+const { entry, slug, lang } = Astro.props;
+const { Content } = await render(entry);
+const path = `/guides/${slug}`;
+
+const breadcrumbs = breadcrumbListSchema([
+  { name: SITE.name, url: new URL(localizePath(lang, "/"), SITE.url).toString() },
+  { name: entry.data.title, url: new URL(localizePath(lang, path), SITE.url).toString() },
+]);
+---
+
+<BaseLayout lang={lang} title={`${entry.data.title} | ${SITE.name}`} description={entry.data.description} path={path}>
+  <JsonLd schema={breadcrumbs} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14 prose-guide">
+      <h1 class="text-3xl font-extrabold text-neutral-900">{entry.data.title}</h1>
+      <p class="mt-2 text-sm text-neutral-500">{entry.data.description}</p>
+      <div class="prose-guide-body mt-8 text-base leading-relaxed text-neutral-700">
+        <Content />
+      </div>
+    </article>
+    <AdSlot position="in-content" class="mx-auto mb-14 max-w-2xl px-4" />
+  </Container>
+</BaseLayout>
+
+<style>
+  .prose-guide-body :global(h2) {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-neutral-900);
+  }
+  .prose-guide-body :global(p) {
+    margin-top: 0.875rem;
+  }
+  .prose-guide-body :global(a) {
+    color: var(--color-accent-600);
+    text-decoration: underline;
+  }
+  .prose-guide-body :global(ol),
+  .prose-guide-body :global(ul) {
+    margin-top: 0.875rem;
+    padding-left: 1.25rem;
+  }
+  .prose-guide-body :global(li) {
+    margin-top: 0.375rem;
+  }
+  .prose-guide-body :global(strong) {
+    color: var(--color-neutral-900);
+  }
+</style>

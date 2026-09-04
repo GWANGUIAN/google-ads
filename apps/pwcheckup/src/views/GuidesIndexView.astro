@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { getDictionary, localizePath, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+
+const entries = (await getCollection("guides", (e) => e.data.lang === lang)).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout lang={lang} title={t.pages.guidesIndex.title} description={t.pages.guidesIndex.description} path="/guides">
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">{t.pages.guidesIndex.title}</h1>
+      <p class="mt-2 text-base text-neutral-600">{t.pages.guidesIndex.description}</p>
+
+      <ul class="mt-8 space-y-4">
+        {
+          entries.map((entry) => {
+            const slug = entry.id.replace(/^(ko|en)\//, "").replace(/\.md$/, "");
+            return (
+              <li>
+                <a
+                  href={localizePath(lang, `/guides/${slug}`)}
+                  class="block rounded-card border border-neutral-200 bg-white p-5 transition-colors hover:border-accent-400"
+                >
+                  <p class="text-lg font-bold text-neutral-900">{entry.data.title}</p>
+                  <p class="mt-1 text-sm text-neutral-600">{entry.data.description}</p>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </article>
+  </Container>
+</BaseLayout>

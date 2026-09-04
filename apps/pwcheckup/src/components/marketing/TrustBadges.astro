@@ -1,0 +1,21 @@
+---
+import { getDictionary, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+  {
+    t.home.trustBadges.map((badge) => (
+      <div class="rounded-card border border-neutral-200 bg-white px-3 py-3 text-center">
+        <p class="text-sm font-semibold text-neutral-900">{badge.title}</p>
+        <p class="mt-0.5 text-xs text-neutral-500">{badge.desc}</p>
+      </div>
+    ))
+  }
+</div>

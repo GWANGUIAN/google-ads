@@ -1,0 +1,21 @@
+---
+import { getDictionary, localizePath, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+  path: string;
+  class?: string;
+}
+
+const { lang, path, class: className = "" } = Astro.props;
+const t = getDictionary(lang);
+const otherLang: Locale = lang === "ko" ? "en" : "ko";
+const href = localizePath(otherLang, path);
+---
+
+<a
+  href={href}
+  class:list={["inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900", className]}
+>
+  {t.nav.language}
+</a>

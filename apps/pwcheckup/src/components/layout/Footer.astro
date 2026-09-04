@@ -1,0 +1,48 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { getDictionary, localizePath, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+  path: string;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<footer class="mt-16 border-t border-neutral-200 bg-neutral-50">
+  <Container class="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-3">
+    <div>
+      <p class="text-base font-bold text-neutral-900">{SITE.name}</p>
+      <p class="mt-2 text-sm text-neutral-600">{t.footer.tagline}</p>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">{t.footer.company}</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href={localizePath(lang, "/about")} class="hover:text-accent-600">{t.footer.aboutLink}</a></li>
+        <li><a href={localizePath(lang, "/faq")} class="hover:text-accent-600">{t.footer.faqLink}</a></li>
+        <li><a href={localizePath(lang, "/guides")} class="hover:text-accent-600">{t.footer.guidesHeading}</a></li>
+        <li><a href={localizePath(lang, "/contact")} class="hover:text-accent-600">{t.footer.contactLink}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-sm font-semibold text-neutral-900">{t.footer.legal}</p>
+      <ul class="mt-3 space-y-2 text-sm text-neutral-600">
+        <li><a href={localizePath(lang, "/privacy-policy")} class="hover:text-accent-600">{t.footer.privacyLink}</a></li>
+        <li><a href={localizePath(lang, "/terms-of-service")} class="hover:text-accent-600">{t.footer.termsLink}</a></li>
+      </ul>
+    </div>
+  </Container>
+
+  <div class="border-t border-neutral-200 py-6">
+    <Container>
+      <p class="text-xs text-neutral-500">
+        © {new Date().getFullYear()} {SITE.name}. {t.footer.rights}
+      </p>
+    </Container>
+  </div>
+</footer>

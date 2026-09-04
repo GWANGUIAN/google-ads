@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import StaticPageBody from "@/components/pages/StaticPageBody.astro";
+import { getDictionary, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<BaseLayout lang={lang} title={t.pages.privacyPolicy.title} description={t.pages.privacyPolicy.description} path="/privacy-policy">
+  <Container>
+    <StaticPageBody copy={t.pages.privacyPolicy} lastUpdated={t.pages.privacyPolicy.lastUpdated} />
+  </Container>
+</BaseLayout>

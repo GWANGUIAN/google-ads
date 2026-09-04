@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pwcheckup.com/sitemap-index.xml

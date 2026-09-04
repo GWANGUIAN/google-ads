@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "@repo/config/tailwind-tokens.css";
+
+/*
+ * Self-hosted Pretendard variable font, full Hangul + Latin coverage
+ * (weights 45-920 in one file). NOT via @fontsource/pretendard — that
+ * package's per-weight CSS (400.css etc.) only ships the Latin subset with
+ * zero Hangul glyphs, which would silently fall back to the system font for
+ * all Korean text. The raw `pretendard` npm package's variable woff2 is
+ * copied into public/fonts/ instead; see public/fonts/PretendardVariable.woff2.
+ */
+@font-face {
+  font-family: "Pretendard Variable";
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/PretendardVariable.woff2") format("woff2-variations");
+}
+
+@theme {
+  /* Local-only: Korean glyph coverage (shared token's Inter stack has none)
+     plus a mid-severity warning color for the breach-result UI. */
+  --font-sans: "Pretendard Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+}
+
+body {
+  font-family: var(--font-sans);
+}

@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import GuideArticle from "@/components/guides/GuideArticle.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("guides", (e) => e.data.lang === "ko");
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/^ko\//, "").replace(/\.md$/, "") },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { slug } = Astro.params;
+---
+
+<GuideArticle entry={entry} slug={slug as string} lang="ko" />

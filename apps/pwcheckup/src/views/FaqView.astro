@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema } from "@repo/seo/schema";
+import { FAQ_ITEMS } from "@/data/faq";
+import { getDictionary, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<BaseLayout lang={lang} title={t.pages.faq.title} description={t.pages.faq.description} path="/faq">
+  <JsonLd schema={faqPageSchema(FAQ_ITEMS[lang])} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">{t.pages.faq.title}</h1>
+      <div class="mt-8">
+        <Faq lang={lang} />
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

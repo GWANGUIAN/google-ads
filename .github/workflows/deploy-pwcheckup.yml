@@ -1,0 +1,71 @@
+name: Deploy pwcheckup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/pwcheckup/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - ".github/workflows/deploy-pwcheckup.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-pwcheckup-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: pwcheckup
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build pwcheckup
+        run: pnpm turbo run build --filter=pwcheckup...
+        env:
+          # Astro bakes PUBLIC_* vars into the static build at build time, so
+          # they must be provided here (GitHub Actions), not in the Cloudflare
+          # Pages dashboard — this repo builds via CI and ships a finished
+          # dist/, Cloudflare's own build/env-var system is never invoked.
+          # These are not secrets (they end up in public page HTML once ads
+          # are on). Domain-specific ones live in the `pwcheckup` GitHub
+          # Environment above, NOT as repo-level Variables — a repo-level
+          # Variable is shared by every site's workflow, which silently
+          # breaks the moment a second site's workflow reads the same name
+          # expecting a different value. Only PUBLIC_ADSENSE_CLIENT_ID (one
+          # AdSense account, safe to share) stays at the repo level;
+          # environment Variables of the same name take precedence over it.
+          #   gh variable set PUBLIC_ADS_ENABLED --env pwcheckup --body true
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_ADS_ENABLED: ${{ vars.PUBLIC_ADS_ENABLED }}
+          PUBLIC_ADSENSE_CLIENT_ID: ${{ vars.PUBLIC_ADSENSE_CLIENT_ID }}
+          PUBLIC_AD_SLOT_HEADER: ${{ vars.PUBLIC_AD_SLOT_HEADER }}
+          PUBLIC_AD_SLOT_IN_CONTENT: ${{ vars.PUBLIC_AD_SLOT_IN_CONTENT }}
+          PUBLIC_AD_SLOT_FOOTER: ${{ vars.PUBLIC_AD_SLOT_FOOTER }}
+          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
+          PUBLIC_NAVER_SITE_VERIFICATION: ${{ vars.PUBLIC_NAVER_SITE_VERIFICATION }}
+          PUBLIC_BING_SITE_VERIFICATION: ${{ vars.PUBLIC_BING_SITE_VERIFICATION }}
+          PUBLIC_KAKAO_JS_KEY: ${{ vars.PUBLIC_KAKAO_JS_KEY }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: apps/pwcheckup
+          command: pages deploy dist --project-name=pwcheckup --branch=main

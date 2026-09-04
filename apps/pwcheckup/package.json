@@ -1,0 +1,34 @@
+{
+  "name": "pwcheckup",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "astro": "^5.1.0",
+    "@astrojs/react": "^4.1.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@zxcvbn-ts/core": "^3.0.4",
+    "@zxcvbn-ts/language-common": "^3.0.4",
+    "@zxcvbn-ts/language-en": "^3.0.2",
+    "@repo/ui": "workspace:*",
+    "@repo/seo": "workspace:*",
+    "@repo/config": "workspace:*"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "wrangler": "^4.20.0"
+  }
+}

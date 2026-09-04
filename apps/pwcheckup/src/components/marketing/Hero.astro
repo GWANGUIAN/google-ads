@@ -1,0 +1,44 @@
+---
+import PasswordChecker from "@/components/checker/PasswordChecker";
+import TrustNote from "@/components/checker/TrustNote.astro";
+import TypewriterHeadline from "./TypewriterHeadline";
+import TrustBadges from "./TrustBadges.astro";
+import { getDictionary, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<section class="py-10 sm:py-16">
+  <div class="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+    <div>
+      <div class="mx-auto max-w-md lg:hidden">
+        <img src="/hero.webp" alt="" width="320" height="320" class="mx-auto w-40 sm:w-52" loading="eager" />
+      </div>
+
+      <h1 class="mt-4 text-center text-3xl font-extrabold leading-tight tracking-tight text-neutral-900 sm:text-4xl lg:mt-0 lg:text-left lg:text-5xl">
+        <TypewriterHeadline client:load phrases={t.hero.headlinePhrases} />
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-center text-base text-neutral-600 lg:mx-0 lg:text-left">
+        {t.hero.sub}
+      </p>
+
+      <div class="mx-auto mt-8 max-w-xl lg:mx-0">
+        <PasswordChecker client:load lang={lang} />
+        <TrustNote lang={lang} />
+      </div>
+
+      <div class="mx-auto mt-8 max-w-xl lg:mx-0">
+        <TrustBadges lang={lang} />
+      </div>
+    </div>
+
+    <div class="hidden justify-center lg:flex">
+      <img src="/hero.webp" alt="" width="440" height="440" class="w-full max-w-sm" loading="eager" />
+    </div>
+  </div>
+</section>

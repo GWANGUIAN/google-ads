@@ -1,0 +1,46 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Hero from "@/components/marketing/Hero.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import ShareButtons from "@/components/share/ShareButtons";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { softwareApplicationSchema } from "@repo/seo/schema";
+import { SITE } from "@/data/site";
+import { getDictionary, type Locale } from "@/i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<BaseLayout lang={lang} title={t.pages.home.title} description={t.pages.home.description} path="/">
+  <JsonLd
+    schema={softwareApplicationSchema({
+      name: SITE.name,
+      url: SITE.url,
+      description: t.pages.home.description,
+      applicationCategory: "SecurityApplication",
+    })}
+  />
+  <Container>
+    <Hero lang={lang} />
+
+    <section class="mx-auto max-w-xl py-4">
+      <p class="text-center text-sm font-semibold text-neutral-500">{t.share.title}</p>
+      <div class="mt-3 flex justify-center">
+        <ShareButtons client:visible lang={lang} />
+      </div>
+    </section>
+
+    <section class="py-14">
+      <h2 class="text-center text-2xl font-bold text-neutral-900">{t.pages.faq.title}</h2>
+      <div class="mx-auto mt-6 max-w-2xl">
+        <Faq lang={lang} />
+      </div>
+    </section>
+  </Container>
+</BaseLayout>
