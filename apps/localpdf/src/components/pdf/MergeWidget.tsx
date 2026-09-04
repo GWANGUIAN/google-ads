@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Dropzone from "./Dropzone";
 import PdfFileListItem from "./PdfFileListItem";
+import ProcessAction, { type ProcessStatus } from "./ProcessAction";
 import { PdfEngineClient } from "@/lib/pdf/pdfEngineClient";
 import { downloadBlob } from "@/lib/pdf/download";
 import { pdfSizeWarning } from "@/lib/pdf/fileGuards";
@@ -18,8 +19,9 @@ function nextId() {
 
 export default function MergeWidget() {
   const [items, setItems] = useState<QueuedPdf[]>([]);
-  const [status, setStatus] = useState<"idle" | "working" | "error">("idle");
+  const [status, setStatus] = useState<ProcessStatus>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<Blob | null>(null);
   const clientRef = useRef<PdfEngineClient | null>(null);
 
   useEffect(() => {
@@ -27,9 +29,15 @@ export default function MergeWidget() {
     return () => clientRef.current?.destroy();
   }, []);
 
+  function invalidateResult() {
+    setResult(null);
+    setStatus((s) => (s === "done" ? "idle" : s));
+  }
+
   function handleFiles(files: File[]) {
     setError(null);
     setItems((prev) => [...prev, ...files.map((file) => ({ id: nextId(), file }))]);
+    invalidateResult();
   }
 
   function move(index: number, dir: -1 | 1) {
@@ -40,10 +48,12 @@ export default function MergeWidget() {
       [next[index], next[target]] = [next[target], next[index]];
       return next;
     });
+    invalidateResult();
   }
 
   function remove(id: string) {
     setItems((prev) => prev.filter((i) => i.id !== id));
+    invalidateResult();
   }
 
   async function handleMerge() {
@@ -52,12 +62,17 @@ export default function MergeWidget() {
     setError(null);
     try {
       const blob = await clientRef.current.run<Blob>("mergePdfs", { files: items.map((i) => i.file) });
-      downloadBlob(blob, "merged.pdf");
-      setStatus("idle");
+      setResult(blob);
+      setStatus("done");
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Could not merge these PDFs.");
     }
+  }
+
+  function handleDownload() {
+    if (!result) return;
+    downloadBlob(result, "merged.pdf");
   }
 
   const warning = items.map((i) => pdfSizeWarning(i.file)).find(Boolean);
@@ -96,17 +111,20 @@ export default function MergeWidget() {
           )}
 
           <div className="flex items-center justify-between gap-3 border-t border-neutral-100 px-5 py-4">
-            <span className="text-xs text-neutral-500">
+            <span className="shrink-0 text-xs text-neutral-500">
               {items.length} file{items.length === 1 ? "" : "s"}
             </span>
-            <button
-              type="button"
-              onClick={handleMerge}
-              disabled={status === "working" || items.length < 2}
-              className="rounded-control bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
-            >
-              {status === "working" ? "Merging…" : "Merge PDFs"}
-            </button>
+            <div className="flex min-w-0 flex-1 justify-end">
+              <ProcessAction
+                status={status}
+                idleLabel="Merge PDFs"
+                workingLabel="Merging…"
+                downloadLabel="Download PDF"
+                onStart={handleMerge}
+                onDownload={handleDownload}
+                startDisabled={items.length < 2}
+              />
+            </div>
           </div>
         </div>
       )}

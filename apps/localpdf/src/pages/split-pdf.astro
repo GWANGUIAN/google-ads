@@ -6,7 +6,7 @@ import { buildToolFaq } from "@/data/faqTemplates";
 import { SITE } from "@/data/site";
 
 const faqItems = buildToolFaq([
-  { question: "How do I specify page ranges?", answer: "Use comma-separated ranges like \"1-3, 4-6\" — each range becomes its own PDF. A single page range downloads one PDF; multiple ranges download as a ZIP." },
+  { question: "How do I choose which pages to keep?", answer: "Every page renders as a thumbnail with a checkbox — uncheck any page to leave it out, or use Select all / Deselect all. The download is a single PDF containing only the pages you kept, in their original order." },
 ]);
 ---
 

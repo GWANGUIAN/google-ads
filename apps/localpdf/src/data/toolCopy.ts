@@ -18,9 +18,9 @@ export const MERGE_COPY: ToolCopy = {
 
 export const SPLIT_COPY: ToolCopy = {
   title: "Split a PDF file",
-  subtitle: "Break one PDF into several smaller files by page range — free and completely private.",
+  subtitle: "Pull out just the pages you need into a single PDF — free and completely private.",
   intro:
-    "Splitting a PDF is useful when you only need to share a few pages out of a larger document, or when you want to break a scanned batch into separate files. Upload a PDF, specify the page ranges you want, and download each piece as a separate file (bundled as a ZIP if you create more than one).",
+    "Splitting a PDF is useful when you only need to share a few pages out of a larger document. Upload a PDF, uncheck any page thumbnails you don't want, and download a single PDF containing just the pages you kept, in their original order.",
   why:
     "Splitting locally means the full document — including any pages you're not sharing — never leaves your device.",
 };

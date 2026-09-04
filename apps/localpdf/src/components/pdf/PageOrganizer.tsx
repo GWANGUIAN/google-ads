@@ -1,6 +1,7 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import Dropzone from "./Dropzone";
 import PageThumbnail from "./PageThumbnail";
+import ProcessAction, { type ProcessStatus } from "./ProcessAction";
 import { PdfEngineClient } from "@/lib/pdf/pdfEngineClient";
 import { downloadBlob } from "@/lib/pdf/download";
 import { getPageCount, loadPdfForRender, renderThumbnailDataUrl, type PdfDocumentProxy } from "@/lib/pdf/render";
@@ -22,13 +23,19 @@ function nextKey() {
 export default function PageOrganizer({ actionLabel }: { actionLabel: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [pages, setPages] = useState<PageState[]>([]);
-  const [status, setStatus] = useState<"idle" | "loading" | "working" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | ProcessStatus>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<Blob | null>(null);
   const pdfRef = useRef<PdfDocumentProxy | null>(null);
   const engineRef = useRef<PdfEngineClient | null>(null);
   const dragIndexRef = useRef<number | null>(null);
 
   if (!engineRef.current) engineRef.current = new PdfEngineClient();
+
+  function invalidateResult() {
+    setResult(null);
+    setStatus((s) => (s === "done" ? "idle" : s));
+  }
 
   async function handleFiles(files: File[]) {
     const picked = files[0];
@@ -36,6 +43,7 @@ export default function PageOrganizer({ actionLabel }: { actionLabel: string }) 
     setError(null);
     setFile(picked);
     setPages([]);
+    setResult(null);
     setStatus("loading");
     try {
       const pdf = await loadPdfForRender(picked);
@@ -71,16 +79,19 @@ export default function PageOrganizer({ actionLabel }: { actionLabel: string }) 
       next.splice(to, 0, item);
       return next;
     });
+    invalidateResult();
   }
 
   function rotate(index: number) {
     setPages((prev) =>
       prev.map((p, i) => (i === index ? { ...p, rotation: (((p.rotation + 90) % 360) as 0 | 90 | 180 | 270) } : p)),
     );
+    invalidateResult();
   }
 
   function remove(index: number) {
     setPages((prev) => prev.filter((_, i) => i !== index));
+    invalidateResult();
   }
 
   function handleDragHandlePointerDown(e: ReactPointerEvent<HTMLButtonElement>, index: number) {
@@ -114,12 +125,17 @@ export default function PageOrganizer({ actionLabel }: { actionLabel: string }) 
         if (p.rotation) rotations[p.originalIndex] = p.rotation;
       });
       const blob = await engineRef.current.run<Blob>("applyPageEdits", { file, pageOrder, rotations });
-      downloadBlob(blob, `${file.name.replace(/\.pdf$/i, "")}-edited.pdf`);
-      setStatus("idle");
+      setResult(blob);
+      setStatus("done");
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Could not save this PDF.");
     }
+  }
+
+  function handleDownload() {
+    if (!result || !file) return;
+    downloadBlob(result, `${file.name.replace(/\.pdf$/i, "")}-edited.pdf`);
   }
 
   return (
@@ -166,17 +182,20 @@ export default function PageOrganizer({ actionLabel }: { actionLabel: string }) 
           )}
 
           <div className="flex items-center justify-between gap-3 border-t border-neutral-100 px-5 py-4">
-            <span className="text-xs text-neutral-500">
+            <span className="shrink-0 text-xs text-neutral-500">
               {pages.length} page{pages.length === 1 ? "" : "s"}
             </span>
-            <button
-              type="button"
-              onClick={handleSave}
-              disabled={status === "working" || pages.length === 0}
-              className="rounded-control bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
-            >
-              {status === "working" ? "Saving…" : "Save PDF"}
-            </button>
+            <div className="flex min-w-0 flex-1 justify-end">
+              <ProcessAction
+                status={status === "loading" ? "idle" : status}
+                idleLabel="Save PDF"
+                workingLabel="Saving…"
+                downloadLabel="Download PDF"
+                onStart={handleSave}
+                onDownload={handleDownload}
+                startDisabled={pages.length === 0}
+              />
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import Dropzone from "./Dropzone";
+import ProcessAction, { type ProcessStatus } from "./ProcessAction";
 import { downloadBlob } from "@/lib/pdf/download";
 import { zipFiles } from "@/lib/pdf/zip";
 import { extractAllText, getPageCount, loadPdfForRender, renderPageToBlob, type PdfDocumentProxy } from "@/lib/pdf/render";
@@ -12,6 +13,9 @@ export default function ExtractWidget() {
   const [imageFormat, setImageFormat] = useState<"image/png" | "image/jpeg">("image/png");
   const [status, setStatus] = useState<"idle" | "loading" | "working" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [imageStatus, setImageStatus] = useState<ProcessStatus>("idle");
+  const [imageProgress, setImageProgress] = useState(0);
+  const [imageResult, setImageResult] = useState<{ blob: Blob; name: string } | null>(null);
   const busyRef = useRef(false);
 
   async function handleFiles(files: File[]) {
@@ -20,6 +24,8 @@ export default function ExtractWidget() {
     setFile(picked);
     setText(null);
     setError(null);
+    setImageStatus("idle");
+    setImageResult(null);
     setStatus("loading");
     try {
       const doc = await loadPdfForRender(picked);
@@ -50,10 +56,11 @@ export default function ExtractWidget() {
     downloadBlob(new Blob([text], { type: "text/plain" }), `${file.name.replace(/\.pdf$/i, "")}.txt`);
   }
 
-  async function handleDownloadImages() {
+  async function handleRenderImages() {
     if (!pdf || !file || busyRef.current) return;
     busyRef.current = true;
-    setStatus("working");
+    setImageStatus("working");
+    setImageProgress(0);
     setError(null);
     try {
       const count = getPageCount(pdf);
@@ -62,20 +69,26 @@ export default function ExtractWidget() {
       for (let i = 0; i < count; i++) {
         const blob = await renderPageToBlob(pdf, i, 2, imageFormat);
         entries.push({ name: `page-${i + 1}.${ext}`, blob });
+        setImageProgress(((i + 1) / count) * 100);
       }
       if (entries.length === 1) {
-        downloadBlob(entries[0].blob, entries[0].name);
+        setImageResult({ blob: entries[0].blob, name: entries[0].name });
       } else {
         const zipBlob = await zipFiles(entries);
-        downloadBlob(zipBlob, `${file.name.replace(/\.pdf$/i, "")}-pages.zip`);
+        setImageResult({ blob: zipBlob, name: `${file.name.replace(/\.pdf$/i, "")}-pages.zip` });
       }
-      setStatus("idle");
+      setImageStatus("done");
     } catch {
-      setStatus("error");
+      setImageStatus("error");
       setError("Could not render page images from this PDF.");
     } finally {
       busyRef.current = false;
     }
+  }
+
+  function handleDownloadImages() {
+    if (!imageResult) return;
+    downloadBlob(imageResult.blob, imageResult.name);
   }
 
   return (
@@ -152,21 +165,28 @@ export default function ExtractWidget() {
                   Format
                   <select
                     value={imageFormat}
-                    onChange={(e) => setImageFormat(e.target.value as "image/png" | "image/jpeg")}
+                    onChange={(e) => {
+                      setImageFormat(e.target.value as "image/png" | "image/jpeg");
+                      setImageResult(null);
+                      setImageStatus((s) => (s === "done" ? "idle" : s));
+                    }}
                     className="rounded-control border border-neutral-300 bg-white px-3 py-1.5 text-sm font-semibold text-neutral-900 focus:border-accent-500 focus:outline-none"
                   >
                     <option value="image/png">PNG</option>
                     <option value="image/jpeg">JPG</option>
                   </select>
                 </label>
-                <button
-                  type="button"
-                  onClick={handleDownloadImages}
-                  disabled={status === "working"}
-                  className="rounded-control bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
-                >
-                  {status === "working" ? "Rendering…" : "Download page images"}
-                </button>
+                <div className="min-w-[10rem] flex-1">
+                  <ProcessAction
+                    status={imageStatus}
+                    idleLabel="Render page images"
+                    workingLabel="Rendering pages…"
+                    downloadLabel="Download images"
+                    progress={imageProgress}
+                    onStart={handleRenderImages}
+                    onDownload={handleDownloadImages}
+                  />
+                </div>
               </div>
             </div>
           )}
