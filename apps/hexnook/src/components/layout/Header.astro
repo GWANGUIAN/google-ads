@@ -1,0 +1,25 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { TOOLS } from "@/data/tools";
+---
+
+<header class="sticky top-0 z-40 border-b border-neutral-800 bg-neutral-950/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href="/" class="flex items-center gap-2 text-base font-bold text-white">
+      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 font-mono text-xs text-white">
+        &lt;/&gt;
+      </span>
+      {SITE.name}
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-400 lg:flex">
+      {
+        TOOLS.map((tool) => (
+          <a href={tool.slug} class="transition-colors hover:text-white">
+            {tool.shortLabel}
+          </a>
+        ))
+      }
+    </nav>
+  </Container>
+</header>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import Hero from "@/components/marketing/Hero.astro";
+import ToolCard from "@/components/marketing/ToolCard.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { TOOLS } from "@/data/tools";
+import { siteFaq } from "@/data/toolFaq";
+import { SITE } from "@/data/site";
+---
+
+<BaseLayout title={`${SITE.name} — Free developer tools that run in your browser`} description={SITE.description} path="/">
+  <Hero />
+
+  <Container>
+    <section id="tools" class="py-6">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <h2 class="text-2xl font-bold text-white">Every tool, right here</h2>
+        <p class="mt-2 text-sm text-neutral-400">No tab-switching between five different sites. Pick one below.</p>
+      </div>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {TOOLS.map((tool, i) => <ToolCard tool={tool} class={`[transition-delay:${i * 60}ms]`} />)}
+      </div>
+    </section>
+
+    <AdSlot position="in-content" class="my-10" />
+
+    <section class="reveal py-10">
+      <div class="mx-auto max-w-2xl">
+        <h2 class="text-2xl font-bold text-white">Why hexnook</h2>
+        <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-400">
+          <p>
+            Most "online tool" sites quietly upload whatever you paste to a server to process it. hexnook doesn't —
+            every tool here runs on JavaScript already built into your browser (JSON.parse, the Web Crypto API,
+            native RegExp), so your data never leaves the tab it's in.
+          </p>
+          <p>That also means there's nothing to wait on. No request round-trip, no rate limit, no "processing…" spinner.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal py-10 pb-16">
+      <div class="mx-auto max-w-2xl">
+        <Faq items={siteFaq} heading="Common questions" />
+      </div>
+    </section>
+  </Container>
+</BaseLayout>

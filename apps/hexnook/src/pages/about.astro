@@ -1,0 +1,45 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+---
+
+<BaseLayout
+  title={`About | ${SITE.name}`}
+  description={`Learn how ${SITE.name} works, why it's free, and why nothing you paste ever leaves your browser.`}
+  path="/about"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-white">About {SITE.name}</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-400">
+        <p>
+          {SITE.name} is a small collection of developer tools — a JSON formatter, Base64 encoder, hash generator,
+          regex tester, and JWT decoder — that run entirely in your web browser. No sign-up, no rate limit, no
+          "processing…" spinner waiting on a server.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Why is it free?</h2>
+        <p>
+          Every tool here runs using JavaScript already built into your browser — JSON.parse, the Web Crypto API,
+          native RegExp — not a server we operate. Because there's no per-request infrastructure cost to pass on, the
+          site is instead supported by advertising.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Nothing you paste ever leaves your device</h2>
+        <p>
+          Whatever you type or paste into a tool — JSON, a JWT, a file for Base64 encoding — is only ever processed
+          in your browser's own memory. We can't see it, because we never receive it. You can verify this yourself
+          by opening your browser's network tab while using any tool here.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Feedback</h2>
+        <p>
+          If you have feedback, a bug report, or a tool you'd like to see added, see our{" "}
+          <a href="/contact" class="text-accent-400 underline underline-offset-2">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

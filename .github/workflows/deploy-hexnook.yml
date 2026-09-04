@@ -1,0 +1,55 @@
+name: Deploy hexnook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/hexnook/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - ".github/workflows/deploy-hexnook.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hexnook-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: hexnook
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build hexnook
+        run: pnpm turbo run build --filter=hexnook...
+        env:
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_ADS_ENABLED: ${{ vars.PUBLIC_ADS_ENABLED }}
+          PUBLIC_ADSENSE_CLIENT_ID: ${{ vars.PUBLIC_ADSENSE_CLIENT_ID }}
+          PUBLIC_AD_SLOT_HEADER: ${{ vars.PUBLIC_AD_SLOT_HEADER }}
+          PUBLIC_AD_SLOT_IN_CONTENT: ${{ vars.PUBLIC_AD_SLOT_IN_CONTENT }}
+          PUBLIC_AD_SLOT_FOOTER: ${{ vars.PUBLIC_AD_SLOT_FOOTER }}
+          PUBLIC_NAVER_SITE_VERIFICATION: ${{ vars.PUBLIC_NAVER_SITE_VERIFICATION }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: apps/hexnook
+          command: pages deploy dist --project-name=hexnook --branch=main

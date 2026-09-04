@@ -1,0 +1,62 @@
+---
+import GuideLayout from "@/components/guides/GuideLayout.astro";
+---
+
+<GuideLayout
+  title="JWTs explained: what's actually inside a token"
+  description="Why a JWT isn't encrypted, what the three parts mean, and how signature verification actually works."
+  path="/guides/jwt-explained"
+  relatedTool="/jwt"
+  relatedToolLabel="the JWT Decoder"
+>
+  <p>
+    A JSON Web Token is three Base64url-encoded segments joined by dots:{" "}
+    <code>header.payload.signature</code>. It's a compact, self-contained way to represent claims — "this user is
+    logged in as Ada, and this token expires at 3pm" — that a server can verify without a database lookup.
+  </p>
+
+  <h2>The header</h2>
+  <p>
+    A small JSON object describing the token itself — typically just the signing algorithm (<code>alg</code>, e.g.{" "}
+    <code>HS256</code> or <code>RS256</code>) and the token type (<code>typ: "JWT"</code>).
+  </p>
+
+  <h2>The payload</h2>
+  <p>
+    The actual claims — arbitrary JSON, though a handful of field names are standardized: <code>sub</code> (subject,
+    usually a user id), <code>iat</code> (issued-at time), <code>exp</code> (expiration time), and <code>nbf</code>{" "}
+    (not-before time). The last three are Unix timestamps in seconds, not milliseconds — a common source of bugs when
+    mixing them with JavaScript's <code>Date</code>, which expects milliseconds.
+  </p>
+
+  <h2>Important: it's encoded, not encrypted</h2>
+  <p>
+    This is the single most common misunderstanding about JWTs. Base64url is just an encoding — anyone who has the
+    token can decode the header and payload instantly and read every claim inside, with no key required. That's
+    exactly what <a href="/jwt">hexnook's JWT decoder</a> does. Never put a secret (a password, an API key) directly
+    inside a JWT's payload expecting it to stay hidden.
+  </p>
+
+  <h2>The signature</h2>
+  <p>
+    What actually makes a JWT trustworthy is the signature — a cryptographic proof that the header and payload
+    haven't been tampered with since the token was issued. There are two broad families:
+  </p>
+  <ul>
+    <li>
+      <strong>HMAC (HS256, HS384, HS512):</strong> symmetric — the same secret both signs and verifies the token.
+      Anyone with the secret can also forge new tokens, so it only works when the signer and verifier are the same
+      trusted party (or share the secret securely).
+    </li>
+    <li>
+      <strong>Asymmetric (RS256, ES256, and similar):</strong> a private key signs, and the corresponding public key
+      verifies. This is what lets a third party verify a token's authenticity without being able to forge new ones —
+      common for identity providers like Auth0 or Google.
+    </li>
+  </ul>
+  <p>
+    hexnook's decoder can verify HMAC signatures client-side, since that only needs the shared secret you provide.
+    Asymmetric algorithms need the issuer's public key to verify, which the decoder doesn't have — so those tokens
+    are decode-only.
+  </p>
+</GuideLayout>

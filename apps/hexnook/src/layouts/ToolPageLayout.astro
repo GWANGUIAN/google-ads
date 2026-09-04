@@ -1,0 +1,63 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema, breadcrumbListSchema, softwareApplicationSchema } from "@repo/seo/schema";
+import Container from "@repo/ui/Container.astro";
+import ToolHero from "@/components/marketing/ToolHero.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { SITE } from "@/data/site";
+import type { FaqItem } from "@/data/toolFaq";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbName: string;
+  faqItems: FaqItem[];
+}
+
+const { title, description, path, heroTitle, heroSubtitle, breadcrumbName, faqItems } = Astro.props;
+const canonical = new URL(path, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <JsonLd
+    schema={softwareApplicationSchema({
+      name: heroTitle,
+      url: canonical,
+      description,
+      applicationCategory: "DeveloperApplication",
+    })}
+  />
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <JsonLd
+    schema={breadcrumbListSchema([
+      { name: "Home", url: homeUrl },
+      { name: breadcrumbName, url: canonical },
+    ])}
+  />
+
+  <Container>
+    <ToolHero title={heroTitle} subtitle={heroSubtitle}>
+      <slot />
+    </ToolHero>
+
+    <nav aria-label="Breadcrumb" class="-mt-4 mb-6 text-xs text-neutral-500">
+      <a href="/" class="hover:text-neutral-300">Home</a>
+      <span class="mx-1.5">/</span>
+      <span class="text-neutral-400">{breadcrumbName}</span>
+    </nav>
+
+    <AdSlot position="in-content" class="mx-auto mb-10 max-w-3xl" />
+
+    <article class="mx-auto max-w-3xl pb-16">
+      <section>
+        <Faq items={faqItems} />
+      </section>
+    </article>
+  </Container>
+</BaseLayout>

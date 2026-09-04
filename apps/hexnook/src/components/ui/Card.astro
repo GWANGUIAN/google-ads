@@ -1,0 +1,17 @@
+---
+// Local dark-theme reskin of @repo/ui/Card.astro — see Button.astro for why.
+interface Props {
+  class?: string;
+  hover?: boolean;
+}
+
+const { class: className = "", hover = false } = Astro.props;
+
+const hoverClasses = hover
+  ? "transition-all hover:-translate-y-1 hover:border-accent-600/60 hover:shadow-[0_0_32px_-8px_var(--color-accent-600)]"
+  : "";
+---
+
+<div class:list={["rounded-card border border-neutral-800 bg-neutral-900 p-6 shadow-sm", hoverClasses, className]}>
+  <slot />
+</div>

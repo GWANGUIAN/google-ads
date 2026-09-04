@@ -1,0 +1,52 @@
+---
+import GuideLayout from "@/components/guides/GuideLayout.astro";
+---
+
+<GuideLayout
+  title="MD5 vs. SHA-256: which hash should you use?"
+  description="A practical comparison of the common hash algorithms and when each one is (and isn't) appropriate."
+  path="/guides/md5-vs-sha256"
+  relatedTool="/hash"
+  relatedToolLabel="the Hash Generator"
+>
+  <p>
+    A hash function takes input of any size and produces a fixed-size fingerprint. The same input always produces the
+    same hash, and changing even a single character produces a completely different one. Beyond that shared
+    definition, the algorithms differ a lot in output size, speed, and — critically — whether they're still
+    considered secure.
+  </p>
+
+  <h2>MD5 (128-bit)</h2>
+  <p>
+    MD5 is fast and produces a short, 32-character hex digest, which is why it's still common for non-security
+    purposes like cache keys, checksums for detecting accidental file corruption, or de-duplicating data. It is{" "}
+    <strong>cryptographically broken</strong>: researchers can construct two different inputs that produce the same
+    MD5 hash (a "collision") relatively cheaply. Never use it for passwords, digital signatures, or anywhere an
+    attacker might benefit from forging a match.
+  </p>
+
+  <h2>SHA-1 (160-bit)</h2>
+  <p>
+    SHA-1 improved on MD5 but is also now considered broken — a practical collision was publicly demonstrated in
+    2017. It's still found in older systems (some Git internals historically used it) but shouldn't be chosen for
+    anything new.
+  </p>
+
+  <h2>SHA-256 / SHA-384 / SHA-512</h2>
+  <p>
+    These are part of the SHA-2 family and are the current practical standard for general-purpose secure hashing —
+    used in TLS certificates, Bitcoin, package integrity checks (like npm's <code>integrity</code> field), and much
+    more. SHA-256 is the most common default; SHA-384 and SHA-512 produce longer digests and are marginally more
+    resistant to certain theoretical attacks, at a small performance cost.
+  </p>
+
+  <h2>What none of these are for: passwords</h2>
+  <p>
+    This is the mistake worth flagging clearly: MD5, SHA-1, and even SHA-256/512 are all <em>fast</em> hash
+    functions, which is exactly the wrong property for hashing passwords — it means an attacker with a stolen
+    password database can try billions of guesses per second. Purpose-built password hashing functions like{" "}
+    <strong>bcrypt</strong>, <strong>scrypt</strong>, or <strong>Argon2</strong> are deliberately slow and
+    memory-hard instead. If you're building authentication, use one of those, not a general-purpose hash from this
+    list.
+  </p>
+</GuideLayout>

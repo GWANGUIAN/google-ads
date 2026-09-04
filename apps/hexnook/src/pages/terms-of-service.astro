@@ -1,0 +1,60 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+
+const lastUpdated = "September 4, 2026";
+---
+
+<BaseLayout
+  title={`Terms of Service | ${SITE.name}`}
+  description={`The terms for using ${SITE.name}'s free developer tools.`}
+  path="/terms-of-service"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-white">Terms of Service</h1>
+      <p class="mt-2 text-sm text-neutral-500">Last updated: {lastUpdated}</p>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-400">
+        <h2 class="text-xl font-bold text-white">Using the site</h2>
+        <p>
+          {SITE.name} is provided free of charge, as-is, with no account required. You may use every tool for any
+          lawful purpose, personal or commercial, without attribution.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">No warranty</h2>
+        <p>
+          These tools are provided "as is" without warranty of any kind. While we aim for correctness (e.g. that the
+          JSON formatter round-trips valid JSON exactly, or that hashes match standard implementations), you're
+          responsible for verifying results before relying on them in a production system, especially for anything
+          security-sensitive like signature verification.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Acceptable use</h2>
+        <p>
+          Don't use {SITE.name} to process content that is illegal to possess or distribute, or in a way that
+          attempts to disrupt, reverse-engineer, or abuse the site's infrastructure.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Advertising</h2>
+        <p>
+          This site may be supported by advertising served through Google AdSense. See our{" "}
+          <a href="/privacy-policy" class="text-accent-400 underline underline-offset-2">Privacy Policy</a> for
+          details on how that works.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Changes</h2>
+        <p>
+          We may update these terms or the tools themselves at any time. Continued use of the site after a change
+          means you accept the updated terms.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Contact</h2>
+        <p>
+          Questions about these terms? See our <a href="/contact" class="text-accent-400 underline underline-offset-2">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

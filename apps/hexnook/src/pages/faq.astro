@@ -1,0 +1,29 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema } from "@repo/seo/schema";
+import Faq from "@/components/marketing/Faq.astro";
+import { siteFaq, jsonFaq, base64Faq, hashFaq, regexFaq, jwtFaq } from "@/data/toolFaq";
+import { SITE } from "@/data/site";
+
+const allFaq = [...siteFaq, ...jsonFaq, ...base64Faq, ...hashFaq, ...regexFaq, ...jwtFaq];
+---
+
+<BaseLayout title={`FAQ | ${SITE.name}`} description={`Answers to common questions about ${SITE.name}'s developer tools.`} path="/faq">
+  <JsonLd schema={faqPageSchema(allFaq)} />
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-white">Frequently asked questions</h1>
+
+      <div class="mt-8 space-y-10">
+        <Faq items={siteFaq} heading="General" />
+        <Faq items={jsonFaq} heading="JSON Formatter" />
+        <Faq items={base64Faq} heading="Base64" />
+        <Faq items={hashFaq} heading="Hash Generator" />
+        <Faq items={regexFaq} heading="Regex Tester" />
+        <Faq items={jwtFaq} heading="JWT Decoder" />
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

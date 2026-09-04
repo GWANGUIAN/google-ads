@@ -1,0 +1,79 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+
+const lastUpdated = "September 4, 2026";
+---
+
+<BaseLayout
+  title={`Privacy Policy | ${SITE.name}`}
+  description={`How ${SITE.name} handles your data. In short: nothing you paste or upload ever leaves your browser.`}
+  path="/privacy-policy"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-white">Privacy Policy</h1>
+      <p class="mt-2 text-sm text-neutral-500">Last updated: {lastUpdated}</p>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-400">
+        <h2 class="text-xl font-bold text-white">What you paste or upload</h2>
+        <p>
+          Every tool on {SITE.name} — the JSON formatter, Base64 encoder, hash generator, regex tester, and JWT
+          decoder — processes your input entirely within your browser, using JavaScript's built-in JSON parser, the
+          Web Crypto API, and native regular expressions. Text you type, files you drop for Base64 encoding, and
+          tokens you paste into the JWT decoder are never transmitted to any server we operate.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">JWT secrets</h2>
+        <p>
+          If you use the JWT decoder's optional signature-verification feature, the secret you enter is used only to
+          run a local HMAC verification in your browser via the Web Crypto API. It is never sent anywhere, and is
+          discarded the moment you navigate away or reload the page.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Analytics</h2>
+        <p>
+          We may use privacy-respecting analytics to understand aggregate traffic patterns (e.g. which pages are
+          visited, approximate country of origin). This data is anonymized/aggregated and is not linked to any
+          content you process on this site.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Advertising</h2>
+        <p>
+          This site may display advertising served by Google AdSense. Google and its partners may use cookies or
+          similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of
+          personalized advertising by visiting Google's{" "}
+          <a href="https://adssettings.google.com" class="text-accent-400 underline underline-offset-2" rel="noopener noreferrer" target="_blank">
+            Ads Settings
+          </a>. For more information on how Google uses data, see{" "}
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            class="text-accent-400 underline underline-offset-2"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            How Google uses information from sites that use its services
+          </a>.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Cookies</h2>
+        <p>
+          This site itself does not set cookies for its tools to function. Third-party services we use (analytics,
+          advertising, once enabled) may set their own cookies, governed by their own privacy policies.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Your rights</h2>
+        <p>
+          Depending on your location, you may have rights under regulations such as the GDPR or CCPA to access,
+          correct, or delete personal data we hold about you. Since we do not collect the content you process on this
+          site, there is generally nothing of that nature to request. For questions, see our{" "}
+          <a href="/contact" class="text-accent-400 underline underline-offset-2">Contact page</a>.
+        </p>
+
+        <h2 class="text-xl font-bold text-white">Changes to this policy</h2>
+        <p>We may update this policy from time to time. Changes will be posted on this page with an updated revision date.</p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

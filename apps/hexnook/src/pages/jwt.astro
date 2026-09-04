@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import JwtDecoder from "@/components/tools/JwtDecoder";
+import { jwtFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="JWT Decoder — Decode & Verify JSON Web Tokens | hexnook"
+  description="Decode a JWT's header and payload into readable JSON, with human-readable claim dates and optional client-side HMAC signature verification."
+  path="/jwt"
+  heroTitle="JWT Decoder"
+  heroSubtitle="Decode a JSON Web Token's header and payload, with optional HMAC signature verification."
+  breadcrumbName="JWT Decoder"
+  faqItems={jwtFaq}
+>
+  <JwtDecoder client:idle />
+</ToolPageLayout>

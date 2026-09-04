@@ -1,0 +1,47 @@
+---
+import Button from "@/components/ui/Button.astro";
+import TrustBadges from "./TrustBadges.astro";
+import TypewriterText from "./TypewriterText.astro";
+---
+
+<section class="relative overflow-hidden py-20 text-center sm:py-28">
+  {/* Pure-CSS ambient glow — two blurred radial gradients (accent + glow
+      color), no image asset, no JS. */}
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute left-1/2 top-[-10%] h-[420px] w-[720px] -translate-x-1/2 rounded-full opacity-25 blur-[110px]"
+      style="background: radial-gradient(closest-side, var(--color-accent-600), transparent)"
+    >
+    </div>
+    <div
+      class="absolute right-[8%] top-[20%] h-[280px] w-[280px] rounded-full opacity-20 blur-[100px]"
+      style="background: radial-gradient(closest-side, var(--color-glow), transparent)"
+    >
+    </div>
+    <div
+      class="absolute inset-0 opacity-[0.05]"
+      style="background-image: linear-gradient(var(--color-neutral-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-neutral-500) 1px, transparent 1px); background-size: 40px 40px"
+    >
+    </div>
+  </div>
+
+  <p class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-accent-400">hexnook /dev/tools</p>
+
+  <h1 class="mx-auto mt-4 max-w-3xl text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+    <TypewriterText phrases={["Format JSON.", "Encode Base64.", "Hash anything.", "Test a regex.", "Decode a JWT."]} />
+  </h1>
+
+  <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-neutral-400">
+    Fast, free developer tools that run entirely in your browser. No sign-up, no uploads, no waiting on a server —
+    just paste and go.
+  </p>
+
+  <div class="mt-8 flex items-center justify-center gap-3">
+    <Button href="#tools">Browse tools</Button>
+    <Button href="/guides" variant="secondary">Read the guides</Button>
+  </div>
+
+  <div class="mx-auto mt-10 max-w-2xl">
+    <TrustBadges />
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import Base64Tool from "@/components/tools/Base64Tool";
+import { base64Faq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Base64 Encode & Decode — Free, Instant | hexnook"
+  description="Encode or decode text and files as Base64, with correct UTF-8 handling and a URL-safe variant toggle — entirely in your browser."
+  path="/base64"
+  heroTitle="Base64 Encode & Decode"
+  heroSubtitle="Convert text or files to and from Base64 — UTF-8 safe, with an optional URL-safe variant."
+  breadcrumbName="Base64"
+  faqItems={base64Faq}
+>
+  <Base64Tool client:idle />
+</ToolPageLayout>

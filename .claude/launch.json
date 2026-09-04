@@ -55,6 +55,14 @@
       "port": 4329,
       "autoPort": true,
       "env": { "PORT": "4329" }
+    },
+    {
+      "name": "hexnook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "hexnook", "dev"],
+      "port": 4330,
+      "autoPort": true,
+      "env": { "PORT": "4330" }
     }
   ]
 }

@@ -1,0 +1,119 @@
+@import "tailwindcss";
+@import "@repo/config/tailwind-tokens.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/700.css";
+
+@theme {
+  /* hexnook rebrands the shared accent scale to neon pink/magenta — distinct
+     from every sibling site's accent (img-convertor/pwcheckup blue,
+     localpdf red, video-tools/loomfile violet, font-tools emerald,
+     qr-tools cyan). Paired with the one-off --color-glow below for the
+     hacker/synthwave cyan+magenta ambient background. See
+     packages/config/tailwind-tokens.css and docs/NEW_SITE_PLAYBOOK.md §3. */
+  --color-accent-50: #fdf2f8;
+  --color-accent-100: #fce7f3;
+  --color-accent-200: #fbcfe8;
+  --color-accent-300: #f9a8d4;
+  --color-accent-400: #f472b6;
+  --color-accent-500: #ec4899;
+  --color-accent-600: #db2777;
+  --color-accent-700: #be185d;
+  --color-accent-800: #9d174d;
+  --color-accent-900: #831843;
+
+  /* Secondary ambient-only accent — never used for text/buttons/links, only
+     for the hero glow gradient and code-panel highlights, so it doesn't
+     compete with the primary accent above. */
+  --color-glow: #22d3ee;
+
+  /* This app is dark-only (first in the repo — see docs/NEW_SITE_PLAYBOOK.md).
+     The shared neutral-* scale is reused as-is, just applied in the dark
+     direction (bg-neutral-950/text-neutral-100 instead of bg-white/text-
+     neutral-800) rather than redeclared, since neutral-950 is already a
+     near-black. */
+
+  /* Self-hosted via @fontsource (imported above) rather than a Google Fonts
+     <link>, so there is zero third-party font request and the CSP in
+     public/_headers can stay `font-src 'self'`. Mono is used for every
+     tool's input/output panel to read as "developer tool", sans stays for
+     marketing copy/headings. */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-neutral-950);
+  color-scheme: dark;
+}
+
+/* Scroll-reveal: JS (src/lib/scrollReveal.ts) toggles .is-visible when an
+   element enters the viewport; CSS handles the actual transition so the
+   animation stays purely declarative. Respects reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* No typography plugin in this repo (checked) — minimal hand-rolled prose
+   styling scoped to .prose-guide for the guide articles' hand-written markup. */
+.prose-guide h2 {
+  margin-top: 1.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+.prose-guide h3 {
+  margin-top: 1.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+}
+.prose-guide ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-guide li {
+  margin-top: 0.375rem;
+}
+.prose-guide code {
+  border-radius: 0.25rem;
+  background-color: var(--color-neutral-800);
+  padding: 0.125rem 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--color-accent-300);
+}
+.prose-guide a {
+  color: var(--color-accent-400);
+  text-underline-offset: 2px;
+  text-decoration: underline;
+}
+
+@keyframes blink-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.blink-caret {
+  animation: blink-caret 1s step-end infinite;
+}

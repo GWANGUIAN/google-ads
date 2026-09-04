@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import JsonFormatter from "@/components/tools/JsonFormatter";
+import { jsonFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="JSON Formatter & Validator — Free, Instant | hexnook"
+  description="Format, minify, and validate JSON online. Inline error locations, syntax highlighting, and instant results — entirely in your browser, nothing uploaded."
+  path="/json"
+  heroTitle="JSON Formatter & Validator"
+  heroSubtitle="Paste JSON to pretty-print, minify, or validate it — with the exact line and column of any error."
+  breadcrumbName="JSON Formatter"
+  faqItems={jsonFaq}
+>
+  <JsonFormatter client:idle />
+</ToolPageLayout>

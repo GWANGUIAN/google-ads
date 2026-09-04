@@ -1,0 +1,47 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import AdSlot from "@/components/ads/AdSlot.astro";
+import { SITE } from "@/data/site";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  relatedTool?: string;
+  relatedToolLabel?: string;
+}
+
+const { title, description, path, relatedTool, relatedToolLabel } = Astro.props;
+---
+
+<BaseLayout title={`${title} | ${SITE.name}`} description={description} path={path}>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <nav aria-label="Breadcrumb" class="mb-6 text-xs text-neutral-500">
+        <a href="/guides" class="hover:text-neutral-300">Guides</a>
+        <span class="mx-1.5">/</span>
+        <span class="text-neutral-400">{title}</span>
+      </nav>
+
+      <h1 class="text-3xl font-extrabold tracking-tight text-white">{title}</h1>
+
+      <div class="prose-guide mt-6 space-y-5 text-base leading-relaxed text-neutral-400">
+        <slot />
+      </div>
+
+      {
+        relatedTool && (
+          <a
+            href={relatedTool}
+            class="mt-10 flex items-center justify-between rounded-card border border-neutral-800 bg-neutral-900 p-5 transition-colors hover:border-accent-600/50"
+          >
+            <span class="text-sm font-semibold text-white">Try {relatedToolLabel ?? "this tool"} →</span>
+          </a>
+        )
+      }
+
+      <AdSlot position="in-content" class="mt-10" />
+    </article>
+  </Container>
+</BaseLayout>

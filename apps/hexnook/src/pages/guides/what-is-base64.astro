@@ -1,0 +1,51 @@
+---
+import GuideLayout from "@/components/guides/GuideLayout.astro";
+---
+
+<GuideLayout
+  title="What is Base64, and when should you use it?"
+  description="Base64 turns binary data into text-safe characters — here's why that's useful, and what it isn't for."
+  path="/guides/what-is-base64"
+  relatedTool="/base64"
+  relatedToolLabel="the Base64 tool"
+>
+  <p>
+    Base64 is an encoding scheme, not an encryption or compression scheme. It takes arbitrary binary data — an
+    image, a file, raw bytes — and re-represents it using only 64 printable ASCII characters (<code>A–Z</code>,{" "}
+    <code>a–z</code>, <code>0–9</code>, <code>+</code>, <code>/</code>, and <code>=</code> for padding). The output is
+    always about 33% larger than the input, because it's trading space efficiency for the guarantee that the result
+    is plain text.
+  </p>
+
+  <h2>Why that guarantee matters</h2>
+  <p>
+    A lot of systems — email (MIME attachments), JSON, XML, URLs, HTTP headers — are built to carry text safely, but
+    choke on arbitrary binary bytes (a null byte, an unescaped quote, a byte sequence that isn't valid UTF-8). Base64
+    sidesteps all of that: since the output only ever uses those 64 safe characters, it can be embedded directly
+    inside a JSON string, a URL query parameter, or a data URI without any further escaping.
+  </p>
+
+  <h2>Common uses</h2>
+  <ul>
+    <li>Embedding a small image directly in HTML/CSS as a <code>data:image/png;base64,...</code> URI.</li>
+    <li>Putting a binary token (like a signed cookie or API key) into an HTTP header or URL.</li>
+    <li>Encoding email attachments (this is literally what MIME does under the hood).</li>
+    <li>Storing binary data in a system that only accepts text, like some JSON-based config formats.</li>
+  </ul>
+
+  <h2>What it isn't for</h2>
+  <p>
+    Base64 provides zero confidentiality — anyone can decode it back to the original bytes instantly, with no key or
+    password required. It's not encryption, and it shouldn't be used to "hide" sensitive data like passwords or
+    secrets. It's also not compression — the output is larger than the input, not smaller.
+  </p>
+
+  <h2>The UTF-8 trap</h2>
+  <p>
+    Base64 operates on raw bytes, not characters. If you naively encode a JavaScript string with <code>btoa()</code>{" "}
+    directly, any character outside the Latin-1 range (accented letters, Korean, emoji) throws or gets silently
+    corrupted, because <code>btoa()</code> expects a "binary string" where every character is a single byte 0–255.
+    The fix is to convert the text to actual UTF-8 bytes first (via <code>TextEncoder</code>) and Base64-encode{" "}
+    <em>that</em> — which is exactly what <a href="/base64">hexnook's Base64 tool</a> does automatically.
+  </p>
+</GuideLayout>

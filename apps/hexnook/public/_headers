@@ -1,0 +1,6 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com; connect-src 'self'; img-src 'self' data: https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline'; frame-src https://googleads.g.doubleclick.net; font-src 'self'

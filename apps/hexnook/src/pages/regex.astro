@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import RegexTester from "@/components/tools/RegexTester";
+import { regexFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Regex Tester — Live Match Highlighting | hexnook"
+  description="Test regular expressions with live match highlighting and a full capture-group breakdown, using your browser's native RegExp engine."
+  path="/regex"
+  heroTitle="Regex Tester"
+  heroSubtitle="Write a pattern and see every match highlighted live, with a full capture-group breakdown."
+  breadcrumbName="Regex Tester"
+  faqItems={regexFaq}
+>
+  <RegexTester client:idle />
+</ToolPageLayout>

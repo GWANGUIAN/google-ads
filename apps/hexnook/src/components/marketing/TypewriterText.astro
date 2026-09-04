@@ -1,0 +1,70 @@
+---
+// Framework-free typewriter effect — a plain inline script tag, no React
+// island, so this stays off the client JS bundle entirely (see
+// docs/NEW_SITE_PLAYBOOK.md and the animation-approach decision in the plan
+// for this feature).
+interface Props {
+  phrases: string[];
+  class?: string;
+}
+
+const { phrases, class: className = "" } = Astro.props;
+const id = `tw-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<span id={id} class={`inline-flex items-baseline font-mono ${className}`} data-phrases={JSON.stringify(phrases)}>
+  <span class="tw-text"></span><span class="blink-caret ml-0.5 inline-block h-[0.9em] w-[2px] bg-accent-400 align-baseline" aria-hidden="true"></span>
+</span>
+
+<script>
+  const TYPE_SPEED = 55;
+  const DELETE_SPEED = 30;
+  const HOLD_MS = 1400;
+  const PAUSE_MS = 300;
+
+  function runTypewriter(root: HTMLElement) {
+    const phrases: string[] = JSON.parse(root.dataset.phrases ?? "[]");
+    const textEl = root.querySelector<HTMLElement>(".tw-text");
+    if (!textEl || phrases.length === 0) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      textEl.textContent = phrases[0];
+      return;
+    }
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+
+    function step() {
+      const current = phrases[phraseIndex % phrases.length];
+
+      function typing() {
+        if (charIndex < current.length) {
+          charIndex += 1;
+          textEl!.textContent = current.slice(0, charIndex);
+          setTimeout(typing, TYPE_SPEED);
+        } else {
+          setTimeout(deleting, HOLD_MS);
+        }
+      }
+
+      function deleting() {
+        if (charIndex > 0) {
+          charIndex -= 1;
+          textEl!.textContent = current.slice(0, charIndex);
+          setTimeout(deleting, DELETE_SPEED);
+        } else {
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          setTimeout(typing, PAUSE_MS);
+        }
+      }
+
+      typing();
+    }
+
+    step();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-phrases]").forEach(runTypewriter);
+</script>

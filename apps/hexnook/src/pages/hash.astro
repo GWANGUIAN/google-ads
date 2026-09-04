@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import HashGenerator from "@/components/tools/HashGenerator";
+import { hashFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Hash Generator — MD5, SHA-1, SHA-256, SHA-512 | hexnook"
+  description="Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text, computed locally with your browser's own crypto engine."
+  path="/hash"
+  heroTitle="Hash Generator"
+  heroSubtitle="Hash any text with MD5, SHA-1, SHA-256, SHA-384, and SHA-512 at once."
+  breadcrumbName="Hash Generator"
+  faqItems={hashFaq}
+>
+  <HashGenerator client:idle />
+</ToolPageLayout>

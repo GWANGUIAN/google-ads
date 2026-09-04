@@ -1,0 +1,64 @@
+---
+import GuideLayout from "@/components/guides/GuideLayout.astro";
+---
+
+<GuideLayout
+  title="Regex cheat sheet: the patterns you'll actually use"
+  description="A quick-reference for the regex syntax that comes up constantly — anchors, classes, quantifiers, groups."
+  path="/guides/regex-cheatsheet"
+  relatedTool="/regex"
+  relatedToolLabel="the Regex Tester"
+>
+  <p>
+    This isn't exhaustive — it's the subset of regex syntax that covers the vast majority of real-world patterns.
+    Everything below works with JavaScript's native RegExp engine, the same one <a href="/regex">hexnook's regex tester</a>{" "}
+    runs against.
+  </p>
+
+  <h2>Anchors</h2>
+  <ul>
+    <li><code>^</code> — start of string (or line, with the <code>m</code> flag)</li>
+    <li><code>$</code> — end of string (or line, with the <code>m</code> flag)</li>
+    <li><code>\b</code> — word boundary</li>
+  </ul>
+
+  <h2>Character classes</h2>
+  <ul>
+    <li><code>.</code> — any character except a newline (unless the <code>s</code> flag is set)</li>
+    <li><code>\d</code> / <code>\D</code> — digit / non-digit</li>
+    <li><code>\w</code> / <code>\W</code> — word character (letters, digits, underscore) / non-word</li>
+    <li><code>\s</code> / <code>\S</code> — whitespace / non-whitespace</li>
+    <li><code>[abc]</code> — any one of a, b, or c</li>
+    <li><code>[^abc]</code> — any character except a, b, or c</li>
+    <li><code>[a-z]</code> — any character in the range a to z</li>
+  </ul>
+
+  <h2>Quantifiers</h2>
+  <ul>
+    <li><code>*</code> — zero or more</li>
+    <li><code>+</code> — one or more</li>
+    <li><code>?</code> — zero or one (also marks a quantifier as "lazy" when placed after one)</li>
+    <li><code>{"{n}"}</code> — exactly n times</li>
+    <li><code>{"{n,}"}</code> — n or more times</li>
+    <li><code>{"{n,m}"}</code> — between n and m times</li>
+  </ul>
+
+  <h2>Groups</h2>
+  <ul>
+    <li><code>(...)</code> — capturing group (shows up in the match's group list)</li>
+    <li><code>(?:...)</code> — non-capturing group (groups for precedence only, doesn't appear in results)</li>
+    <li><code>(?&lt;name&gt;...)</code> — named capturing group</li>
+    <li><code>|</code> — alternation ("or") — usually used inside a group, e.g. <code>(cat|dog)</code></li>
+  </ul>
+
+  <h2>A few real patterns</h2>
+  <ul>
+    <li>
+      Simple email match: <code>{"[\\w.+-]+@[\\w-]+\\.[\\w.-]+"}</code> (production email validation is notoriously
+      harder than it looks — this covers the common case, not the full RFC).
+    </li>
+    <li>Digits only: <code>^\d+$</code></li>
+    <li>Whitespace-trimming: <code>^\s+|\s+$</code> with the <code>g</code> flag</li>
+    <li>Extract hex color: <code>{"#[0-9a-fA-F]{6}"}</code></li>
+  </ul>
+</GuideLayout>

@@ -1,0 +1,59 @@
+---
+import GuideLayout from "@/components/guides/GuideLayout.astro";
+---
+
+<GuideLayout
+  title="How JSON validation actually works"
+  description="What makes JSON valid or invalid, the most common mistakes, and how to read a parser's error message."
+  path="/guides/json-validation"
+  relatedTool="/json"
+  relatedToolLabel="the JSON Formatter"
+>
+  <p>
+    JSON (JavaScript Object Notation) looks close enough to a JavaScript object literal that it's easy to assume
+    they're interchangeable — they aren't. JSON is a much stricter subset, and "validating" JSON really just means
+    running it through a parser that enforces that stricter grammar and reports exactly where it breaks.
+  </p>
+
+  <h2>The rules that trip people up</h2>
+  <ul>
+    <li>
+      <strong>Keys must be double-quoted strings.</strong> <code>{"{name: \"Ada\"}"}</code> is invalid — it has to be{" "}
+      <code>{"{\"name\": \"Ada\"}"}</code>.
+    </li>
+    <li>
+      <strong>No trailing commas.</strong> <code>{"[1, 2, 3,]"}</code> is invalid JSON, even though it's valid
+      JavaScript.
+    </li>
+    <li>
+      <strong>No single quotes.</strong> Strings must use double quotes — <code>'hello'</code> isn't valid,{" "}
+      <code>"hello"</code> is.
+    </li>
+    <li>
+      <strong>No comments.</strong> JSON has no <code>//</code> or <code>/* */</code> syntax at all, unlike JSON5 or
+      JavaScript.
+    </li>
+    <li>
+      <strong>Numbers can't have leading zeros or a leading plus.</strong> <code>01</code> and <code>+1</code> are
+      both invalid; <code>1</code> and <code>-1</code> are fine.
+    </li>
+  </ul>
+
+  <h2>Reading a parser error</h2>
+  <p>
+    When JSON.parse rejects an input, its error message includes a character position, like{" "}
+    <code>Unexpected token } in JSON at position 42</code>. That position counts characters from the very start of
+    the string, including whitespace and newlines — which makes it hard to eyeball in a large document.{" "}
+    <a href="/json">hexnook's JSON formatter</a> converts that raw position into an actual line and column, so you can
+    jump straight to the problem instead of counting characters by hand.
+  </p>
+
+  <h2>Format vs. validate vs. minify</h2>
+  <p>
+    These three are really the same underlying operation with a different final step. Validation is just{" "}
+    <code>JSON.parse</code> succeeding or throwing. Formatting is <code>JSON.stringify</code> with an indent
+    argument, which re-serializes the already-parsed value with consistent whitespace. Minifying is the same
+    stringify call with no indent argument at all, producing the smallest possible output — useful when you're about
+    to send the JSON over the wire and don't need it to be human-readable anymore.
+  </p>
+</GuideLayout>

@@ -1,0 +1,22 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+---
+
+<BaseLayout title={`Contact | ${SITE.name}`} description={`Get in touch with the ${SITE.name} team.`} path="/contact">
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-white">Contact</h1>
+      <p class="mt-6 text-base leading-relaxed text-neutral-400">
+        Found a bug, have feedback, or a tool request? Send us an email and we'll get back to you as soon as we can.
+      </p>
+      <a
+        href={`mailto:${SITE.contactEmail}`}
+        class="mt-6 inline-flex items-center gap-2 rounded-control bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-accent-500 active:scale-95"
+      >
+        {SITE.contactEmail}
+      </a>
+    </article>
+  </Container>
+</BaseLayout>
