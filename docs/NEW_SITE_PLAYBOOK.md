@@ -71,6 +71,7 @@ Aim for enough total indexable pages (~20+) that the site doesn't read as thin b
 - Mobile-first Tailwind utility classes; container max-width comes from the shared `--container-content` token via `packages/ui/Container.astro`.
 - Test every new page at the `mobile` (375×812) preset in the Browser tool before calling a feature done — check nav collapse, dropzone/form usability, and that no element causes horizontal scroll.
 - Primary nav collapses to a minimal set on small screens (`hidden sm:flex` pattern in `Header.astro`) rather than a hamburger menu for v1 sites with few nav items — revisit only if a site's nav grows beyond ~4-5 links.
+- **`BaseLayout.astro`'s `<body>` must be a sticky-footer flex column**, not a bare `min-h-screen`: `<body class="flex min-h-screen flex-col ...">` with `<main class="flex-1">` wrapping the page slot. Without this, `min-h-screen` alone only guarantees the *body* is tall enough — it does nothing to push `<Footer />` down, so any page whose content is shorter than the viewport (a short trust page, a guide article, a nearly-empty state) renders with the footer floating in the middle of the screen instead of pinned to the bottom. This has already shipped broken in more than one site here (check any app before assuming it's fine) — always verify by opening a short/low-content page (not the landing page, which is usually tall enough to hide the bug) at both desktop and the 375×812 mobile preset.
 
 ## 8. Deployment: Cloudflare Pages + GitHub Actions
 

@@ -2,6 +2,7 @@ import type { Dictionary } from "../types";
 
 const ko: Dictionary = {
   nav: {
+    brand: "내 비밀번호 안전할까?",
     guides: "가이드",
     about: "소개",
     faq: "자주 묻는 질문",

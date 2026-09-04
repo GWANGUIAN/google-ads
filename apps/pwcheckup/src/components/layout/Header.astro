@@ -1,7 +1,6 @@
 ---
 import Container from "@repo/ui/Container.astro";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
-import { SITE } from "@/data/site";
 import { getDictionary, localizePath, type Locale } from "@/i18n/config";
 
 interface Props {
@@ -16,14 +15,14 @@ const home = localizePath(lang, "/");
 
 <header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
   <Container class="flex h-16 items-center justify-between">
-    <a href={home} class="flex items-center gap-2 text-base font-bold text-neutral-900">
-      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
+    <a href={home} class="flex min-w-0 items-center gap-2 text-sm font-bold text-neutral-900 sm:text-base">
+      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-control bg-accent-600 text-white">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="5" y="11" width="14" height="9" rx="2" stroke-linejoin="round" />
           <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </span>
-      {SITE.name}
+      <span class="truncate">{t.nav.brand}</span>
     </a>
     <nav class="hidden items-center gap-6 text-sm font-medium text-neutral-600 sm:flex">
       <a href={localizePath(lang, "/guides")} class="hover:text-neutral-900">{t.nav.guides}</a>

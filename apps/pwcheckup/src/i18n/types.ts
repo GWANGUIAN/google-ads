@@ -11,6 +11,7 @@ export interface StaticPageCopy {
 
 export interface Dictionary {
   nav: {
+    brand: string;
     guides: string;
     about: string;
     faq: string;

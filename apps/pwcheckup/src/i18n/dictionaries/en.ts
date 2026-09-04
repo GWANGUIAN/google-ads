@@ -2,6 +2,7 @@ import type { Dictionary } from "../types";
 
 const en: Dictionary = {
   nav: {
+    brand: "Is My Password Safe?",
     guides: "Guides",
     about: "About",
     faq: "FAQ",
