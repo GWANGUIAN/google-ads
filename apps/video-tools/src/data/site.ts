@@ -11,6 +11,7 @@ export const SITE = {
 export const SITE_VERIFICATION = {
   google: import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
   naver: import.meta.env.PUBLIC_NAVER_SITE_VERIFICATION ?? "",
+  bing: import.meta.env.PUBLIC_BING_SITE_VERIFICATION ?? "",
 };
 
 export const ADS = {

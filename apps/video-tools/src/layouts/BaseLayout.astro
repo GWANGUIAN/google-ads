@@ -30,6 +30,7 @@ const ogImage = new URL(withBase("og-image.png"), SITE.url).toString();
     <meta name="theme-color" content="#7c3aed" />
     {SITE_VERIFICATION.google && <meta name="google-site-verification" content={SITE_VERIFICATION.google} />}
     {SITE_VERIFICATION.naver && <meta name="naver-site-verification" content={SITE_VERIFICATION.naver} />}
+    {SITE_VERIFICATION.bing && <meta name="msvalidate.01" content={SITE_VERIFICATION.bing} />}
 
     <SeoHead title={title} description={description} canonical={canonical} ogImage={ogImage} siteName={SITE.name} noindex={noindex} />
     <JsonLd schema={organizationSchema({ name: SITE.name, url: new URL(withBase("/"), SITE.url).toString(), logo: new URL(withBase("favicon.svg"), SITE.url).toString(), description: SITE.description })} />

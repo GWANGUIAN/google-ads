@@ -81,6 +81,7 @@ jobs:
           PUBLIC_AD_SLOT_FOOTER: ${{ vars.PUBLIC_AD_SLOT_FOOTER }}
           PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
           PUBLIC_NAVER_SITE_VERIFICATION: ${{ vars.PUBLIC_NAVER_SITE_VERIFICATION }}
+          PUBLIC_BING_SITE_VERIFICATION: ${{ vars.PUBLIC_BING_SITE_VERIFICATION }}
 
       - name: Merge each tool's dist under its path
         run: |
