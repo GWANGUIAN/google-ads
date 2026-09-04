@@ -4,10 +4,22 @@ import Container from "@repo/ui/Container.astro";
 import JsonLd from "@repo/seo/JsonLd.astro";
 import { faqPageSchema } from "@repo/seo/schema";
 import Faq from "@/components/marketing/Faq.astro";
-import { siteFaq, jsonFaq, base64Faq, hashFaq, regexFaq, jwtFaq } from "@/data/toolFaq";
+import { siteFaq, jsonFaq, base64Faq, hashFaq, regexFaq, jwtFaq, colorFaq, uuidFaq, passwordFaq, timestampFaq, diffFaq } from "@/data/toolFaq";
 import { SITE } from "@/data/site";
 
-const allFaq = [...siteFaq, ...jsonFaq, ...base64Faq, ...hashFaq, ...regexFaq, ...jwtFaq];
+const allFaq = [
+  ...siteFaq,
+  ...jsonFaq,
+  ...base64Faq,
+  ...hashFaq,
+  ...regexFaq,
+  ...jwtFaq,
+  ...colorFaq,
+  ...uuidFaq,
+  ...passwordFaq,
+  ...timestampFaq,
+  ...diffFaq,
+];
 ---
 
 <BaseLayout title={`FAQ | ${SITE.name}`} description={`Answers to common questions about ${SITE.name}'s developer tools.`} path="/faq">
@@ -23,6 +35,11 @@ const allFaq = [...siteFaq, ...jsonFaq, ...base64Faq, ...hashFaq, ...regexFaq, .
         <Faq items={hashFaq} heading="Hash Generator" />
         <Faq items={regexFaq} heading="Regex Tester" />
         <Faq items={jwtFaq} heading="JWT Decoder" />
+        <Faq items={colorFaq} heading="Color Tool" />
+        <Faq items={uuidFaq} heading="UUID Generator" />
+        <Faq items={passwordFaq} heading="Password Generator" />
+        <Faq items={timestampFaq} heading="Timestamp Converter" />
+        <Faq items={diffFaq} heading="Diff Checker" />
       </div>
     </article>
   </Container>

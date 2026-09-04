@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import DiffTool from "@/components/tools/DiffTool";
+import { diffFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Text Diff Checker — Compare Text Online | hexnook"
+  description="Compare two blocks of text line-by-line or word-by-word, with additions and deletions highlighted — computed entirely in your browser."
+  path="/diff"
+  heroTitle="Text Diff Checker"
+  heroSubtitle="Compare two blocks of text line by line or word by word, with changes highlighted instantly."
+  breadcrumbName="Diff Checker"
+  faqItems={diffFaq}
+>
+  <DiffTool client:idle />
+</ToolPageLayout>

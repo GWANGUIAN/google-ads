@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import ColorTool from "@/components/tools/ColorTool";
+import { colorFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Color Converter & Contrast Checker — HEX, RGB, HSL | hexnook"
+  description="Convert colors between HEX, RGB, and HSL, and check WCAG contrast ratios for accessible text — entirely in your browser."
+  path="/color"
+  heroTitle="Color Converter & Contrast Checker"
+  heroSubtitle="Convert HEX, RGB, and HSL instantly, and check WCAG contrast ratios for accessible color pairs."
+  breadcrumbName="Color Tool"
+  faqItems={colorFaq}
+>
+  <ColorTool client:idle />
+</ToolPageLayout>

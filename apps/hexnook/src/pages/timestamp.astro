@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import TimestampTool from "@/components/tools/TimestampTool";
+import { timestampFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="Unix Timestamp Converter — Free, Instant | hexnook"
+  description="Convert Unix timestamps to and from human-readable dates, with live current-time display, timezone toggle, and ISO 8601/RFC 2822 output."
+  path="/timestamp"
+  heroTitle="Unix Timestamp Converter"
+  heroSubtitle="Convert Unix time to and from human-readable dates — with a live current timestamp and timezone toggle."
+  breadcrumbName="Timestamp Converter"
+  faqItems={timestampFaq}
+>
+  <TimestampTool client:idle />
+</ToolPageLayout>

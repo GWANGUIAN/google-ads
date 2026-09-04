@@ -1,0 +1,17 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import UuidTool from "@/components/tools/UuidTool";
+import { uuidFaq } from "@/data/toolFaq";
+---
+
+<ToolPageLayout
+  title="UUID / GUID Generator — Free, Instant | hexnook"
+  description="Generate RFC 4122 v4 UUIDs one at a time or in bulk, with uppercase and no-hyphen formatting options — entirely in your browser."
+  path="/uuid"
+  heroTitle="UUID / GUID Generator"
+  heroSubtitle="Generate cryptographically random v4 UUIDs, one at a time or in bulk."
+  breadcrumbName="UUID Generator"
+  faqItems={uuidFaq}
+>
+  <UuidTool client:idle />
+</ToolPageLayout>

@@ -57,4 +57,49 @@ export const TOOLS: ToolInfo[] = [
     description:
       "Decode a JWT's header and payload into readable JSON, with human-readable claim dates and optional client-side HMAC signature verification.",
   },
+  {
+    slug: "/color",
+    name: "Color Converter & Contrast Checker",
+    shortLabel: "Color Tool",
+    glyph: "HEX",
+    tagline: "Convert HEX, RGB, and HSL — check WCAG contrast",
+    description:
+      "Convert colors between HEX, RGB, and HSL instantly, and check WCAG contrast ratios for accessible text — all computed locally in your browser.",
+  },
+  {
+    slug: "/uuid",
+    name: "UUID / GUID Generator",
+    shortLabel: "UUID Generator",
+    glyph: "v4",
+    tagline: "Generate RFC 4122 v4 UUIDs instantly",
+    description:
+      "Generate cryptographically random v4 UUIDs one at a time or in bulk, with uppercase and no-hyphen formatting options — nothing leaves your browser.",
+  },
+  {
+    slug: "/password",
+    name: "Password Generator",
+    shortLabel: "Password Generator",
+    glyph: "•••",
+    tagline: "Generate strong, random passwords",
+    description:
+      "Generate strong random passwords with customizable length and character sets, using your browser's cryptographically secure random number generator.",
+  },
+  {
+    slug: "/timestamp",
+    name: "Unix Timestamp Converter",
+    shortLabel: "Timestamp Converter",
+    glyph: "UNIX",
+    tagline: "Convert Unix time to and from human-readable dates",
+    description:
+      "Convert Unix timestamps to and from human-readable dates, with live current-time display, timezone toggle, and ISO 8601/RFC 2822 output.",
+  },
+  {
+    slug: "/diff",
+    name: "Text Diff Checker",
+    shortLabel: "Diff Checker",
+    glyph: "Δ",
+    tagline: "Compare two blocks of text line by line",
+    description:
+      "Compare two blocks of text line-by-line or word-by-word, with additions and deletions highlighted — computed entirely in your browser.",
+  },
 ];

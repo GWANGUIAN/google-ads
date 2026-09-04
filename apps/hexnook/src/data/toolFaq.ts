@@ -127,6 +127,143 @@ export const jwtFaq: FaqItem[] = [
   },
 ];
 
+export const colorFaq: FaqItem[] = [
+  {
+    question: "Is my color data sent anywhere?",
+    answer:
+      "No — conversion between HEX, RGB, and HSL is plain math computed locally, and the color picker is your browser's own native <input type=\"color\"> control. Nothing is sent to a server.",
+  },
+  {
+    question: "Why do HEX and HSL show slightly different values after converting back and forth?",
+    answer:
+      "HSL is stored as rounded whole-number degrees/percentages, so converting HSL → RGB → HEX and back can shift by 1 unit. That's expected rounding, not a bug.",
+  },
+  {
+    question: "What's the difference between AA and AAA contrast?",
+    answer:
+      "WCAG 2.1 defines two conformance levels: AA requires a 4.5:1 ratio for normal text (3:1 for large text), AAA requires 7:1 (4.5:1 for large text) — AAA is the stricter, optional level.",
+  },
+  {
+    question: "What counts as \"large text\" for contrast rules?",
+    answer:
+      "18pt (24px) regular text, or 14pt (18.66px) bold. Large text gets a lower required ratio because its thicker strokes stay legible at lower contrast.",
+  },
+  {
+    question: "Is the native color picker limited in which colors it can pick?",
+    answer:
+      "Its gamut and precision depend on your OS and browser, since it's their own picker UI — but you can always type an exact HEX, RGB, or HSL value directly into the text fields regardless of what the picker itself supports.",
+  },
+];
+
+export const uuidFaq: FaqItem[] = [
+  {
+    question: "What UUID version does this generate?",
+    answer:
+      "Version 4 (random) — the most commonly used version, generated with crypto.randomUUID(), built directly into your browser.",
+  },
+  {
+    question: "Is a v4 UUID collision actually possible?",
+    answer:
+      "Practically no. There are 2^122 possible v4 UUIDs — generating a billion per second for 100 years still leaves a vanishingly small chance of ever seeing a collision.",
+  },
+  {
+    question: "Is crypto.randomUUID() actually random?",
+    answer:
+      "Yes — it draws from your operating system's cryptographically secure random number generator, unlike Math.random(), which is not safe for anything security-sensitive.",
+  },
+  {
+    question: "What's the difference between UUID and GUID?",
+    answer:
+      "None functionally — GUID is Microsoft's name for the same 128-bit identifier format defined by the UUID standard (RFC 4122).",
+  },
+  {
+    question: "Will other UUID versions (v1, v5, v7) be added?",
+    answer:
+      "Possibly — v4 covers the vast majority of use cases (a unique ID with no embedded data), so it's the only version supported for now.",
+  },
+];
+
+export const passwordFaq: FaqItem[] = [
+  {
+    question: "Are generated passwords ever sent anywhere?",
+    answer:
+      "No. Every password is generated with crypto.getRandomValues() entirely inside your browser tab — never transmitted, logged, or stored anywhere — and disappears the moment you navigate away or reload the page.",
+  },
+  {
+    question: "Why exclude ambiguous characters?",
+    answer:
+      "Characters like l, I, 1, O, and 0 can look identical in some fonts. Excluding them makes a password easier to type correctly by hand, at the cost of a very slightly smaller character set.",
+  },
+  {
+    question: "How is \"strength\" calculated?",
+    answer:
+      "As entropy in bits — length × log2(character set size) — a standard rough proxy for how many guesses a brute-force attack would need. It's not a guarantee against every attack style (e.g. a leaked password reused elsewhere).",
+  },
+  {
+    question: "What password length should I use?",
+    answer:
+      "For most modern accounts, 16+ characters using all four character types gives comfortable margin against brute-force attacks — go longer if the account allows it.",
+  },
+  {
+    question: "Does adding symbols matter more than length?",
+    answer:
+      "Length matters more. A longer password with fewer character types is generally stronger than a short one using every type, since entropy scales with both, but length has far more room to grow.",
+  },
+];
+
+export const timestampFaq: FaqItem[] = [
+  {
+    question: "What is a Unix timestamp?",
+    answer:
+      "The number of seconds (or milliseconds) elapsed since January 1, 1970 00:00:00 UTC — the \"epoch\" — used throughout logs, APIs, and databases as a compact, timezone-agnostic way to represent a point in time.",
+  },
+  {
+    question: "Why did my number convert to a date decades off?",
+    answer:
+      "You likely pasted a millisecond timestamp into the seconds field, or vice versa — a 13-digit number is almost always milliseconds, a 10-digit number is almost always seconds. Use the Auto button to detect which.",
+  },
+  {
+    question: "Does JavaScript have the Year 2038 problem?",
+    answer:
+      "No — that problem is specific to systems storing time as a 32-bit signed integer of seconds. JavaScript's Date uses a 64-bit float of milliseconds, safely covering roughly ±273,000 years from 1970.",
+  },
+  {
+    question: "What's the difference between the Local and UTC views?",
+    answer:
+      "Local shows the time in your browser's own timezone; UTC shows the same instant with zero offset — useful when comparing timestamps across servers or logs from different regions.",
+  },
+  {
+    question: "Is anything I type here sent anywhere?",
+    answer: "No — every conversion uses JavaScript's built-in Date and Intl APIs, computed entirely in your browser.",
+  },
+];
+
+export const diffFaq: FaqItem[] = [
+  {
+    question: "What's the difference between line and word diff?",
+    answer:
+      "Line diff highlights entire lines that were added or removed. Word diff breaks the comparison down to individual words, which is useful for spotting small edits inside an otherwise unchanged line.",
+  },
+  {
+    question: "Can I diff two files instead of pasting text?",
+    answer: "Not yet — this tool is paste-only for now. You can copy a file's contents into either box.",
+  },
+  {
+    question: "Is my text sent anywhere?",
+    answer:
+      "No — the comparison runs entirely in your browser using a bundled diffing library. Nothing you paste is ever uploaded.",
+  },
+  {
+    question: "Why does a single changed word show the whole line as different?",
+    answer: "That's line mode's normal behavior — switch to word mode to see exactly which word changed within an otherwise identical line.",
+  },
+  {
+    question: "Is there a size limit?",
+    answer:
+      "No hard limit is enforced, but very large inputs (tens of thousands of lines) may be slow to diff since everything runs on your device rather than a server.",
+  },
+];
+
 /** General site-wide FAQ, rendered on /faq. */
 export const siteFaq: FaqItem[] = [
   {

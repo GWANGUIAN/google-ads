@@ -1,0 +1,59 @@
+---
+// Replaces the old `hidden lg:flex` inline tool-link row (which had no
+// mobile equivalent at all) with a single hamburger-triggered panel used at
+// every breakpoint — 10 tools no longer fit inline at any width, and there
+// was nothing worth preserving as a separate desktop-only implementation.
+// Only the Tools list lives here; Company links (About/Guides/FAQ/Contact)
+// stay footer-only per product decision.
+import { TOOLS } from "@/data/tools";
+---
+
+<div class="relative">
+  <button
+    id="nav-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="nav-panel"
+    aria-label="Open navigation menu"
+    class="flex h-9 w-9 items-center justify-center rounded-control border border-neutral-700 text-neutral-300 transition-colors hover:border-neutral-600 hover:text-white"
+  >
+    <span id="nav-icon-open" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </span>
+    <span id="nav-icon-close" hidden aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-5 w-5">
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+      </svg>
+    </span>
+  </button>
+
+  <nav
+    id="nav-panel"
+    aria-label="Site navigation"
+    hidden
+    class="absolute right-0 top-12 z-50 w-[min(90vw,20rem)] rounded-card border border-neutral-800 bg-neutral-950/95 p-4 shadow-xl backdrop-blur"
+  >
+    <p class="px-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Tools</p>
+    <ul class="mt-2 grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-2">
+      {
+        TOOLS.map((tool) => (
+          <li>
+            <a href={tool.slug} class="block rounded-control px-2 py-1.5 text-sm font-medium text-neutral-300 transition-colors hover:bg-neutral-800/60 hover:text-white">
+              {tool.shortLabel}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<script>
+  import { initNavMenu } from "@/lib/navMenu";
+  initNavMenu();
+</script>
