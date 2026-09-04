@@ -84,9 +84,11 @@ export default function Base64Tool() {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <div>
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            {mode === "encode" ? "Text (or drop a file)" : "Base64"}
-          </p>
+          <div className="mb-1.5 flex min-h-8 items-center">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+              {mode === "encode" ? "Text (or drop a file)" : "Base64"}
+            </p>
+          </div>
           <div
             onDragOver={(e) => {
               e.preventDefault();
@@ -110,7 +112,7 @@ export default function Base64Tool() {
           </div>
         </div>
         <div>
-          <div className="mb-1.5 flex items-center justify-between">
+          <div className="mb-1.5 flex min-h-8 items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Result</p>
             <CopyButton getText={() => (result?.ok ? result.value : "")} disabled={!result?.ok} />
           </div>

@@ -50,7 +50,9 @@ export default function TimestampTool() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div>
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500">Epoch → Date</p>
+          <div className="mb-1.5 flex min-h-8 items-center">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Epoch → Date</p>
+          </div>
           <div className="flex gap-2">
             <input
               value={epochInput}
@@ -90,7 +92,7 @@ export default function TimestampTool() {
         </div>
 
         <div>
-          <div className="mb-1.5 flex items-center justify-between">
+          <div className="mb-1.5 flex min-h-8 items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Date → Epoch</p>
             <div className="inline-flex rounded-control border border-neutral-700 bg-neutral-900 p-0.5 text-[10px]">
               {(["local", "utc"] as const).map((tz) => (

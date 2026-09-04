@@ -84,7 +84,9 @@ export default function JsonFormatter() {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <div>
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500">Input</p>
+          <div className="mb-1.5 flex min-h-8 items-center">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Input</p>
+          </div>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -94,7 +96,7 @@ export default function JsonFormatter() {
           />
         </div>
         <div>
-          <div className="mb-1.5 flex items-center justify-between">
+          <div className="mb-1.5 flex min-h-8 items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Output</p>
             <CopyButton getText={() => (result?.ok ? result.value : "")} disabled={!result?.ok} />
           </div>
