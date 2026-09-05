@@ -1,9 +1,10 @@
 ---
 import Container from "@repo/ui/Container.astro";
-import { SITE, TOOLS } from "@/data/site";
+import { SITE } from "@/data/site";
+import NavMenu from "./NavMenu.astro";
 ---
 
-<header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+<header class="sticky top-0 z-40 border-b border-neutral-200 bg-white/80 backdrop-blur">
   <Container class="flex h-16 items-center justify-between">
     <a href="/" class="flex items-center gap-2 text-base font-bold text-neutral-900">
       <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
@@ -13,17 +14,6 @@ import { SITE, TOOLS } from "@/data/site";
       </span>
       {SITE.name}
     </a>
-    <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-600 lg:flex">
-      {TOOLS.map((tool) => (
-        <a
-          href={tool.slug}
-          target={tool.external ? "_blank" : undefined}
-          rel={tool.external ? "noopener noreferrer" : undefined}
-          class="hover:text-neutral-900"
-        >
-          {tool.name}
-        </a>
-      ))}
-    </nav>
+    <NavMenu />
   </Container>
 </header>

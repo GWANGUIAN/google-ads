@@ -5,9 +5,9 @@ import { faqPageSchema, breadcrumbListSchema, softwareApplicationSchema } from "
 import Container from "@repo/ui/Container.astro";
 import ToolHero from "@/components/marketing/ToolHero.astro";
 import Faq from "@/components/marketing/Faq.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
-import { SITE } from "@/data/site";
-import { withBase } from "@/lib/url";
+import AdSlot from "@repo/ui/AdSlot.astro";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
 import type { FaqItem } from "@/data/faqTemplates";
 
 interface Props {
@@ -60,7 +60,7 @@ const homeUrl = new URL(withBase("/"), SITE.url).toString();
         )
       }
 
-      <AdSlot position="in-content" />
+      <AdSlot position="in-content" ads={ADS} />
 
       <section>
         <Faq items={faqItems} />

@@ -6,12 +6,12 @@ import Container from "@repo/ui/Container.astro";
 import Hero from "@/components/marketing/Hero.astro";
 import FormatFactSheet from "@/components/marketing/FormatFactSheet.astro";
 import Faq from "@/components/marketing/Faq.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
 import { FORMATS } from "@/data/formats";
 import { buildFaq } from "@/data/faqTemplates";
 import { buildIntro, buildWhyConvert } from "@/data/copy";
-import { SITE } from "@/data/site";
-import { withBase } from "@/lib/url";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
 import type { FormatPair } from "@/data/pairs";
 
 interface Props {
@@ -79,7 +79,7 @@ const acceptAttr = from.extensions.map((ext) => `.${ext.replace(".", "")}`).join
         <FormatFactSheet format={to} />
       </section>
 
-      <AdSlot position="in-content" />
+      <AdSlot position="in-content" ads={ADS} />
 
       <section>
         <Faq items={faqItems} />

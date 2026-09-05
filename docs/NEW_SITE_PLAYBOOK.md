@@ -16,9 +16,10 @@ Consequences:
 
 ```
 apps/<site-name>/       # one Astro project per site
-packages/ui/             # shared Button/Card/Container/Accordion primitives
-packages/seo/             # SeoHead.astro, JsonLd.astro, schema.ts helpers
-packages/config/          # tsconfig.base.json, tailwind-tokens.css, eslint.base.mjs
+packages/ui/             # shared Button/Card/Container/Accordion primitives, plus BaseLayout.astro/AdSlot.astro (see §5)
+packages/seo/             # SeoHead.astro, JsonLd.astro, schema.ts helpers, plus siteConfig.ts's createSiteConfig() (see §4/§5)
+packages/config/          # tsconfig.base.json, tailwind-tokens.css (also declares @source paths into every other packages/*, see §3), eslint.base.mjs
+packages/file-tools-core/ # WorkerPool/Dropzone/zip/withBase — shared by tools mounted under a `base` path (see §11)
 docs/                     # this file
 .github/workflows/        # one deploy-<site-name>.yml per app
 ```
@@ -27,16 +28,19 @@ Tooling: **pnpm workspaces + Turborepo**. `turbo.json` uses the v2 `tasks` key (
 
 To add a new site:
 1. `mkdir apps/<site-name>` and scaffold an Astro project inside it (React integration only if the site needs an interactive island; sitemap integration always).
-2. Depend on `@repo/ui`, `@repo/seo`, `@repo/config` via `"workspace:*"` in its `package.json`.
+2. Depend on `@repo/ui`, `@repo/seo`, `@repo/config` via `"workspace:*"` in its `package.json` (add `@repo/file-tools-core` too if the site is mounted under a `base` path — see §11's `withBase()` note).
 3. Import `@repo/config/tailwind-tokens.css` into the site's `global.css` before `@theme` overrides (see §4).
-4. Copy `.github/workflows/deploy-img-convertor.yml` to `deploy-<site-name>.yml`, adjust the `paths:` filter to `apps/<site-name>/**` and the `--project-name` to `<site-name>`.
-5. Create a matching Cloudflare Pages project (see §8).
-6. Do **not** pre-create a shared `packages/converter-core`-style package for whatever the new site's core logic is. Keep it inside the app until a *second* site actually needs the same logic — then extract it. Don't pre-abstract.
+4. Scaffold `src/data/site.ts` as a single call to `createSiteConfig()` from `@repo/seo/siteConfig` (see §5) rather than hand-writing the `SITE`/`SITE_VERIFICATION`/`ADS` objects — every current site follows this shape, differing only in the literal strings passed in.
+5. Scaffold `src/layouts/BaseLayout.astro` as a thin wrapper around `@repo/ui/BaseLayout.astro`: it supplies `site`/`ads`/`siteVerification`/`themeColor` props and the app's own `Header`/`Footer` via the shared layout's `header`/`footer` named slots, plus the `import "@/styles/global.css"` side-effect import (that one stays local — a package can't reach an app's path-relative CSS). See any current app's `BaseLayout.astro` for the exact shape. There's no local `AdSlot.astro` to write — import `@repo/ui/AdSlot.astro` directly wherever an ad placement is needed, passing `ads={ADS}` from `@/data/site` (see §5).
+6. Copy `.github/workflows/deploy-img-convertor.yml` to `deploy-<site-name>.yml`, adjust the `paths:` filter to `apps/<site-name>/**` and the `--project-name` to `<site-name>`.
+7. Create a matching Cloudflare Pages project (see §8).
+8. Do **not** pre-create a shared `packages/converter-core`-style package for whatever the new site's core logic is. Keep it inside the app until a *second* site actually needs the same logic — then extract it. Don't pre-abstract.
 
 ## 3. Design tokens & UI primitives
 
 - Styling is **Tailwind CSS v4** using its CSS-first config (`@import "tailwindcss";` + `@theme { ... }` blocks — no `tailwind.config.js` preset object, no `@astrojs/tailwind` integration package). Add `@tailwindcss/vite` to the Astro `vite.plugins` array instead.
 - `packages/config/tailwind-tokens.css` defines the shared neutral/trust color scale, a default accent scale, font family, radii, and container width as `@theme` tokens. Every new site imports this file first in its own `global.css`, then may redeclare `--color-accent-*` variables in a local `@theme` block to rebrand without touching the shared file.
+- **Tailwind v4's automatic content scanner does not follow the pnpm workspace symlink into `packages/*`** — it only walks each app's own source tree. Any utility class used *only* inside a shared-package `.astro`/`.tsx` file (not also written somewhere in the consuming app's own source) gets silently dropped from that app's compiled CSS — this isn't a hard error, it just quietly doesn't render, which is a much nastier failure mode to debug than a build break. `packages/config/tailwind-tokens.css` (imported by every app) carries `@source` directives pointing at `packages/ui/src`, `packages/seo/src`, and `packages/file-tools-core/src` to fix this — **whenever a shared package gains a new `.astro`/`.tsx` file with its own Tailwind classes, add its package to that `@source` list too**, or every app silently loses whatever classes only that file used. (This is exactly how the shared `@repo/ui/BaseLayout.astro` extraction briefly shipped with every site's `<body>` missing its `flex-col` — the class existed nowhere else once the per-app copy was deleted.)
 - `packages/ui` holds framework-light primitives (`Button.astro`, `Card.astro`, `Container.astro`, `Accordion.tsx`) built against those tokens. Reuse these before writing new one-off components with hand-rolled Tailwind classes. **They're hardcoded light-theme** (`bg-white`, `text-neutral-900`, etc.) with no className escape hatch for color — every site before `apps/hexnook` was light-only, so this was never an issue. A dark-only site can't override them via `class:list` (same-specificity Tailwind utilities don't reliably win by DOM order), so `apps/hexnook` instead ships local dark-theme reskins with the same prop API under `src/components/ui/` (`Button.astro`, `Card.astro`, `Accordion.tsx`) — copy that pattern for the next dark-themed site rather than fighting the shared primitives' specificity. `Container.astro` has no color classes, so it's still reused directly.
 - **Dark mode**: no site had it before `apps/hexnook`. There's no light/dark *toggle* infrastructure anywhere yet (no `dark:` Tailwind variant setup, no `data-theme` attribute) — `apps/hexnook` is dark-only, achieved simply by using the existing shared `neutral-*` scale in the dark direction (`bg-neutral-950`/`text-neutral-100` instead of `bg-white`/`text-neutral-800`) rather than redeclaring it, since `neutral-950` is already a near-black. If a future site needs an actual toggle, that infrastructure still needs to be built from scratch.
 - **Animation**: no animation library (Framer Motion, GSAP, etc.) exists anywhere in this repo — every site uses plain Tailwind (`transition-*`, `animate-spin`, `animate-pulse`) plus, as of `apps/hexnook`, a couple of small hand-rolled vanilla-JS patterns worth reusing rather than re-deriving: `src/lib/scrollReveal.ts` (an `IntersectionObserver` that toggles an `.is-visible` class on `.reveal` elements, with the actual transition left to CSS — see its `global.css`) for scroll-in fades, and a framework-free typewriter effect (`src/components/marketing/TypewriterText.astro`, a plain inline `<script>` tag, deliberately not a React island) for animated headline text. Prefer this CSS-first approach over pulling in an animation library, consistent with Astro's "zero JS by default" posture used throughout this repo.
@@ -61,9 +65,10 @@ To add a new site:
 
 AdSense approval requires real content depth and it requires that ad units not appear broken/empty before approval. The pattern used here handles both:
 
-- Env vars (all `PUBLIC_*`, so Astro exposes them client-side): `PUBLIC_ADS_ENABLED`, `PUBLIC_ADSENSE_CLIENT_ID`, and one `PUBLIC_AD_SLOT_<POSITION>` per placement.
-- An `AdSlot.astro` component (see `apps/img-convertor/src/components/ads/AdSlot.astro`) takes a `position` prop and renders **absolutely nothing** — no wrapper `<div>`, no reserved height — unless `PUBLIC_ADS_ENABLED === 'true'` AND that position's slot id AND the client id are all set. This guarantees zero layout shift and zero ad markup pre-approval.
-- The AdSense loader `<script src="...adsbygoogle.js">` is only injected into `<head>` when ads are enabled — so no third-party network request happens before approval either.
+- Env vars (all `PUBLIC_*`, so Astro exposes them client-side): `PUBLIC_ADS_ENABLED`, `PUBLIC_ADSENSE_CLIENT_ID`, and one `PUBLIC_AD_SLOT_<POSITION>` per placement. `src/data/site.ts`'s `ADS` object (built by `createSiteConfig()` — see `@repo/seo/src/siteConfig.ts`) reads these var names once, so every site reads the same names the same way.
+- `@repo/ui/AdSlot.astro` (shared across every site — there is no longer a per-app local copy) takes a `position` prop plus an `ads: AdsConfig` prop (passed in as `ads={ADS}` from the caller's `@/data/site`, since a shared package has no per-app path to reach into `@/data/site` itself) and renders **absolutely nothing** — no wrapper `<div>`, no reserved height — unless `PUBLIC_ADS_ENABLED === 'true'` AND that position's slot id AND the client id are all set. This guarantees zero layout shift and zero ad markup pre-approval.
+- The header and footer ad placements are wired into `@repo/ui/BaseLayout.astro` itself (see §2), so a new site gets those two for free by using the shared layout — only an in-content placement on content-heavy pages needs its own `<AdSlot position="in-content" ads={ADS} />` call.
+- The AdSense loader `<script src="...adsbygoogle.js">` is only injected into `<head>` when ads are enabled (also handled inside `@repo/ui/BaseLayout.astro`) — so no third-party network request happens before approval either.
 - Turning ads on for a live site is purely a Cloudflare Pages environment-variable change + redeploy. No code change, no redesign.
 - Placement convention: one slot in the header, one in the footer (base layout), one in-content slot on content-heavy pages, positioned away from any interactive control (never inside/adjacent to a dropzone, form, or other clickable UI) to avoid AdSense's accidental-click policy violations.
 
@@ -77,7 +82,7 @@ Aim for enough total indexable pages (~20+) that the site doesn't read as thin b
 
 - Mobile-first Tailwind utility classes; container max-width comes from the shared `--container-content` token via `packages/ui/Container.astro`.
 - Test every new page at the `mobile` (375×812) preset in the Browser tool before calling a feature done — check nav collapse, dropzone/form usability, and that no element causes horizontal scroll.
-- Primary nav collapses to a minimal set on small screens (`hidden sm:flex` pattern in `Header.astro`) rather than a hamburger menu for v1 sites with few nav items — revisit only if a site's nav grows beyond ~4-5 links.
+- Primary nav collapses to a minimal set on small screens (`hidden sm:flex`/`hidden lg:flex` pattern in `Header.astro`) for v1 sites with few nav items (~4-5 links or fewer) — no hamburger menu needed at that scale. Once a site's nav grows past that (an umbrella domain accumulating tools, or a many-tool site like hexnook), switch to a hamburger dropdown at *every* screen width, not just a mobile breakpoint fallback — `apps/hexnook/src/components/layout/NavMenu.astro` + `src/lib/navMenu.ts` is the reference implementation (dark theme) and `apps/loomfile`'s copy (light theme) shows the reskin; both are plain vanilla JS (open/close, `aria-expanded`, Escape-to-close with focus return, outside-click close, auto-close on link click) with no framework dependency. This pattern isn't extracted into a shared package (it's copy-and-reskin like the drag-and-drop pattern in §9, not identical enough across light/dark themes to warrant one) — copy one of the two existing implementations rather than rebuilding from scratch.
 - **`BaseLayout.astro`'s `<body>` must be a sticky-footer flex column**, not a bare `min-h-screen`: `<body class="flex min-h-screen flex-col ...">` with `<main class="flex-1">` wrapping the page slot. Without this, `min-h-screen` alone only guarantees the *body* is tall enough — it does nothing to push `<Footer />` down, so any page whose content is shorter than the viewport (a short trust page, a guide article, a nearly-empty state) renders with the footer floating in the middle of the screen instead of pinned to the bottom. This has already shipped broken in more than one site here (check any app before assuming it's fine) — always verify by opening a short/low-content page (not the landing page, which is usually tall enough to hide the bug) at both desktop and the 375×812 mobile preset.
 
 ## 8. Deployment: Cloudflare Pages + GitHub Actions
@@ -110,6 +115,8 @@ Reference implementation: `apps/img-convertor/src/lib/convert/` + `src/component
 | — Video Tools | `apps/video-tools` | loomfile.com/video | Deployed (compress + trim, MP4/WebM via WebCodecs/mediabunny) |
 | — Font Tools | `apps/font-tools` | loomfile.com/font | Deployed (TTF/OTF/WOFF/WOFF2 conversion via fonteditor-core/WASM) |
 | — QR Code Tools | `apps/qr-tools` | loomfile.com/qr | Deployed (generate + scan QR codes) |
+| — Image Compressor | `apps/image-compressor` | loomfile.com/compress | Deployed |
+| — Image Resizer | `apps/image-resizer` | loomfile.com/resize | Deployed |
 | PW Checkup | `apps/pwcheckup` | pwcheckup.com | Deployed — standalone (not loomfile-mounted); client-side breached-password checker, ko/en i18n |
 | hexnook | `apps/hexnook` | hexnook.dev | Deployed — standalone (not loomfile-mounted); 17 developer tools (JSON formatter, Base64, hash generator, regex tester, JWT decoder, color converter, UUID generator, password generator, timestamp converter, diff checker, URL encoder/decoder, Markdown previewer, HTML/CSS/JS formatter (3 pages), Lorem Ipsum generator, cron expression parser). First dark-only/animated site in the repo — see the dark-mode and animation notes in §3 below |
 
@@ -125,14 +132,14 @@ New sites beyond ImgConvertor are **not** getting their own dedicated domain eac
 
 **`apps/loomfile` is the umbrella root** — landing page + domain-level trust pages (About/Privacy/Terms/Contact) + `robots.txt`/`ads.txt`, scaffolded the same way as every other site per §2. It owns the `SITE`/`ADS`/`SITE_VERIFICATION` data shape from `src/data/site.ts` plus a `TOOLS` list the landing page and footer render from — add each new tool to that list as it's built.
 
-**`apps/localpdf` is the first tool**, mounted at `/pdf` (`base: "/pdf"` in `astro.config.mjs`) rather than its own domain — this superseded the app's original one-app-per-domain setup. Astro's `base` automatically prefixes routes it generates itself (page routing, the sitemap), but hand-written `href`s and the canonical-URL computation in the layouts don't get that for free — `apps/localpdf/src/lib/url.ts` exports a `withBase()` helper used everywhere an internal link or canonical URL is built by hand. Any *new* tool added under this domain needs the same treatment: set `base` in its `astro.config.mjs`, and route every internal `href`/canonical through an equivalent `withBase()`.
+**`apps/localpdf` is the first tool**, mounted at `/pdf` (`base: "/pdf"` in `astro.config.mjs`) rather than its own domain — this superseded the app's original one-app-per-domain setup. Astro's `base` automatically prefixes routes it generates itself (page routing, the sitemap), but hand-written `href`s and the canonical-URL computation in the layouts don't get that for free — `@repo/file-tools-core/url.ts` exports a `withBase()` helper used everywhere an internal link or canonical URL is built by hand (every mounted-tool app in this repo imports it from that shared package now, not a local per-app copy). Any *new* tool added under this domain needs the same treatment: set `base` in its `astro.config.mjs`, depend on `@repo/file-tools-core`, and route every internal `href`/canonical through `withBase()`.
 
 **Deploy architecture:** hosting several Astro apps under one Cloudflare Pages project without introducing a Cloudflare Worker (which would violate §1's static-only/Workers-quota constraint) works by merging static output, not by routing requests:
 - each tool app builds normally with its own `base` path
 - `.github/workflows/deploy-loomfile.yml` builds `loomfile` (root) and every tool app with one `turbo run build`, then copies each tool's `dist/` into `merged-dist/<path>/` (`apps/localpdf/dist/*` → `merged-dist/pdf/*`) and `apps/loomfile/dist/*` into `merged-dist/` itself, then runs `apps/loomfile/scripts/generate-sitemap-index.mjs` to consolidate every tool's sitemap into one root index (see the sitemap bullet below), then ships `merged-dist/` with a single `wrangler pages deploy --project-name=loomfile`
 - adding a new tool to this domain means: add its app under `apps/`, add it to `apps/loomfile/src/data/site.ts`'s `TOOLS` list, add a `cp -r apps/<tool>/dist/. merged-dist/<path>/` line + a `--filter=<tool>...` to the build step + a `paths:` entry, all in `deploy-loomfile.yml`. Nothing else needs updating for sitemaps/`robots.txt` — see below.
 - this replaces the "one Cloudflare Pages project + one workflow per site" pattern in §8 **for umbrella-domain sites only**.
-- **a dual-target app (built for both its own domain and an umbrella mount — img-convertor is the reference implementation) needs its `astro.config.mjs`'s `site`/`base` to be env-driven instead of hardcoded**: `site: process.env.PUBLIC_SITE_URL || "<own-domain>"`, `base: process.env.PUBLIC_BASE_PATH || "/"`. Its own standalone `deploy-<site>.yml` is untouched (never sets `PUBLIC_BASE_PATH`, so the fallback applies); `deploy-loomfile.yml` gets the usual `--filter=<tool>...` + `merged-dist/<path>/` copy step *plus* a `PUBLIC_BASE_PATH: /<path>` line on its build step's `env:`. Every hand-written internal `href` and canonical/JSON-LD URL in the app must be audited and routed through `withBase()` (see `apps/img-convertor/src/lib/url.ts`) — unlike a single-target tool, these bugs won't surface until someone actually loads the umbrella-mounted build, since the standalone build keeps working either way. Also declare the app's `PUBLIC_*` vars in `turbo.json`'s `build` task `env` array so Turbo cache-keys the two differently-configured builds separately.
+- **a dual-target app (built for both its own domain and an umbrella mount — img-convertor is the reference implementation) needs its `astro.config.mjs`'s `site`/`base` to be env-driven instead of hardcoded**: `site: process.env.PUBLIC_SITE_URL || "<own-domain>"`, `base: process.env.PUBLIC_BASE_PATH || "/"`. Its own standalone `deploy-<site>.yml` is untouched (never sets `PUBLIC_BASE_PATH`, so the fallback applies); `deploy-loomfile.yml` gets the usual `--filter=<tool>...` + `merged-dist/<path>/` copy step *plus* a `PUBLIC_BASE_PATH: /<path>` line on its build step's `env:`. Every hand-written internal `href` and canonical/JSON-LD URL in the app must be audited and routed through `withBase()` (see `@repo/file-tools-core/url.ts`) — unlike a single-target tool, these bugs won't surface until someone actually loads the umbrella-mounted build, since the standalone build keeps working either way. Also declare the app's `PUBLIC_*` vars in `turbo.json`'s `build` task `env` array so Turbo cache-keys the two differently-configured builds separately.
 - **a tool kept on its own dedicated domain with no umbrella mount at all is cross-linked from the loomfile landing page instead of merged into the build**: add a `TOOLS` entry with `external: true` and an absolute `slug` URL (e.g. `"https://example.com"`) — `Header.astro`, `Footer.astro`, and `index.astro` all read `tool.external` and render those links with `target="_blank" rel="noopener noreferrer"`. It gets **no** `merged-dist/<path>` copy step, `--filter=<tool>...` build addition, or `paths:` entry in `deploy-loomfile.yml`, and its own independent `deploy-<site>.yml` pipeline and `robots.txt` stay untouched — only the `TOOLS` entry changes.
 - **whenever the tool roster changes (adding, removing, or reworking a tool), also re-read the landing page's hero paragraph (`apps/loomfile/src/pages/index.astro`) and `SITE.description` in `site.ts`** — both are hand-written prose, not generated from `TOOLS`, so Astro won't flag them when they drift out of date (e.g. copy that still says "starting with PDFs" after other tools were added).
 
@@ -140,6 +147,45 @@ New sites beyond ImgConvertor are **not** getting their own dedicated domain eac
 
 **Sitemaps are consolidated into one root index at build time — no per-tool `robots.txt` edit, ever.** Each tool app still generates its own `sitemap-index.xml`/`sitemap-0.xml` via `@astrojs/sitemap` (correctly scoped to its own `site`/`base`, per the dual-target-app bullet above), but a sitemap index file may only list actual sitemap files, not other sitemap index files (sitemaps.org protocol) — so after the merge step, `apps/loomfile/scripts/generate-sitemap-index.mjs merged-dist` scans `merged-dist/*/sitemap-index.xml` (auto-discovering every mounted tool, whatever its path), pulls each one's `<loc>` entries, and overwrites `merged-dist/sitemap-index.xml` with a single index aggregating loomfile's own sitemap plus every tool's. `apps/loomfile/public/robots.txt` therefore only ever needs the one line `Sitemap: https://loomfile.com/sitemap-index.xml` — adding, removing, or renaming a tool's mount path requires no `robots.txt` or sitemap change at all, only the usual "new tool" steps above. Submit just `https://loomfile.com/sitemap-index.xml` in Google Search Console; it covers every mounted tool automatically as the roster grows.
 
-**Deployment is complete** — DNS, the Cloudflare Pages project, and the `PUBLIC_*` Variables are all set; loomfile.com is live with all four tools. `PUBLIC_ADS_ENABLED` is intentionally kept `false` in the `loomfile`/`img-convertor` GitHub Environments until AdSense site review is actually requested — flip it to `true` (and set the `PUBLIC_AD_SLOT_*` Variables) at that point, not before, so the `adsbygoogle.js` loader doesn't fire with no ad units to show on a brand-new domain.
+**Testing the merged build locally** reproduces exactly what `deploy-loomfile.yml` ships, so it's the only way to catch a mount-path bug (an app that only breaks once it's actually served from a subpath, not from its own dev server) before pushing. From the repo root:
+
+```powershell
+# 1. Build every mounted app. img-convertor is dual-target (see the bullet
+#    above) — set these two env vars for THIS build or you'll get its
+#    standalone (imgconvertor.download) output merged in instead, which
+#    references /_astro/... at the domain root and 404s once nested under
+#    /image-convertor/. They're harmless to pass to every other app in the
+#    same command (their `base` is hardcoded, so they ignore both vars),
+#    exactly like deploy-loomfile.yml's build step does.
+$env:PUBLIC_SITE_URL = "https://loomfile.com"
+$env:PUBLIC_BASE_PATH = "/image-convertor"
+pnpm turbo run build --filter=loomfile... --filter=localpdf... --filter=video-tools... --filter=img-convertor... --filter=font-tools... --filter=qr-tools... --filter=image-compressor... --filter=image-resizer...
+
+# 2. Merge, mirroring deploy-loomfile.yml's merge step exactly. Use
+#    Copy-Item -Recurse -Force with a trailing /* wildcard, NOT bash's
+#    `cp -r src/. dst/` idiom — PowerShell's `cp` alias doesn't understand
+#    that trailing-dot "copy contents, not the folder" convention, so it
+#    silently nests an extra `dist/` folder inside each destination instead
+#    of flattening it (this shipped broken once already — check for a
+#    stray merged-dist/<tool>/dist/ if pages 404 after merging).
+Remove-Item -Recurse -Force merged-dist -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force merged-dist | Out-Null
+Copy-Item -Path "apps/loomfile/dist/*" -Destination "merged-dist/" -Recurse -Force
+$tools = @{ "localpdf"="pdf"; "video-tools"="video"; "img-convertor"="image-convertor"; "font-tools"="font"; "qr-tools"="qr"; "image-compressor"="compress"; "image-resizer"="resize" }
+foreach ($t in $tools.GetEnumerator()) {
+  New-Item -ItemType Directory -Force "merged-dist/$($t.Value)" | Out-Null
+  Copy-Item -Path "apps/$($t.Key)/dist/*" -Destination "merged-dist/$($t.Value)/" -Recurse -Force
+}
+
+# 3. Regenerate the consolidated sitemap (auto-discovers every merged tool).
+node apps/loomfile/scripts/generate-sitemap-index.mjs merged-dist
+
+# 4. Serve it.
+npx serve merged-dist
+```
+
+To test img-convertor's *standalone* `imgconvertor.download` build instead, just run `pnpm --filter img-convertor build` on its own with neither env var set — that's what `deploy-img-convertor.yml` does. `merged-dist/` is gitignored (build output, regenerated every time); stop any previous `serve`/`wrangler pages dev` process before re-running step 2 on Windows — a live server holding the directory open can make `Copy-Item` silently fail for whichever folders it has open, leaving stale content merged in alongside the fresh copy.
+
+**Deployment is complete** — DNS, the Cloudflare Pages project, and the `PUBLIC_*` Variables are all set; loomfile.com is live with every tool in `TOOLS` (see §10 for the current roster). `PUBLIC_ADS_ENABLED` is intentionally kept `false` in the `loomfile`/`img-convertor` GitHub Environments until AdSense site review is actually requested — flip it to `true` (and set the `PUBLIC_AD_SLOT_*` Variables) at that point, not before, so the `adsbygoogle.js` loader doesn't fire with no ad units to show on a brand-new domain.
 
 **Open branding question — not decided, flagged rather than assumed:** `apps/localpdf`'s on-page brand (`SITE.name` = "LocalPDF", header/footer copy, `hello@loomfile.com` contact address already updated) still reads as its own product name distinct from the "LoomFile" umbrella brand shown at the domain root. Keeping a tool-level sub-brand under an umbrella domain is a legitimate pattern (many multi-tool sites do this), but whether LocalPDF should keep its name or become "PDF Tools by LoomFile" is a product decision for the user, not something this restructuring silently decided.

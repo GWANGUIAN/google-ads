@@ -38,6 +38,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
       '@repo/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -173,6 +176,110 @@ importers:
         specifier: ^4.20.0
         version: 4.128.0
 
+  apps/image-compressor:
+    dependencies:
+      '@astrojs/react':
+        specifier: ^4.1.0
+        version: 4.4.2(@types/node@24.13.3)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(jiti@2.7.0)(lightningcss@1.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.51.2)(yaml@2.9.0)
+      '@astrojs/sitemap':
+        specifier: ^3.2.0
+        version: 3.7.4
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
+      '@repo/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@tailwindcss/vite':
+        specifier: ^4.0.0
+        version: 4.3.3(vite@6.4.3(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(yaml@2.9.0))
+      astro:
+        specifier: ^5.1.0
+        version: 5.18.2(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.63.1)(terser@5.51.2)(typescript@5.9.3)(yaml@2.9.0)
+      fflate:
+        specifier: ^0.8.2
+        version: 0.8.3
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.3.3
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.4
+        version: 0.9.10(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@5.9.3)
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.31
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.31)
+      wrangler:
+        specifier: ^4.20.0
+        version: 4.128.0
+
+  apps/image-resizer:
+    dependencies:
+      '@astrojs/react':
+        specifier: ^4.1.0
+        version: 4.4.2(@types/node@24.13.3)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(jiti@2.7.0)(lightningcss@1.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.51.2)(yaml@2.9.0)
+      '@astrojs/sitemap':
+        specifier: ^3.2.0
+        version: 3.7.4
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
+      '@repo/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@tailwindcss/vite':
+        specifier: ^4.0.0
+        version: 4.3.3(vite@6.4.3(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(yaml@2.9.0))
+      astro:
+        specifier: ^5.1.0
+        version: 5.18.2(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.63.1)(terser@5.51.2)(typescript@5.9.3)(yaml@2.9.0)
+      fflate:
+        specifier: ^0.8.2
+        version: 0.8.3
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.3.3
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.4
+        version: 0.9.10(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@5.9.3)
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.31
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.31)
+      wrangler:
+        specifier: ^4.20.0
+        version: 4.128.0
+
   apps/img-convertor:
     dependencies:
       '@astrojs/react':
@@ -184,6 +291,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
       '@repo/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -233,6 +343,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
       '@repo/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -374,6 +487,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
       '@repo/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -432,6 +548,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../../packages/file-tools-core
       '@repo/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -482,6 +601,18 @@ importers:
         specifier: ^8.19.0
         version: 8.69.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
 
+  packages/file-tools-core:
+    dependencies:
+      astro:
+        specifier: ^5.0.0
+        version: 5.18.2(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.63.1)(terser@5.51.2)(typescript@5.9.3)(yaml@2.9.0)
+      fflate:
+        specifier: ^0.8.2
+        version: 0.8.3
+      react:
+        specifier: ^18.3.0
+        version: 18.3.1
+
   packages/seo:
     dependencies:
       astro:
@@ -490,6 +621,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@repo/file-tools-core':
+        specifier: workspace:*
+        version: link:../file-tools-core
+      '@repo/seo':
+        specifier: workspace:*
+        version: link:../seo
       astro:
         specifier: ^5.0.0
         version: 5.18.2(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.63.1)(terser@5.51.2)(typescript@5.9.3)(yaml@2.9.0)

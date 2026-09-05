@@ -2,7 +2,20 @@
  * Shared design tokens for all AdSense sites in this monorepo (Tailwind v4, CSS-first).
  * Import into each app's global.css with:  @import "@repo/config/tailwind-tokens.css";
  * Apps may override/extend the accent color locally after this import.
+ *
+ * Tailwind v4's automatic content scanner only walks each app's own source
+ * tree — it does not follow the pnpm workspace symlink into sibling
+ * `packages/*` directories. Any class used ONLY inside a shared-package
+ * component (e.g. Container.astro's `max-w-content`, BaseLayout.astro's
+ * `flex-col`) is silently dropped from the compiled CSS unless explicitly
+ * declared here. `@source` paths are resolved relative to *this* file, so
+ * this one declaration covers every app that imports it. Add a new package
+ * path here whenever a shared package gains its own Astro/TSX components.
  */
+@source "../ui/src";
+@source "../seo/src";
+@source "../file-tools-core/src";
+
 @theme {
   --font-sans:
     "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;

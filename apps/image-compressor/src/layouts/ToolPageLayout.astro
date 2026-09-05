@@ -1,0 +1,68 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { faqPageSchema, breadcrumbListSchema, softwareApplicationSchema } from "@repo/seo/schema";
+import Container from "@repo/ui/Container.astro";
+import ToolHero from "@/components/marketing/ToolHero.astro";
+import Faq from "@/components/marketing/Faq.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+import type { FaqItem } from "@/data/faqTemplates";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  breadcrumbName: string;
+  faqItems: FaqItem[];
+  intro?: string;
+  why?: string;
+}
+
+const { title, description, path, heroTitle, heroSubtitle, breadcrumbName, faqItems, intro, why } = Astro.props;
+const canonical = new URL(withBase(path), SITE.url).toString();
+const homeUrl = new URL(withBase("/"), SITE.url).toString();
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <JsonLd schema={softwareApplicationSchema({ name: heroTitle, url: canonical, description, applicationCategory: "MultimediaApplication" })} />
+  <JsonLd schema={faqPageSchema(faqItems)} />
+  <JsonLd
+    schema={breadcrumbListSchema([
+      { name: "Home", url: homeUrl },
+      { name: breadcrumbName, url: canonical },
+    ])}
+  />
+
+  <Container>
+    <ToolHero title={heroTitle} subtitle={heroSubtitle}>
+      <slot />
+    </ToolHero>
+
+    <nav aria-label="Breadcrumb" class="-mt-6 mb-6 text-xs text-neutral-400">
+      <a href={withBase("/")} class="hover:text-neutral-600">Home</a>
+      <span class="mx-1.5">/</span>
+      <span class="text-neutral-600">{breadcrumbName}</span>
+    </nav>
+
+    <article class="mx-auto max-w-3xl space-y-10 pb-16">
+      {
+        (intro || why) && (
+          <section>
+            {intro && <p class="text-base leading-relaxed text-neutral-700">{intro}</p>}
+            {why && <p class="mt-4 text-base leading-relaxed text-neutral-700">{why}</p>}
+          </section>
+        )
+      }
+
+      <AdSlot position="in-content" ads={ADS} />
+
+      <section>
+        <Faq items={faqItems} />
+      </section>
+    </article>
+  </Container>
+</BaseLayout>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { QR_TYPE_LIST, QR_TYPES, type QrTypeCode } from "@/data/qrTypes";
 import { renderQrToCanvas, renderQrToSvg, canvasToPngBlob, type QrStyleOptions } from "@/lib/qr/generate";
-import { downloadBlob } from "@/lib/qr/zip";
+import { downloadBlob } from "@repo/file-tools-core/zip.ts";
 
 type ErrorCorrectionLevel = NonNullable<QrStyleOptions["errorCorrectionLevel"]>;
 

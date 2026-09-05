@@ -1,0 +1,47 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+---
+
+<BaseLayout
+  title={`About ${SITE.name}`}
+  description={`Learn how ${SITE.name} works, why it's free, and why nothing you upload ever leaves your device.`}
+  path="/about"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">About {SITE.name}</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          {SITE.name} is a free tool for resizing images — to an exact width and height, or to a ready-made preset
+          like an Instagram post or a YouTube thumbnail — directly in your web browser. There's no sign-up, no
+          watermark, and no limit on how many images you resize.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Why is it free?</h2>
+        <p>
+          Every tool here runs in your own browser using plain JavaScript, not a server we operate. Because we're
+          not paying to process anything on our own infrastructure, there's no per-use cost to pass on — the site is
+          instead supported by advertising.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Nothing you upload ever leaves your device</h2>
+        <p>
+          Every resize on this site happens locally, using your browser's own Canvas APIs. The image you drop in is
+          read directly into your browser's memory, resized there, and offered back to you as a download — it is
+          never transmitted to any server we operate.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Who's behind this</h2>
+        <p>
+          {SITE.name} is part of the <a href="https://loomfile.com" class="text-accent-600 underline">LoomFile</a>{" "}
+          family of free, private, in-browser file tools. If you have feedback or run into a bug, see our{" "}
+          <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

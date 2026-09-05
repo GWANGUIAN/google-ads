@@ -2,10 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@repo/ui/Container.astro";
 import Hero from "@/components/marketing/Hero.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
 import { FORMAT_PAIRS, popularPairs } from "@/data/pairs";
-import { SITE } from "@/data/site";
-import { withBase } from "@/lib/url";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
 
 const popular = popularPairs(8);
 
@@ -38,7 +38,7 @@ const grouped = FORMAT_PAIRS.reduce<Record<string, typeof FORMAT_PAIRS>>((acc, p
       </div>
     </section>
 
-    <AdSlot position="in-content" class="py-4" />
+    <AdSlot position="in-content" ads={ADS} class="py-4" />
 
     <section class="py-10">
       <h2 class="text-xl font-bold text-neutral-900">All conversions</h2>

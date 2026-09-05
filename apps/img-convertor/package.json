@@ -21,7 +21,8 @@
     "fflate": "^0.8.2",
     "@repo/ui": "workspace:*",
     "@repo/seo": "workspace:*",
-    "@repo/config": "workspace:*"
+    "@repo/config": "workspace:*",
+    "@repo/file-tools-core": "workspace:*"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

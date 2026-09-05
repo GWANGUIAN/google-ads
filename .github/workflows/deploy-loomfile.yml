@@ -18,6 +18,8 @@ on:
       - "apps/img-convertor/**"
       - "apps/font-tools/**"
       - "apps/qr-tools/**"
+      - "apps/image-compressor/**"
+      - "apps/image-resizer/**"
       - "packages/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -49,7 +51,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build loomfile (root) and every tool mounted under it
-        run: pnpm turbo run build --filter=loomfile... --filter=localpdf... --filter=video-tools... --filter=img-convertor... --filter=font-tools... --filter=qr-tools...
+        run: pnpm turbo run build --filter=loomfile... --filter=localpdf... --filter=video-tools... --filter=img-convertor... --filter=font-tools... --filter=qr-tools... --filter=image-compressor... --filter=image-resizer...
         env:
           # img-convertor is also built standalone by deploy-img-convertor.yml
           # for imgconvertor.download; this PUBLIC_BASE_PATH only applies here,
@@ -99,6 +101,10 @@ jobs:
           cp -r apps/font-tools/dist/. merged-dist/font/
           mkdir -p merged-dist/qr
           cp -r apps/qr-tools/dist/. merged-dist/qr/
+          mkdir -p merged-dist/compress
+          cp -r apps/image-compressor/dist/. merged-dist/compress/
+          mkdir -p merged-dist/resize
+          cp -r apps/image-resizer/dist/. merged-dist/resize/
 
       - name: Regenerate consolidated sitemap index
         run: node apps/loomfile/scripts/generate-sitemap-index.mjs merged-dist

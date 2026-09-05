@@ -1,0 +1,28 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+---
+
+<header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href={withBase("/")} class="flex items-center gap-2 text-base font-bold text-neutral-900">
+      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 00-2 2v3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M16 3h3a2 2 0 012 2v3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M8 21H5a2 2 0 01-2-2v-3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M16 21h3a2 2 0 002-2v-3" stroke-linecap="round" stroke-linejoin="round" />
+          <rect x="9" y="9" width="6" height="6" rx="1" />
+        </svg>
+      </span>
+      {SITE.name}
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-600 lg:flex">
+      <a href={withBase("/")} class="hover:text-neutral-900">Home</a>
+      <a href={withBase("/instagram-post")} class="hover:text-neutral-900">Instagram Post</a>
+      <a href={withBase("/1920x1080")} class="hover:text-neutral-900">1920×1080</a>
+      <a href={withBase("/about")} class="hover:text-neutral-900">About</a>
+    </nav>
+  </Container>
+</header>

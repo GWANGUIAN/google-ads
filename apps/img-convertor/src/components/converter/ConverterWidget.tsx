@@ -1,11 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import Dropzone from "./Dropzone";
+import Dropzone from "@repo/file-tools-core/Dropzone.tsx";
 import FormatSelect from "./FormatSelect";
 import FileQueueRow from "./FileQueueRow";
 import DownloadAllButton from "./DownloadAllButton";
-import { ConvertWorkerPool } from "@/lib/convert/workerPool";
-import { downloadBlob } from "@/lib/convert/zip";
-import type { ConvertResult, OutputFormatCode } from "@/lib/convert/types";
+import { WorkerPool, defaultPoolSize } from "@repo/file-tools-core/WorkerPool.ts";
+import { downloadBlob } from "@repo/file-tools-core/zip.ts";
+import type { ConvertOptions, ConvertResult, OutputFormatCode } from "@/lib/convert/types";
+
+/** Builds this app's own Worker[] — Vite needs the `new URL("./worker.ts", import.meta.url)`
+ * literal at this call site (relative to this file) so its bundler can locate the worker file. */
+function createConvertWorkers(): Worker[] {
+  const size = defaultPoolSize();
+  return Array.from(
+    { length: size },
+    () => new Worker(new URL("../../lib/convert/worker.ts", import.meta.url), { type: "module" }),
+  );
+}
 
 export interface QueueItem {
   id: string;
@@ -39,10 +49,10 @@ export default function ConverterWidget({
 }) {
   const [target, setTarget] = useState<OutputFormatCode>(initialTarget);
   const [items, setItems] = useState<QueueItem[]>([]);
-  const poolRef = useRef<ConvertWorkerPool | null>(null);
+  const poolRef = useRef<WorkerPool<ConvertOptions, ConvertResult> | null>(null);
 
   useEffect(() => {
-    poolRef.current = new ConvertWorkerPool();
+    poolRef.current = new WorkerPool<ConvertOptions, ConvertResult>(createConvertWorkers());
     return () => poolRef.current?.destroy();
   }, []);
 
@@ -50,7 +60,7 @@ export default function ConverterWidget({
     async (item: QueueItem, formatToUse: OutputFormatCode) => {
       setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, status: "converting" } : i)));
       try {
-        const result = await poolRef.current!.convert(item.id, item.file, { targetFormat: formatToUse });
+        const result = await poolRef.current!.run(item.id, item.file, { targetFormat: formatToUse });
         setItems((prev) =>
           prev.map((i) =>
             i.id === item.id

@@ -1,0 +1,40 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import CompressorWidget from "@/components/compress/CompressorWidget";
+import { COMPRESS_FORMAT_LIST } from "@/data/formats";
+import { buildIntro, buildWhy } from "@/data/copy";
+import { buildFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+import type { CompressFormatInfo } from "@/data/formats";
+
+export function getStaticPaths() {
+  return COMPRESS_FORMAT_LIST.map((format) => ({
+    params: { format: format.slug },
+    props: { format },
+  }));
+}
+
+const { format } = Astro.props as { format: CompressFormatInfo };
+
+const title = `${format.label} Compressor — Reduce File Size Free | ${SITE.name}`;
+const description = `Compress a ${format.label} image instantly in your browser — free, private, no upload required.`;
+const path = `/${format.slug}`;
+
+const faqItems = buildFaq(format);
+const intro = buildIntro(format);
+const why = buildWhy(format);
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`${format.label} compressor`}
+  heroSubtitle="Free, instant, and completely private. Nothing you upload ever leaves your device."
+  breadcrumbName={`${format.label} compressor`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <CompressorWidget client:idle accept={format.mimeType} />
+</ToolPageLayout>

@@ -1,0 +1,101 @@
+---
+// The shared <head>/<body> shell every tool site's own (now-thin) BaseLayout
+// wraps: SEO meta tags, JSON-LD, the AdSense loader script, and the two
+// AdSlot placements either side of `<main>`. Each app still keeps its own
+// small BaseLayout.astro because Astro/Vite CSS side-effect imports
+// (`@/styles/global.css`, which carries that app's own accent-color @theme
+// override) and each app's own Header/Footer components can't cross a
+// package boundary — those are passed in here via the `header`/`footer`
+// named slots instead. See docs/NEW_SITE_PLAYBOOK.md §3-4 and §11.
+import SeoHead from "@repo/seo/SeoHead.astro";
+import JsonLd from "@repo/seo/JsonLd.astro";
+import { organizationSchema, websiteSchema } from "@repo/seo/schema";
+import { withBase } from "@repo/file-tools-core/url.ts";
+import AdSlot from "./AdSlot.astro";
+import type { AdsConfig } from "./AdSlot.astro";
+
+export interface SiteInfo {
+  name: string;
+  url: string;
+  description: string;
+}
+
+export interface SiteVerificationInfo {
+  google: string;
+  naver: string;
+  bing: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  site: SiteInfo;
+  ads: AdsConfig;
+  siteVerification: SiteVerificationInfo;
+  /** Meta theme-color hex, e.g. "#d97706" — each site's own accent. */
+  themeColor: string;
+  /** Override for dark-themed sites; defaults to every current site's light theme. */
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  noindex,
+  site,
+  ads,
+  siteVerification,
+  themeColor,
+  bodyClass = "flex min-h-screen flex-col bg-white text-neutral-800 antialiased",
+} = Astro.props;
+
+const canonical = new URL(withBase(path), site.url).toString();
+const ogImage = new URL(withBase("og-image.png"), site.url).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <meta name="theme-color" content={themeColor} />
+    {siteVerification.google && <meta name="google-site-verification" content={siteVerification.google} />}
+    {siteVerification.naver && <meta name="naver-site-verification" content={siteVerification.naver} />}
+    {siteVerification.bing && <meta name="msvalidate.01" content={siteVerification.bing} />}
+
+    <SeoHead title={title} description={description} canonical={canonical} ogImage={ogImage} siteName={site.name} noindex={noindex} />
+    <JsonLd
+      schema={organizationSchema({
+        name: site.name,
+        url: new URL(withBase("/"), site.url).toString(),
+        logo: new URL(withBase("favicon.svg"), site.url).toString(),
+        description: site.description,
+      })}
+    />
+    <JsonLd schema={websiteSchema({ name: site.name, url: site.url })} />
+
+    {
+      ads.enabled && ads.clientId && (
+        <script
+          is:inline
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ads.clientId}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
+  </head>
+  <body class:list={[bodyClass]}>
+    <slot name="header" />
+    <AdSlot position="header" ads={ads} class="mx-auto my-2 max-w-content px-4" />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <AdSlot position="footer" ads={ads} class="mx-auto my-4 max-w-content px-4" />
+    <slot name="footer" />
+  </body>
+</html>

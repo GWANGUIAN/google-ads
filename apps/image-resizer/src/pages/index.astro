@@ -1,0 +1,47 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import TrustBadges from "@/components/marketing/TrustBadges.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
+import ResizerWidget from "@/components/resize/ResizerWidget";
+import { RESIZE_PRESETS } from "@/data/presets";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+---
+
+<BaseLayout title={`${SITE.name} — Resize Images Free, In Your Browser`} description={SITE.description} path="/">
+  <Container>
+    <section class="py-12 text-center sm:py-16">
+      <h1 class="mx-auto max-w-3xl text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
+        Resize an image, right in your browser
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-base text-neutral-600">
+        No uploads, no sign-up, no limits. Set any width and height, lock the aspect ratio, and download — JPG, PNG,
+        or WEBP.
+      </p>
+      <div class="mx-auto mt-8 max-w-2xl">
+        <TrustBadges />
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-2xl py-6">
+      <ResizerWidget client:idle />
+    </section>
+
+    <AdSlot position="in-content" ads={ADS} class="py-4" />
+
+    <section class="py-10">
+      <h2 class="text-xl font-bold text-neutral-900">Popular sizes</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          RESIZE_PRESETS.map((preset) => (
+            <a href={withBase(preset.slug)} class="rounded-card border border-neutral-200 bg-white p-5 hover:border-accent-400 hover:shadow-sm">
+              <p class="text-base font-bold text-neutral-900">{preset.label}</p>
+              <p class="mt-1.5 text-sm text-neutral-600">{preset.width}×{preset.height}px</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+</BaseLayout>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { zipFiles, downloadBlob } from "@/lib/convert/zip";
+import { zipFiles, downloadBlob } from "@repo/file-tools-core/zip.ts";
 import type { QueueItem } from "./ConverterWidget";
 
 export default function DownloadAllButton({ items }: { items: QueueItem[] }) {

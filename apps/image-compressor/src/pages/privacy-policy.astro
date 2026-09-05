@@ -1,0 +1,80 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+
+const lastUpdated = "September 5, 2026";
+---
+
+<BaseLayout
+  title={`Privacy Policy | ${SITE.name}`}
+  description={`How ${SITE.name} handles your data. In short: nothing you upload ever leaves your browser.`}
+  path="/privacy-policy"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">Privacy Policy</h1>
+      <p class="mt-2 text-sm text-neutral-500">Last updated: {lastUpdated}</p>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <h2 class="text-xl font-bold text-neutral-900">What we do with your images</h2>
+        <p>
+          {SITE.name} compresses JPG, PNG, and WEBP files entirely within your browser using its built-in Canvas
+          image processing. A file you drop or select is read directly into your browser's memory, re-encoded at a
+          smaller size there, and offered back to you as a download — it is never transmitted to any server we
+          operate. You can verify this yourself using your browser's developer tools (open the Network tab and watch
+          for outgoing requests while you compress a file).
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">No uploads, no storage</h2>
+        <p>
+          Because compression happens locally, we never receive, store, or have access to any image you process on
+          this site — not even temporarily. Closing or refreshing the tab discards everything.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Analytics</h2>
+        <p>
+          We may use privacy-respecting analytics to understand aggregate traffic patterns (e.g. which pages are
+          visited, approximate country of origin). This data is anonymized/aggregated and is not linked to any file
+          you process on this site.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Advertising</h2>
+        <p>
+          This site may display advertising served by Google AdSense. Google and its partners may use cookies or
+          similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of
+          personalized advertising by visiting Google's
+          <a href="https://adssettings.google.com" class="text-accent-600 underline" rel="noopener noreferrer" target="_blank">
+            Ads Settings
+          </a>. For more information on how Google uses data, see
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            class="text-accent-600 underline"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            How Google uses information from sites that use its services
+          </a>.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Cookies</h2>
+        <p>
+          This site itself does not set cookies for its compression tool to function. Third-party services we use
+          (analytics, advertising, once enabled) may set their own cookies, governed by their own privacy policies.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Your rights</h2>
+        <p>
+          Depending on your location, you may have rights under regulations such as the GDPR or CCPA to access,
+          correct, or delete personal data we hold about you. Since we do not collect the images you compress, there
+          is generally nothing of that nature to request. For questions, see our{" "}
+          <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Changes to this policy</h2>
+        <p>We may update this policy from time to time. Changes will be posted on this page with an updated revision date.</p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

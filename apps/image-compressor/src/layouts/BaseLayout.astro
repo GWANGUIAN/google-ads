@@ -1,0 +1,20 @@
+---
+import SharedBaseLayout from "@repo/ui/BaseLayout.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import { SITE, ADS, SITE_VERIFICATION } from "@/data/site";
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+}
+---
+
+<SharedBaseLayout {...Astro.props} site={SITE} ads={ADS} siteVerification={SITE_VERIFICATION} themeColor="#d97706">
+  <Header slot="header" />
+  <Footer slot="footer" />
+  <slot />
+</SharedBaseLayout>

@@ -16,6 +16,8 @@ export const LOOMFILE_NETWORK = [
   { name: "Image Convertor", url: "https://loomfile.com/image-convertor/", path: "/image-convertor/" },
   { name: "Font Tools", url: "https://loomfile.com/font/", path: "/font/" },
   { name: "QR Code Tools", url: "https://loomfile.com/qr/", path: "/qr/" },
+  { name: "Image Compressor", url: "https://loomfile.com/compress/", path: "/compress/" },
+  { name: "Image Resizer", url: "https://loomfile.com/resize/", path: "/resize/" },
 ] as const;
 
 /** The network list minus whichever entry matches `currentPath` (that app's

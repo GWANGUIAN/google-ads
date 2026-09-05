@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@repo/ui/Container.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
-import { SITE, TOOLS } from "@/data/site";
+import AdSlot from "@repo/ui/AdSlot.astro";
+import { SITE, ADS, TOOLS } from "@/data/site";
 ---
 
 <BaseLayout title={`${SITE.name} — Free, Private Browser Tools`} description={SITE.description} path="/">
@@ -40,6 +40,6 @@ import { SITE, TOOLS } from "@/data/site";
       </div>
     </section>
 
-    <AdSlot position="in-content" class="py-4" />
+    <AdSlot position="in-content" ads={ADS} class="py-4" />
   </Container>
 </BaseLayout>

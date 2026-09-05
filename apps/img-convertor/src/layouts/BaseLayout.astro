@@ -1,12 +1,8 @@
 ---
-import SeoHead from "@repo/seo/SeoHead.astro";
-import JsonLd from "@repo/seo/JsonLd.astro";
-import { organizationSchema, websiteSchema } from "@repo/seo/schema";
+import SharedBaseLayout from "@repo/ui/BaseLayout.astro";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
 import { SITE, ADS, SITE_VERIFICATION } from "@/data/site";
-import { withBase } from "@/lib/url";
 import "@/styles/global.css";
 
 interface Props {
@@ -15,45 +11,10 @@ interface Props {
   path: string;
   noindex?: boolean;
 }
-
-const { title, description, path, noindex } = Astro.props;
-const canonical = new URL(withBase(path), SITE.url).toString();
-const ogImage = new URL(withBase("og-image.png"), SITE.url).toString();
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
-    <meta name="theme-color" content="#2563eb" />
-    {SITE_VERIFICATION.google && <meta name="google-site-verification" content={SITE_VERIFICATION.google} />}
-    {SITE_VERIFICATION.naver && <meta name="naver-site-verification" content={SITE_VERIFICATION.naver} />}
-    {SITE_VERIFICATION.bing && <meta name="msvalidate.01" content={SITE_VERIFICATION.bing} />}
-
-    <SeoHead title={title} description={description} canonical={canonical} ogImage={ogImage} siteName={SITE.name} noindex={noindex} />
-    <JsonLd schema={organizationSchema({ name: SITE.name, url: new URL(withBase("/"), SITE.url).toString(), logo: new URL(withBase("favicon.svg"), SITE.url).toString(), description: SITE.description })} />
-    <JsonLd schema={websiteSchema({ name: SITE.name, url: SITE.url })} />
-
-    {
-      ADS.enabled && ADS.clientId && (
-        <script
-          is:inline
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADS.clientId}`}
-          crossorigin="anonymous"
-        />
-      )
-    }
-  </head>
-  <body class="flex min-h-screen flex-col bg-white text-neutral-800 antialiased">
-    <Header />
-    <AdSlot position="header" class="mx-auto my-2 max-w-content px-4" />
-    <main class="flex-1">
-      <slot />
-    </main>
-    <AdSlot position="footer" class="mx-auto my-4 max-w-content px-4" />
-    <Footer />
-  </body>
-</html>
+<SharedBaseLayout {...Astro.props} site={SITE} ads={ADS} siteVerification={SITE_VERIFICATION} themeColor="#2563eb">
+  <Header slot="header" />
+  <Footer slot="footer" />
+  <slot />
+</SharedBaseLayout>

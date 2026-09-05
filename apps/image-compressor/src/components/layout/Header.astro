@@ -1,0 +1,28 @@
+---
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+---
+
+<header class="border-b border-neutral-200 bg-white/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href={withBase("/")} class="flex items-center gap-2 text-base font-bold text-neutral-900">
+      <span class="flex h-8 w-8 items-center justify-center rounded-control bg-accent-600 text-white">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 6v4M8 10H4M8 10L4 6" />
+          <path d="M16 6v4M16 10h4M16 10l4-4" />
+          <path d="M8 18v-4M8 14H4M8 14l-4 4" />
+          <path d="M16 18v-4M16 14h4M16 14l4 4" />
+        </svg>
+      </span>
+      {SITE.name}
+    </a>
+    <nav class="hidden items-center gap-5 text-sm font-medium text-neutral-600 lg:flex">
+      <a href={withBase("/")} class="hover:text-neutral-900">Home</a>
+      <a href={withBase("/jpg")} class="hover:text-neutral-900">Compress JPG</a>
+      <a href={withBase("/png")} class="hover:text-neutral-900">Compress PNG</a>
+      <a href={withBase("/webp")} class="hover:text-neutral-900">Compress WEBP</a>
+      <a href={withBase("/about")} class="hover:text-neutral-900">About</a>
+    </nav>
+  </Container>
+</header>

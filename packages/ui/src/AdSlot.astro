@@ -1,0 +1,55 @@
+---
+// Renders nothing at all (no wrapper element, no reserved space) unless ads
+// are explicitly enabled AND this position has a configured slot id — so
+// there is zero layout shift and zero ad markup before AdSense approval.
+// `ads` is passed in as a prop (rather than imported from `@/data/site` the
+// way every app used to do it locally) since this component now lives in a
+// shared package with no per-app path to reach into. See
+// docs/NEW_SITE_PLAYBOOK.md §5 and @repo/seo/siteConfig's createSiteConfig().
+export interface AdsConfig {
+  enabled: boolean;
+  clientId: string;
+  slots: {
+    header: string;
+    inContent: string;
+    sidebar: string;
+    footer: string;
+  };
+}
+
+interface Props {
+  position: "header" | "in-content" | "sidebar" | "footer";
+  ads: AdsConfig;
+  class?: string;
+}
+
+const { position, ads, class: className = "" } = Astro.props;
+
+const slotByPosition: Record<Props["position"], string> = {
+  header: ads.slots.header,
+  "in-content": ads.slots.inContent,
+  sidebar: ads.slots.sidebar,
+  footer: ads.slots.footer,
+};
+
+const slotId = slotByPosition[position];
+const shouldRender = ads.enabled && !!slotId && !!ads.clientId;
+---
+
+{
+  shouldRender && (
+    <div class:list={["ad-slot", className]} data-ad-position={position}>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={ads.clientId}
+        data-ad-slot={slotId}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script>
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  )
+}

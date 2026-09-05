@@ -2,11 +2,11 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@repo/ui/Container.astro";
 import TrustBadges from "@/components/marketing/TrustBadges.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
 import QrGeneratorWidget from "@/components/qr/QrGeneratorWidget";
 import { QR_TYPE_LIST } from "@/data/qrTypes";
-import { SITE } from "@/data/site";
-import { withBase } from "@/lib/url";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
 ---
 
 <BaseLayout title={`${SITE.name} — Generate & Scan QR Codes Free`} description={SITE.description} path="/">
@@ -28,7 +28,7 @@ import { withBase } from "@/lib/url";
       <QrGeneratorWidget client:idle initialType="url" />
     </section>
 
-    <AdSlot position="in-content" class="py-4" />
+    <AdSlot position="in-content" ads={ADS} class="py-4" />
 
     <section class="py-10">
       <h2 class="text-xl font-bold text-neutral-900">QR code types</h2>

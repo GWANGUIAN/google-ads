@@ -1,0 +1,40 @@
+---
+import ToolPageLayout from "@/layouts/ToolPageLayout.astro";
+import ResizerWidget from "@/components/resize/ResizerWidget";
+import { RESIZE_PRESETS } from "@/data/presets";
+import { buildIntro, buildWhy } from "@/data/copy";
+import { buildFaq } from "@/data/faqTemplates";
+import { SITE } from "@/data/site";
+import type { ResizePreset } from "@/data/presets";
+
+export function getStaticPaths() {
+  return RESIZE_PRESETS.map((preset) => ({
+    params: { preset: preset.slug },
+    props: { preset },
+  }));
+}
+
+const { preset } = Astro.props as { preset: ResizePreset };
+
+const title = `Resize Image to ${preset.label} (${preset.width}×${preset.height}) — Free | ${SITE.name}`;
+const description = `Resize any image to ${preset.label} size (${preset.width}×${preset.height}px) instantly in your browser — free, private, no upload required.`;
+const path = `/${preset.slug}`;
+
+const faqItems = buildFaq(preset);
+const intro = buildIntro(preset);
+const why = buildWhy(preset);
+---
+
+<ToolPageLayout
+  title={title}
+  description={description}
+  path={path}
+  heroTitle={`Resize image to ${preset.label} (${preset.width}×${preset.height})`}
+  heroSubtitle="Free, instant, and completely private. Nothing you upload ever leaves your device."
+  breadcrumbName={`${preset.label} (${preset.width}×${preset.height})`}
+  faqItems={faqItems}
+  intro={intro}
+  why={why}
+>
+  <ResizerWidget client:idle initialPresetSlug={preset.slug} />
+</ToolPageLayout>

@@ -1,0 +1,46 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@repo/ui/Container.astro";
+import { SITE } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
+---
+
+<BaseLayout
+  title={`About ${SITE.name}`}
+  description={`Learn how ${SITE.name} works, why it's free, and why nothing you upload ever leaves your device.`}
+  path="/about"
+>
+  <Container>
+    <article class="mx-auto max-w-2xl py-14">
+      <h1 class="text-3xl font-extrabold text-neutral-900">About {SITE.name}</h1>
+
+      <div class="mt-6 space-y-5 text-base leading-relaxed text-neutral-700">
+        <p>
+          {SITE.name} is a free tool for shrinking JPG, PNG, and WEBP image files — directly in your web browser.
+          There's no sign-up, no watermark, and no limit on how many files you compress.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Why is it free?</h2>
+        <p>
+          Every compression here runs in your own browser using its built-in Canvas image processing, not a server we
+          operate. Because we're not paying to process anything on our own infrastructure, there's no per-use cost to
+          pass on — the site is instead supported by advertising.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Nothing you upload ever leaves your device</h2>
+        <p>
+          Every image is decoded, re-encoded, and made available for download entirely inside your browser's own
+          memory. We never receive the file, because it's never sent anywhere — you can verify this yourself by
+          watching your browser's network activity while you use the tool.
+        </p>
+
+        <h2 class="text-xl font-bold text-neutral-900">Who's behind this</h2>
+        <p>
+          {SITE.name} is part of the <a href="https://loomfile.com" class="text-accent-600 underline">LoomFile</a>{" "}
+          family of free, private, in-browser file tools. If you have feedback or run into a bug, see our{" "}
+          <a href={withBase("/contact")} class="text-accent-600 underline">Contact page</a>.
+        </p>
+      </div>
+    </article>
+  </Container>
+</BaseLayout>

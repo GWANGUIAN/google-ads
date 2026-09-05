@@ -1,4 +1,4 @@
-import { withBase } from "@/lib/url";
+import { withBase } from "@repo/file-tools-core/url.ts";
 import type { ConvertPayload, EngineResult, FontEngineJobResponse } from "./types";
 
 interface PendingJob {

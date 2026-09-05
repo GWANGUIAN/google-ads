@@ -2,12 +2,12 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@repo/ui/Container.astro";
 import TrustBadges from "@/components/marketing/TrustBadges.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
 import FontWidget from "@/components/font/FontWidget";
 import { CONVERSION_PAGES } from "@/data/conversionPairs";
 import { FORMATS } from "@/data/formats";
-import { SITE } from "@/data/site";
-import { withBase } from "@/lib/url";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
 ---
 
 <BaseLayout title={`${SITE.name} — Convert TTF, OTF, WOFF & WOFF2 Free`} description={SITE.description} path="/">
@@ -29,7 +29,7 @@ import { withBase } from "@/lib/url";
       <FontWidget client:idle initialTarget="woff2" />
     </section>
 
-    <AdSlot position="in-content" class="py-4" />
+    <AdSlot position="in-content" ads={ADS} class="py-4" />
 
     <section class="py-10">
       <h2 class="text-xl font-bold text-neutral-900">Conversions</h2>

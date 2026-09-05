@@ -2,12 +2,12 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@repo/ui/Container.astro";
 import TrustBadges from "@/components/marketing/TrustBadges.astro";
-import AdSlot from "@/components/ads/AdSlot.astro";
+import AdSlot from "@repo/ui/AdSlot.astro";
 import { IMAGE_TO_PDF_PAIRS } from "@/data/imageToPdfPairs";
 import { PDF_TO_IMAGE_PAIRS } from "@/data/pdfToImagePairs";
 import { ORGANIZER_TOOLS } from "@/data/pageOrganizerTools";
-import { SITE } from "@/data/site";
-import { withBase } from "@/lib/url";
+import { SITE, ADS } from "@/data/site";
+import { withBase } from "@repo/file-tools-core/url.ts";
 
 const tools = [
   { href: withBase("/jpg-to-pdf"), title: "Image to PDF", desc: "Combine JPG, PNG, WEBP, GIF, BMP or HEIC images into one PDF" },
@@ -51,7 +51,7 @@ const tools = [
       </div>
     </section>
 
-    <AdSlot position="in-content" class="py-4" />
+    <AdSlot position="in-content" ads={ADS} class="py-4" />
 
     <section class="py-10">
       <h2 class="text-xl font-bold text-neutral-900">Convert images to PDF</h2>

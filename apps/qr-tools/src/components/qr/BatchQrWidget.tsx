@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { renderQrToCanvas, canvasToPngBlob } from "@/lib/qr/generate";
-import { zipFiles, downloadBlob } from "@/lib/qr/zip";
+import { zipFiles, downloadBlob } from "@repo/file-tools-core/zip.ts";
 
 interface BatchItem {
   id: string;
